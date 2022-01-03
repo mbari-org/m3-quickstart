@@ -1,0 +1,109 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>M3 - MBARI Media Management</title>
+  <meta name="author" content="">
+  <meta name="description" content="">
+  <link rel="stylesheet" href="" />
+  <link rel="stylesheet" href="resources/css/default.css" />
+  <!-- <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet"> -->
+</head>
+
+<body>
+
+  <section id="mainheader">
+    <img src="resources/images/logo-mbari-3b.png" alt="MBARI" />
+    <header>
+      <h1>Welcome to the MBARI Media Managment (M3) Server</h1>
+      <details>This server is running <a href="https://www.nginx.com/">NGINX</a>. It is also acting as a proxy for the M3
+        REST services. The source code for the NGINX docker build is located at
+        <a
+          href="https://bitbucket.org/mbari/m3-deployspace/src/master/nginx/">https://bitbucket.org/mbari/m3-deployspace/src/master/nginx/</a>
+      </details>
+    </header>
+  </section>
+
+  <section id="quicklinks">
+    <a href="https://bitbucket.org/account/user/mbari/projects/M3">Bitbucket</a> |
+    <a href="https://github.com/mbari-media-management">GitHub</a> |
+    <a href="https://marineimaging.slack.com/">Slack</a>
+  </section>
+
+  <section id="index">
+    <h2>Available Content</h2>
+
+    <!-- <h3>Video Annotation and Reference System (VARS)</h3>
+    <div>The VARS applications are available in <a href="apps">apps</a></div> -->
+
+    <!-- <h3>Deep-sea Guide</h3>
+    <div>MBARI's internal Deep-sea guide is at <a href="dsg">dsg</a></div> -->
+
+    <h3>Video</h3>
+    <div>
+      You can browse the video content at "<a href="media">media</a>".
+    </div>
+
+    <h3>Framegrabs</h3>
+    <div>
+      Framegrabs are accessible at <a href="framegrabs">framegrabs</a>
+    </div>
+
+    <h3>M3 REST Endpoints</h3>
+    <ul>
+
+      <li>Configuration (raziel):
+        <ul>
+          <li>Endpoint: <a href="config">http://[servername]/config</a></li>
+          <li>Test: <a href="config/health/status">Show health of all M3 services</a></li>
+        </ul>
+      </li>
+
+      <li>Annotations (annosaurus):
+        <ul>
+          <li>Endpoint: <a href="anno">http://[servername]/anno</a></li>
+          <li>Test: <a href="anno/v1/imagedmoments?limit=10">Find a few imaged moments</a></li>
+        </ul>
+      </li>
+
+      <li>Knowledgebase (vars-kb-server):
+        <ul>
+          <li>Endpoint: <a href="kb">http://[servername]/kb</a></li>
+          <li>Test: <a href="kb/v1/phylogeny/up/Nanomia">Show phylogeny branch down to the genus <i>Nanomia</i></a>
+          </li>
+        </ul>
+      </li>
+
+      <li>User Accounts (vars-user-server):
+        <ul>
+          <li>Endpoint: <a href="accounts">http://[servername]/accounts</a></li>
+          <li>Test: <a href="accounts/v1/users">Show all users</a></li>
+        </ul>
+      </li>
+
+      <li>Video Asset manager (vampire-squid):
+        <ul>
+          <li>Endpoint: <a href="vam">http://[servername]/vam</a></li>
+          <li>Test: <a href="vam/v1/videosequences/names">Show all deployment IDs (aka video sequence names)</a>
+          </li>
+        </ul>
+      </li>
+
+      <li>Simple Data Access (Charybdis):
+        <ul>
+          <li>Endpoint: <a href="references">http://[servername]/references</a></li>
+          <li>Test: <a href="references/query/concept/Pandalus">Find all annotations and media for "Pandalus"</a></li>
+          <li>Test: <a href="references/query/dive/Ventana 1234">Show all annotations and media for deployment "Ventana 1234"</a></li>
+          <li>Test: <a href="references/query/file/V4100_20180226T215822Z_prores.mov">Show all annotations for a video file named "V4100_20180226T215822Z_prores.mov"</a></li>
+        </ul>
+      </li>
+
+    </ul>
+  </section>
+
+  <script src=""></script>
+</body>
+
+</html>

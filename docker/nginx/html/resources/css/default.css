@@ -1,0 +1,35 @@
+body {
+  color: #80DEEA;
+  background-color: #FFFFFF;
+  font-family: 'Source Code Pro', monospace;
+}
+
+header {
+  color: #004260;
+  padding-left: 40px;
+}
+
+section {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    border: 0px solid;
+    border-color: #ECEFF1;
+    background-color: #e4f5fd;
+    color: #000000;
+    margin: 20px;
+    padding: 10px;
+}
+
+a {
+  color: #004260;
+}
+
+h3 {
+  text-decoration: underline;
+  color: #F0503F;
+}
+
+#mainheader {
+  background-color: #FFFFFF;
+}

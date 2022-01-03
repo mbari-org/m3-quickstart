@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>M3 - MBARI Media Management</title>
+  <meta name="author" content="">
+  <meta name="description" content="">
+  <link rel="stylesheet" href="" />
+  <link rel="stylesheet" href="resources/css/default.css" />
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet">
+</head>
+
+<body>
+
+  <section>
+    <img src="resources/images/logo-mbari-3b.png" alt="MBARI" />
+    <header>
+      <h1>Welcome to the M3 Video Server</h1>
+      <details>This server is running <a href="https://www.nginx.com/">NGINX</a>. It is also acting as a proxy for the
+        REST services hosted on portal.shore.mbari.org. The source code for the NGINX docker build is located at
+        https://github.org/mbari-media-managment/m3-microservices</details>
+    </header>
+  </section>
+
+<<<<<<< HEAD
+  <section id="index">
+    <h2>Available Content</h2>
+    <h3>Video</h3>
+    <div>
+      You can browse the video content at <a href="media">media</a>
+    </div>
+    <h3>Framegrabs</h3>
+    <div>
+      Framegrabs are accessible at <a href="framegrabs">framegrabs</a>
+    </div>
+    <h3>M3 REST Endpoints</h3>
+    <div>Note that these aren't really browseable, they are listed for reference.</div>
+    <ul>
+      <li>Annotations: <a href="http://localhost:8082/anno/v1">anno/v1</a></li>
+      <li>Knowledgebase: <a href="http://localhost:8083/kb/v1">kb/v1</a></li>
+      <li>Video Asset Manager: <a href="http://localhost:8084/vam/v1">vam/v1</a></li>
+      <li>Users: <a href="http://localhost:8081/accounts/v1">accounts/v1</a></li>
+      <li>Framegrab uploader: <a href="http://localhost:8085/panoptes/v1">panoptes/v1</a></li>
+    </ul>
+  </section>
+=======
+   <section>
+     <img src="resources/images/logo-mbari-3b.png" alt="MBARI" />
+     <header>
+       <h1>Welcome to the M3 Video Server</h1>
+       <details>This server is running <a href="https://www.nginx.com/">NGINX</a>. It is also acting as a proxy for the REST services hosted on portal.shore.mbari.org. The source code for the NGINX docker build is located at https://github.org/mbari-media-managment/m3-microservices</details>
+     </header>
+   </section>
+   
+   <section id="index">
+     <h2>Available Content</h2>
+     <h3>Video</h3>
+     <div>
+       You can browse the video content at <a href="media">media</a>
+     </div>
+     <h3>Framegrabs</h3>
+     <div>
+       Framegrabs are accessible at <a href="framegrabs">framegrabs</a>
+     </div>
+     <h3>M3 REST Endpoints</h3>
+     <div>Note that these aren't really browseable, they are listed for reference.</div> 
+     <ul>
+       <li>Annotations: <a href="http://localhost:8082/anno/v1">anno/v1</a></li>
+       <li>Knowledgebase: <a href="http://localhost:8083/kb/v1">kb/v1</a></li>
+       <li>Video Asset Manager: <a href="http://localhost:8084/vam/v1">vam/v1</a></li>
+       <li>Users: <a href="http://localhost:8081/accounts/v1">accounts/v1</a></li>
+       <li>Framegrab uploader: <a href="http://localhost:8085/panoptes/v1">panoptes/v1</a></li>
+     </ul>
+     
+   </section>
+>>>>>>> integration
+
+  <section>
+    <details>
+      <h1>Test Links</h1>
+      <ul>
+        <li><a href="http://localhost:8082/anno/v1/imagedmoments?limit=10">annosaurus: Show a few imaged moments</a></li>
+        <li><a href="http://localhost:8083/kb/v1/phylogeny/up/Nanomia">vars-kb-server: Phylogeny down to Nanomia</a></li>
+        <li><a href="http://localhost:8081/accounts/v1/users">vars-user-server: Show all users</a></li>
+        <li><a href="http://localhost:8084/vam/v1/videosequences/names">vampire-squid: Show all video sequence names</a></li>
+      </ul>
+    </details>
+  </section>
+
+  <script src=""></script>
+</body>
+
+</html>
