@@ -5,6 +5,7 @@ import argparse
 import io
 import os
 import requests
+import subprocess
 import urllib.request
 import ffprobe
 
@@ -31,17 +32,18 @@ def sha512_from_uri(uri: str) -> str:
     p.remove()
     return checksum
 
-def main(camera_id: str, deployment_id: str, uri: str, start_time: datetime):
+def main(camera_id: str, deployment_id: str, uri: str):
     kb_url = os.environ["VAMPIRE_SQUID_URL"]
     kb_secret = os.environ["VAMPIRESQUID_CLIENT_SECRET"]
     vampire_squid = VampireSquid(kb_url)
-    
-    start_time_utc = start_time.astimezone(datetime.timezone.utc)
-    time_str_full = start_time_utc.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-    time_str_compact = start_time_utc.strftime("%Y%m%dT%H%M%S.%fZ")
 
     print(f"Reading video metadata from {uri}")
     video_metadata = ffprobe.ffprobe(uri).video_metadata()
+
+    start_time_utc = video_metadata.creation_time().astimezone(datetime.timezone.utc)
+    time_str_full = start_time_utc.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+    time_str_compact = start_time_utc.strftime("%Y%m%dT%H%M%S.%fZ")
+
     mime_type = media_type(uri)
     print(f"Calculating checksum from {uri} (be patient)")
     checksum = sha512_from_uri(uri)
@@ -80,10 +82,6 @@ if __name__ == "__main__":
     parser.add_argument("deployment_id", help="The URL of the kb endpoints. e.g. http://localhost/kb/v1", 
         type=str)
     parser.add_argument("uri", help="The URL of the kb endpoints. e.g. http://localhost/kb/v1", 
-        type=str)
-    parser.add_argument("start_time", help="The URL of the kb endpoints. e.g. http://localhost/kb/v1", 
-        type=str)
-    parser.add_argument("camera_id", help="The URL of the kb endpoints. e.g. http://localhost/kb/v1", 
         type=str)
     args = parser.parse_args()
     main()
