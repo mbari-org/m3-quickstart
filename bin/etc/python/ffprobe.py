@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import NamedTuple
@@ -10,11 +11,13 @@ import sys
 @dataclass
 class VideoMetadata:
     name: str
-    created: datetime
+    creation_time: datetime
     duration_millis: int
     width_pixels: int
     height_pixels: int
     size_bytes: int
+    video_codec: str
+    frame_rate: float
 
 @dataclass
 class FFProbeResult:
@@ -36,15 +39,22 @@ class FFProbeResult:
             float(stream["duration"]) * 1000,
             int(stream["width"]),
             int(stream["height"]),  
-            int(file_format["size"]))
+            int(file_format["size"]),
+            stream["codec_name"],
+            self.frame_rate())
 
     def creation_time(self):
         parts = self.name.split("_")
         try:
             return iso8601.parse_date(parts[1])
         except:
-            file_format = json["format"]
+            file_format = self.dict()["format"]
             return iso8601.parse_date(file_format["tags"]["creation_time"])
+
+    def frame_rate(self):
+        json = self.dict()
+        stream = json["streams"][0]
+        return eval(stream["r_frame_rate"])
 
 
 def ffprobe(file_path) -> FFProbeResult:

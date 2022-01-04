@@ -1,7 +1,7 @@
-from datetime import datetime
 from microservices import VampireSquid
 from pathlib import Path
 import argparse
+import datetime
 import io
 import os
 import requests
@@ -32,7 +32,7 @@ def sha512(path: Path) -> str:
 def sha512_from_uri(uri: str) -> str:
     p = fetch(uri)
     checksum = sha512(p)
-    p.remove()
+    p.unlink()  # Delete the file
     return checksum
 
 def main(camera_id: str, deployment_id: str, uri: str):
@@ -43,7 +43,7 @@ def main(camera_id: str, deployment_id: str, uri: str):
     print(f"Reading video metadata from {uri}")
     video_metadata = ffprobe.ffprobe(uri).video_metadata()
 
-    start_time_utc = video_metadata.creation_time().astimezone(datetime.timezone.utc)
+    start_time_utc = video_metadata.creation_time.astimezone(datetime.timezone.utc)
     time_str_full = start_time_utc.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
     time_str_compact = start_time_utc.strftime("%Y%m%dT%H%M%S.%fZ")
 
@@ -52,17 +52,19 @@ def main(camera_id: str, deployment_id: str, uri: str):
     checksum = sha512_from_uri(uri)
 
     xs = {
-          "video_sequence_name" : deployment_id,
           "camera_id" : camera_id,
-          "video_name" : f"{deployment_id} {time_str_compact}",
-          "uri" : uri,
-          "start_timestamp" : time_str_full,
-          "duration_millis" : video_metadata.duration_millis,
           "container" : mime_type,
-          "width" : video_metadata.width_pixels,
+          "duration_millis" : video_metadata.duration_millis,
+          "frame_rate" : video_metadata.frame_rate,
           "height" : video_metadata.height_pixels,
+          "sha512" : f"{checksum}",
           "size_bytes" : video_metadata.size_bytes,
-          "sha512" : f"{checksum}"
+          "start_timestamp" : time_str_full,
+          "uri" : uri,
+          "video_codec": video_metadata.video_codec,
+          "video_name" : f"{deployment_id} {time_str_compact}",
+          "video_sequence_name" : deployment_id,
+          "width" : video_metadata.width_pixels,
     }
 
     print(f"Registering {uri} in video asset manager")
@@ -71,7 +73,13 @@ def main(camera_id: str, deployment_id: str, uri: str):
       xs["camera_id"], 
       xs["uri"], 
       xs["start_timestamp"], 
-      client_secret=kb_secret)
+      client_secret=kb_secret, 
+      duration_millis=xs["duration_millis"],
+      width=xs["width"],
+      height=xs["height"],
+      size_bytes=xs["size_bytes"],
+      sha512=xs["sha512"],
+      frame_rate=xs["frame_rate"])
 
     print("{uri} has been registered")
     [print(key,':',value) for key, value in r.items()]
@@ -87,4 +95,4 @@ if __name__ == "__main__":
     parser.add_argument("uri", help="The URL of the kb endpoints. e.g. http://localhost/kb/v1", 
         type=str)
     args = parser.parse_args()
-    main()
+    main(args.camera_id, args.deployment_id, args.uri)
