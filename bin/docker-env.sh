@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
+MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BASE_DIR="$( cd "$( dirname "${MY_DIR}/../.." )" && pwd )"
+
 export LOGBACK_LEVEL=WARN
-export M3_HOST_DIR="${PWD}/temp"
+export M3_HOST_DIR="${BASE_DIR}/temp"
 export M3_HOST_NAME=http://localhost
 export M3_JDBC_BASE_URL="jdbc:derby://derby:1527"
 export M3_JDBC_DRIVER=org.apache.derby.jdbc.ClientDriver
@@ -65,7 +68,8 @@ export RAZIEL_PORT=8400
 export RAZIEL_HTTP_CONTEXT=/config
 export RAZIEL_JWT_SIGNING_SECRET=foo
 export RAZIEL_MASTER_KEY=inflatable_ducks
-export HOST_IP=$(curl -4 ifconfig.co)
+# export HOST_IP=$(curl -4 ifconfig.co)
+export HOST_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')
 export ANNOSAURUS_URL="http://${HOST_IP}:${ANNOSAURUS_PORT}${ANNOSAURUS_HTTP_CONTEXT_PATH}/v1"
 export CHARYBDIS_URL="http://${HOST_IP}:${CHARYBDIS_PORT}"
 export PANOPTES_URL="http://${HOST_IP}:${PANOPTES_PORT}${PANOPTES_HTTP_CONTEXT_PATH}/v1"
