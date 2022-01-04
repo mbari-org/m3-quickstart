@@ -1,0 +1,196 @@
+version: "3.0"
+services:
+
+  derby:
+    build: docker/derby/.
+    image: m3/derby
+    ports:
+      - "1527:1527"
+    volumes:
+      - ${M3_HOST_DIR}/derby:/dbs
+    networks:
+      - m3
+
+  nginx:
+    build: docker/nginx/.
+    image: m3/nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ${M3_HOST_DIR}/media:/usr/local/nginx/html/media
+      - ${M3_HOST_DIR}/framegrabs:/usr/local/nginx/html/framegrabs
+    networks:
+      - m3
+    depends_on:
+      - annosaurus
+      - charybdis
+      - panoptes
+      - raziel
+      - vampire-squid
+      - vars-kb-server
+      - vars-user-server
+
+  annosaurus:
+    image: mbari/annosaurus
+    restart: always
+    ports:
+      - "${ANNOSAURUS_PORT}:8080"
+      - "${ANNOSAURUS_ZEROMQ_PORT}:5563"
+    environment:
+      - AUTHENTICATION_SERVICE=org.mbari.vars.annotation.auth.BasicJwtService
+      - BASICJWT_CLIENT_SECRET=${ANNOSAURUS_CLIENT_SECRET}
+      - BASICJWT_ISSUER=${JWT_ISSUER}
+      - BASICJWT_SIGNING_SECRET=${ANNOSAURUS_SIGNING_SECRET}
+      - DATABASE_ENVIRONMENT=production
+      - DATABASE_LOG_LEVEL=FINE
+      - HTTP_CONTEXT_PATH=${ANNOSAURUS_HTTP_CONTEXT_PATH}
+      - LOGBACK_LEVEL=${LOGBACK_LEVEL}
+      - MESSAGING_ZEROMQ_ENABLE=${ANNOSAURUS_ZEROMQ_ENABLE}
+      - MESSAGING_ZEROMQ_PORT=${ANNOSAURUS_ZEROMQ_PORT}
+      - MESSAGING_ZEROMQ_TOPIC=${ANNOSAURUS_ZEROMQ_TOPIC}
+      - ORG_MBARI_VARS_ANNOTATION_DATABASE_PRODUCTION_DRIVER=${ANNOSAURUS_DATABASE_DRIVER}
+      - ORG_MBARI_VARS_ANNOTATION_DATABASE_PRODUCTION_NAME=${ANNOSAURUS_DATABASE_NAME}
+      - ORG_MBARI_VARS_ANNOTATION_DATABASE_PRODUCTION_PASSWORD=${ANNOSAURUS_DATABASE_PASSWORD}
+      - ORG_MBARI_VARS_ANNOTATION_DATABASE_PRODUCTION_URL=${ANNOSAURUS_DATABASE_URL}
+      - ORG_MBARI_VARS_ANNOTATION_DATABASE_PRODUCTION_USER=${ANNOSAURUS_DATABASE_USER}
+    depends_on:
+      - derby
+    networks:
+      - m3
+
+  panoptes:
+    image: mbari/panoptes
+    restart: always
+    ports:
+      - "${PANOPTES_PORT}:8080" # PAN_APP_PORT needs to match the one in nginx.conf
+    volumes:
+      - ${M3_HOST_DIR}/framegrabs:${PANOPTES_ROOT_DIRECTORY}
+    environment:
+      - AUTHENTICATION_SERVICE=org.mbari.m3.panoptes.auth.BasicJwtService
+      - BASICJWT_CLIENT_SECRET=${PANOPTES_CLIENT_SECRET}
+      - BASICJWT_JWT_ISSUER=${JWT_ISSUER}
+      - BASICJWT_SIGNING_SECRET=${PANOPTES_SIGNING_SECRET}
+      - HTTP_CONTEXT_PATH=${PANOPTES_HTTP_CONTEXT_PATH}
+      - LOGBACK_LEVEL=${LOGBACK_LEVEL}
+      - PANOPTES_FILE_ARCHIVER=${PANOPTES_FILE_ARCHIVER}
+      - PANOPTES_MBARI_IMAGE_ARCHIVE_ROOT=${PANOPTES_ROOT_DIRECTORY}
+      - PANOPTES_MBARI_IMAGE_ARCHIVE_URL=${PANOPTES_ROOT_URL}
+    networks:
+      - m3
+
+
+  vampire-squid:
+    image: mbari/vampire-squid
+    restart: always
+    ports:
+      - "${VAMPIRESQUID_PORT}:8080"
+    environment:
+      - AUTHENTICATION_SERVICE=org.mbari.vars.vam.auth.BasicJwtService
+      - BASICJWT_CLIENT_SECRET=${VAMPIRESQUID_CLIENT_SECRET}
+      - BASICJWT_ISSUER=${JWT_ISSUER}
+      - BASICJWT_SIGNING_SECRET=${VAMPIRESQUID_SIGNING_SECRET}
+      - DATABASE_ENVIRONMENT=production
+      - HTTP_CONTEXT_PATH=${VAMPIRESQUID_HTTP_CONTEXT_PATH}
+      - ORG_MBARI_VARS_VAM_DATABASE_PRODUCTION_DRIVER=${VAMPIRESQUID_DATABASE_DRIVER}
+      - ORG_MBARI_VARS_VAM_DATABASE_PRODUCTION_NAME=${VAMPIRESQUID_DATABASE_NAME}
+      - ORG_MBARI_VARS_VAM_DATABASE_PRODUCTION_PASSWORD=${VAMPIRESQUID_DATABASE_PASSWORD}
+      - ORG_MBARI_VARS_VAM_DATABASE_PRODUCTION_URL=${VAMPIRESQUID_DATABASE_URL}
+      - ORG_MBARI_VARS_VAM_DATABASE_PRODUCTION_USER=${VAMPIRESQUID_DATABASE_USER}
+    depends_on:
+      - derby
+    networks:
+      - m3
+
+  vars-kb-server:
+    image: mbari/vars-kb-server
+    restart: always
+    ports:
+      - "${VARS_KBSERVER_PORT}:8080"
+    environment:
+      - DATABASE_ALLOW_INIT=${VARS_KBSERVER_DATABASE_ALLOW_INIT}
+      - DATABASE_ENVIRONMENT=production
+      - HTTP_CONTEXT_PATH=${VARS_KBSERVER_HTTP_CONTEXT_PATH}
+      - LOGBACK_LEVEL=${LOGBACK_LEVEL}
+      - ORG_MBARI_VARS_KBSERVER_DATABASE_PRODUCTION_DRIVER=${VARS_KB_DATABASE_DRIVER}
+      - ORG_MBARI_VARS_KBSERVER_DATABASE_PRODUCTION_HIKARI_TEST=${VARS_KB_DATABASE_HIKARI_TEST}
+      - ORG_MBARI_VARS_KBSERVER_DATABASE_PRODUCTION_NAME=${VARS_KB_DATABASE_NAME}
+      - ORG_MBARI_VARS_KBSERVER_DATABASE_PRODUCTION_PASSWORD=${VARS_KB_DATABASE_PASSWORD}
+      - ORG_MBARI_VARS_KBSERVER_DATABASE_PRODUCTION_URL=${VARS_KB_DATABASE_URL}
+      - ORG_MBARI_VARS_KBSERVER_DATABASE_PRODUCTION_USER=${VARS_KB_DATABASE_USER}
+    depends_on:
+      - derby
+    networks:
+      - m3
+
+  vars-user-server:
+    image: mbari/vars-user-server
+    restart: always
+    ports:
+      - "${VARS_USER_PORT}:8080"
+    environment:
+      - AUTHENTICATION_SERVICE=org.mbari.vars.userserver.auth.BasicJwtService
+      - BASICJWT_CLIENT_SECRET=${VARS_USER_CLIENT_SECRET}
+      - BASICJWT_ISSUER=${JWT_ISSUER}
+      - BASICJWT_SIGNING_SECRET=${VARS_USER_SIGNING_SECRET}
+      - DATABASE_ENVIRONMENT=production
+      - HTTP_CONTEXT_PATH=${VARS_USER_HTTP_CONTEXT_PATH}
+      - LOGBACK_LEVEL=${LOGBACK_LEVEL}
+      - ORG_MBARI_VARS_KB_DATABASE_PRODUCTION_DRIVER=${VARS_KB_DATABASE_DRIVER}
+      - ORG_MBARI_VARS_KB_DATABASE_PRODUCTION_HIKARI_TEST=${VARS_KB_DATABASE_HIKARI_TEST}
+      - ORG_MBARI_VARS_KB_DATABASE_PRODUCTION_NAME=${VARS_KB_DATABASE_NAME}
+      - ORG_MBARI_VARS_KB_DATABASE_PRODUCTION_PASSWORD=${VARS_KB_DATABASE_PASSWORD}
+      - ORG_MBARI_VARS_KB_DATABASE_PRODUCTION_URL=${VARS_KB_DATABASE_URL}
+      - ORG_MBARI_VARS_KB_DATABASE_PRODUCTION_USER=${VARS_KB_DATABASE_USER}
+    depends_on:
+      - derby
+    networks:
+      - m3
+
+  charybdis:
+    image: mbari/charybdis
+    restart: always
+    ports:
+      - "${CHARYBDIS_PORT}:8080"
+    environment:
+      - ANNOTATION_SERVICE_URL=${CHARYBDIS_ANNOSAURUS_URL}
+      - ANNOTATION_SERVICE_TIMEOUT=${CHARYBDIS_ANNOSAURUS_TIMEOUT}
+      - MEDIA_SERVICE_URL=${CHARYBDIS_VAMPIRESQUID_URL}
+      - MEDIA_SERVICE_TIMEOUT=${CHARYBDIS_VAMPIRESQUID_TIMEOUT}
+    networks:
+      - m3
+    depends_on:
+      - annosaurus
+      - vampire-squid
+
+  raziel:
+    image: mbari/raziel
+    restart: always
+    ports:
+      - "${RAZIEL_PORT}:8080"
+    environment:
+      - RAZIEL_HTTP_CONTEXT=${RAZIEL_HTTP_CONTEXT}
+      - RAZIEL_JWT_SIGNING_SECRET=${RAZIEL_JWT_SIGNING_SECRET}
+      - RAZIEL_MASTER_KEY=${RAZIEL_MASTER_KEY}
+      - ANNOSAURUS_URL=${ANNOSAURUS_URL}
+      - ANNOSAURUS_SECRET=${ANNOSAURUS_CLIENT_SECRET}
+      - CHARYBDIS_URL=${CHARYBDIS_URL}
+      - PANOPTES_URL=${PANOPTES_URL}
+      - PANOPTES_SECRET=${PANOPTES_CLIENT_SECRET}
+      - VAMPIRE_SQUID_URL=${VAMPIRE_SQUID_URL}
+      - VAMPIRE_SQUID_SECRET=${VAMPIRESQUID_CLIENT_SECRET}
+      - VARS_KB_SERVER_URL=${VARS_KB_SERVER_URL}
+      - VARS_USER_SERVER_URL=${VARS_USER_SERVER_URL}
+      - VARS_USER_SERVER_SECRET=${VARS_USER_CLIENT_SECRET}
+    networks:
+      - m3
+    depends_on:
+      - annosaurus
+      - charybdis
+      - panoptes
+      - vampire-squid
+      - vars-kb-server
+      - vars-user-server
+
+networks:
+  m3:
