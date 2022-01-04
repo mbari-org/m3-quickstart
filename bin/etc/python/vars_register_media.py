@@ -9,6 +9,9 @@ import subprocess
 import urllib.request
 import ffprobe
 
+__author__ = "Brian Schlining"
+__copyright__ = "Copyright 2022, Monterey Bay Aquarium Research Institute"
+
 def media_type(uri: str) -> str:
     r = requests.head(uri)
     return r.headers["Content-Type"]
