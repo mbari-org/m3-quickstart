@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 export LOGBACK_LEVEL=WARN
 export M3_HOST_DIR="${PWD}/temp"
 export M3_HOST_NAME=http://localhost

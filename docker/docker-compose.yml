@@ -2,7 +2,7 @@ version: "3.0"
 services:
 
   derby:
-    build: docker/derby/.
+    build: derby/.
     image: m3/derby
     ports:
       - "1527:1527"
@@ -12,7 +12,7 @@ services:
       - m3
 
   nginx:
-    build: docker/nginx/.
+    build: nginx/.
     image: m3/nginx
     restart: always
     ports:
