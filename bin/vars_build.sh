@@ -1,15 +1,9 @@
 #!/usr/bin/env bash
 
-set -e
-pushd $(pwd)
-
-# first arg is the env file
-export ENV_FILE="$1"
-
 MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-BASE_DIR="$( cd "$( dirname "${MY_DIR}/../../.." )" && pwd )"
- 
-"$BASE_DIR/etc/apps/vars-kb/build.sh" "$BASE_DIR/.env"
-"$BASE_DIR/etc/apps/vars-query/build.sh" "$BASE_DIR/.env"
+BASE_DIR="$( cd "$( dirname "${MY_DIR}/../.." )" && pwd )"
 
-popd
+ENV_FILE="$BASE_DIR/bin/docker-env.sh"
+ 
+"$BASE_DIR/bin/etc/apps/vars-kb/build.sh" "$ENV_FILE"
+"$BASE_DIR/bin/etc/apps/vars-query/build.sh" "$ENV_FILE"
