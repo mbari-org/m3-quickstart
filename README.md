@@ -22,6 +22,14 @@ A simple and easy method to run MBARI's Video Annotation and Reference System.
 3. `bin/docker_start.sh` - This may take a while the first time you run it as it builds a web server and a database server for you.
 4. Open a browser to <http://localhost> to verify that things are working.
 
+### Initialize the knowledgebase
+
+The knowledgebase is used to constrain the terms and associations used for annotations. To help get you started, this project provides a script that can initialize the knowledgebase with a subset of MBARI's data. You can use this a starter to help uild and refine your own lexicon of terms. Note that this is not required, you an use the VARS knowledgebase application to build your own from scratch.
+
+```bash
+bin/vars_init_kb.sh
+```
+
 ### Registering a video
 
 Before a video can be annotated, VARS needs to know about it. The first step is to make your video web accessible. If you've already run `docker_start.sh`, you have a web server running that is capable of serving video. You can put the video in `temp/media` and browse to it under <http://localhost/media>.
