@@ -37,7 +37,7 @@ echo "Building vars-kb in ${APP_DIR}"
 cd "$REPO_DIR" && \
   git clone https://github.com/mbari-media-management/vars-kb && \
   cd "$APP_DIR" && \
-  gradlew jpackage && \
+  ./gradlew jpackage && \
   mkdir -p "${APP_TARGET}" && \
   cp -af "${APP_DIR}/org.mbari.kb.ui/build/jpackage/." "${APP_TARGET}/" && \
   echo "--- The 'VARS Knowledgebase' application is in  ${APP_TARGET}"

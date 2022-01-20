@@ -37,7 +37,7 @@ echo "Building vars-query in ${APP_DIR}"
 cd "$REPO_DIR" && \
   git clone https://github.com/mbari-media-management/vars-query && \
   cd "$APP_DIR" && \
-  gradlew jpackage && \
+  ./gradlew jpackage && \
   mkdir -p "${APP_TARGET}" && \
   cp -af "${APP_DIR}/build/jpackage/." "${APP_TARGET}/" && \
   echo "--- The 'VARS Query' application is in  ${APP_TARGET}"
