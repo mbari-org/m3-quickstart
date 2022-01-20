@@ -90,9 +90,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("camera_id", help="Typically the ROV/AUV name", 
         type=str)
-    parser.add_argument("deployment_id", help="The URL of the kb endpoints. e.g. http://localhost/kb/v1", 
+    parser.add_argument("deployment_id", help="The deployment ID or expedition ID of the video. e.g. 'Doc Ricketts 1234'", 
         type=str)
-    parser.add_argument("uri", help="The URL of the kb endpoints. e.g. http://localhost/kb/v1", 
+    parser.add_argument("uri", help="The URL to the media file e.g. http://my.servername.org/media/D1234_20190201T120000Z.mp4", 
         type=str)
     args = parser.parse_args()
     main(args.camera_id, args.deployment_id, args.uri)
