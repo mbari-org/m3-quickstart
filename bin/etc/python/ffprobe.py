@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import NamedTuple
@@ -8,10 +7,13 @@ import json
 import subprocess
 import sys
 
+__author__ = "Brian Schlining"
+__copyright__ = "Copyright 2022, Monterey Bay Aquarium Research Institute"
+
 @dataclass
 class VideoMetadata:
     name: str
-    creation_time: datetime
+    created: datetime
     duration_millis: int
     width_pixels: int
     height_pixels: int
