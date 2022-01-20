@@ -40,8 +40,7 @@ The next step is to register the video. It's highly recommended that you follow 
 bin/vars_register_media.sh <camera id> <deployment id> <video url>
 ```
 
-- __camera 
-id__ - An identifier for the camera or platform that collected the video
+- __camera-id__ - An identifier for the camera or platform that collected the video
 - __deployment id__ - An identifier for the deployment of the camera
 - __video url__ - The URL to your video. Don't use localhost!! You can browse to your machine using it's netowkr name instead.
 
