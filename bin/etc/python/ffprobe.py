@@ -2,11 +2,10 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 from typing import NamedTuple
-import argparse
 import iso8601
 import json
 import subprocess
-import sys
+
 
 __author__ = "Brian Schlining"
 __copyright__ = "Copyright 2022, Monterey Bay Aquarium Research Institute"
