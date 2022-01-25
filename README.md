@@ -33,6 +33,8 @@ bin/docker_start.sh
 bin/vars_init_kb.sh
 
 # Builds some custom VARS apps under temp/apps
+# You need GITHUB_TOKEN and GITHUB_USERNAME environment variables set.
+#   see https://github.com/mbari-org/maven#gradle
 vars_build.sh
 ```
 
@@ -41,7 +43,7 @@ vars_build.sh
 1. Open a browser to <http://localhost> to verify that things are working.
 2. Run the _VARS Knowledgebase_ application. The first time it's run it will ask you to create an admin account. It will be located in `temp/apps`.
 3. Register your first video with VARS. You can use any video with a URL or you can put them in `temp/media` and browse to it (e.g. <http://localhost>). Once you have a URL use `bin/vars_register_media.sh` to register it in the VARS Video Asset Manager.
-4. Download [VARS Annotation](https://github.com/mbari-media-management/vars-annotation/releases) and configure it as described [here](https://docs.mbari.org/vars-annotation/setup/). 
+4. Download [VARS Annotation](https://github.com/mbari-media-management/vars-annotation/releases) and configure it as described [here](https://docs.mbari.org/vars-annotation/setup/).
 
 Any computer on you network can connect to the VARS services you're running. You can annotated from other machines on your network.
 
