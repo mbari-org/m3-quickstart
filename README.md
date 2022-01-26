@@ -43,15 +43,15 @@ bin/vars_build.sh
 ### Next Steps
 
 1. Open a browser to <http://localhost> to verify that things are working.
-2. Run the _VARS Knowledgebase_ application. The first time it's run it will ask you to create an admin account. It will be located in `temp/apps`.
-3. Register your first video with VARS. You can use any video with a URL or you can put them in `temp/media` and browse to it (e.g. <http://localhost>). Once you have a URL use `bin/vars_register_media.sh` to register it in the VARS Video Asset Manager.
+2. Run the _VARS Knowledgebase_ application. The first time it's run it will ask you to create an admin account. It will be located in `m3-quickstart/temp/apps`.
+3. Register your first video with VARS. You can use any video with a URL or you can put them in `m3-quickstart/temp/media` and browse to it (e.g. <http://localhost>). Once you have a URL use `bin/vars_register_media.sh` to register it in the VARS Video Asset Manager.
 4. Download [VARS Annotation](https://github.com/mbari-media-management/vars-annotation/releases) and configure it as described [here](https://docs.mbari.org/vars-annotation/setup/).
 
-Any computer on you network can connect to the VARS services you're running. You can annotated from other machines on your network.
+Any computer on you network can connect to the VARS services you're running. You can annotate from other machines on your network.
 
 ### Clean up
 
-If you want to shutdown the M3/VARS software stack, run `bin/docker_stop.sh`.
+If you want to shutdown the M3/VARS software stack, run `m3-quickstart/bin/docker_stop.sh`.
 
 ## Details
 
@@ -61,16 +61,18 @@ If you want to shutdown the M3/VARS software stack, run `bin/docker_stop.sh`.
 A knowledgebase is used to constrain the terms and associations used for annotations. To help get you started, this project provides a script that can initialize the knowledgebase with a subset of MBARI's data. You can use this a starter to help uild and refine your own lexicon of terms. Note that this is not required, you an use the VARS knowledgebase application to build your own from scratch.
 
 ```bash
+cd m3-quickstart
 bin/vars_init_kb.sh
 ```
 
 ### Registering a video
 
-Before a video can be annotated, VARS needs to know about it. The first step is to make your video web accessible. If you've already run `docker_start.sh`, you have a web server running that is capable of serving video. You can put the video in `temp/media` and browse to it under <http://localhost/media>.
+Before a video can be annotated, VARS needs to know about it. The first step is to make your video web accessible. If you've already run `docker_start.sh`, you have a web server running that is capable of serving video. You can put the video in `m3-quickstart/temp/media` and browse to it under <http://localhost/media>.
 
 The next step is to register the video. It's highly recommended that you follow a naming convention described [here](https://github.com/underwatervideo/UnderwaterVideoWorkingGroup/blob/master/Meetings/2016_Workshop/Documents/FINAL-2016VideoWorkshopReport.pdf). To help you get started, there's a script <bin/vars_register_media.sh> you can use to register a video with VARS. It's usage is:
 
 ```bash
+cd m3-quickstart
 bin/vars_register_media.sh <camera id> <deployment id> <video url>
 ```
 
