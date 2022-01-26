@@ -35,7 +35,9 @@ bin/vars_init_kb.sh
 # Builds some custom VARS apps under temp/apps
 # You need GITHUB_TOKEN and GITHUB_USERNAME environment variables set.
 #   see https://github.com/mbari-org/maven#gradle
-vars_build.sh
+export GITHUB_TOKEN=<your github token>
+export GITHUB_USERNAME=<your github username>
+bin/vars_build.sh
 ```
 
 ### Next Steps
