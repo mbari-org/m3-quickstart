@@ -43,7 +43,7 @@ def main(camera_id: str, deployment_id: str, uri: str):
     print(f"Reading video metadata from {uri}")
     video_metadata = ffprobe.ffprobe(uri).video_metadata()
 
-    start_time_utc = video_metadata.creation_time.astimezone(datetime.timezone.utc)
+    start_time_utc = video_metadata.created.astimezone(datetime.timezone.utc)
     time_str_full = start_time_utc.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
     time_str_compact = start_time_utc.strftime("%Y%m%dT%H%M%S.%fZ")
 
