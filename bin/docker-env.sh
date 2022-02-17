@@ -3,7 +3,7 @@
 MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASE_DIR="$( cd "$( dirname "${MY_DIR}/../.." )" && pwd )"
 
-export LOGBACK_LEVEL=WARN
+export LOGBACK_LEVEL=DEBUG
 export M3_HOST_DIR="${BASE_DIR}/temp"
 export M3_HOST_NAME=http://localhost
 export M3_JDBC_BASE_URL="jdbc:derby://derby:1527"
@@ -76,8 +76,13 @@ export PANOPTES_URL="http://${HOST_IP}:${PANOPTES_PORT}${PANOPTES_HTTP_CONTEXT_P
 export VAMPIRE_SQUID_URL="http://${HOST_IP}:${VAMPIRESQUID_PORT}${VAMPIRESQUID_HTTP_CONTEXT_PATH}/v1"
 export VARS_KB_SERVER_URL="http://${HOST_IP}:${VARS_KBSERVER_PORT}${VARS_KBSERVER_HTTP_CONTEXT_PATH}/v1"
 export VARS_USER_SERVER_URL="http://${HOST_IP}:${VARS_USER_PORT}${VARS_USER_HTTP_CONTEXT_PATH}/v1"
-
-
+# For docker we need urls on the m3 network
+export ANNOSAURUS_INTERNAL_URL="http://annosaurus:8080${ANNOSAURUS_HTTP_CONTEXT_PATH}/v1"
+export CHARYBDIS_INTERNAL_URL="http://charybdis:8080${CHARYBDIS_HTTP_CONTEXT_PATH}"
+export PANOPTES_INTERNAL_URL="http://panoptes:8080${PANOPTES_HTTP_CONTEXT_PATH}/v1"
+export VAMPIRE_SQUID_INTERNAL_URL="http://vampire-squid:8080${VAMPIRESQUID_HTTP_CONTEXT_PATH}/v1"
+export VARS_KB_SERVER_INTERNAL_URL="http://vars-kb-server:8080${VARS_KBSERVER_HTTP_CONTEXT_PATH}/v1"
+export VARS_USER_SERVER_INTERNAL_URL="http://vars-user-server:8080${VARS_USER_HTTP_CONTEXT_PATH}/v1"
 # --- NOTES
 #
 # BASE_DIR should be defined before you source this file
