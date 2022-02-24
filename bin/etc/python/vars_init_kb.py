@@ -4,6 +4,10 @@ import argparse
 import zipfile
 import requests
 
+__author__ = "Brian Schlining"
+__copyright__ = "Copyright 2022, Monterey Bay Aquarium Research Institute"
+
+
 def main(kb_url, kb_data_file):
     json = _read_kb_as_json(kb_data_file)
     url = f"{kb_url}raw"

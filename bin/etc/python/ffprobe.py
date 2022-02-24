@@ -33,29 +33,31 @@ class FFProbeResult:
 
     def video_metadata(self) -> VideoMetadata:
         json = self.dict()
-        stream = json["streams"][0]
         file_format = json["format"]
-        
-        return VideoMetadata(self.name, 
-            self.creation_time(),
-            float(stream["duration"]) * 1000,
-            int(stream["width"]),
-            int(stream["height"]),  
-            int(file_format["size"]),
-            stream["codec_name"],
-            self.frame_rate())
 
-    def creation_time(self):
+        for stream in json['streams']:
+            if stream['codec_type'] == 'video':        
+                return VideoMetadata(self.name, 
+                    self.__creation_time(),
+                    float(stream["duration"]) * 1000,
+                    int(stream["width"]),
+                    int(stream["height"]),  
+                    int(file_format["size"]),
+                    stream["codec_name"],
+                    self.__frame_rate(stream))
+
+    def __creation_time(self):
         parts = self.name.split("_")
         try:
             return iso8601.parse_date(parts[1])
         except:
-            file_format = self.dict()["format"]
-            return iso8601.parse_date(file_format["tags"]["creation_time"])
+            try:
+                file_format = self.dict()["format"]
+                return iso8601.parse_date(file_format["tags"]["creation_time"])
+            except:
+                return datetime.fromtimestamp(0)
 
-    def frame_rate(self):
-        json = self.dict()
-        stream = json["streams"][0]
+    def __frame_rate(self, stream):
         return eval(stream["r_frame_rate"])
 
 

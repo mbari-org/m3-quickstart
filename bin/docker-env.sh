@@ -9,22 +9,26 @@ export M3_HOST_NAME=http://localhost
 export M3_JDBC_BASE_URL="jdbc:derby://derby:1527"
 export M3_JDBC_DRIVER=org.apache.derby.jdbc.ClientDriver
 export M3_JDBC_NAME=Derby
-
+  
+# Annosaurus specific variables
 export ANNOSAURUS_CLIENT_SECRET=foo
 export ANNOSAURUS_DATABASE_DRIVER=${M3_JDBC_DRIVER}
 export ANNOSAURUS_DATABASE_NAME=Derby
-export ANNOSAURUS_DATABASE_PASSWORD=pwd
+export ANNOSAURUS_DATABASE_PASSWORD=vars0sourceforge
 export ANNOSAURUS_DATABASE_URL="${M3_JDBC_BASE_URL}/M3_ANNOTATIONS;create=true"
 export ANNOSAURUS_DATABASE_URL_FOR_APPS="jdbc:derby://localhost:1527/M3_ANNOTATIONS"
-export ANNOSAURUS_DATABASE_USER=m3
+export ANNOSAURUS_DATABASE_USER=varsuser
 export ANNOSAURUS_HTTP_CONTEXT_PATH=/anno
 export ANNOSAURUS_PORT=8082
 export ANNOSAURUS_SIGNING_SECRET=bar
+export ANNOSAURUS_TIMEOUT="60 seconds"
 export ANNOSAURUS_ZEROMQ_ENABLE=true
 export ANNOSAURUS_ZEROMQ_PORT=5563
 export ANNOSAURUS_ZEROMQ_TOPIC=vars
 export IMAGE_COPYRIGHT_OWNER="Creative Commons (CC)"
 export JWT_ISSUER=http://www.mbari.org
+
+# Panoptess specific variables
 export PANOPTES_CLIENT_SECRET=foo
 export PANOPTES_FILE_ARCHIVER="org.mbari.m3.panoptes.services.MbariDiskArchiver"
 export PANOPTES_HTTP_CONTEXT_PATH=/panoptes
@@ -32,31 +36,44 @@ export PANOPTES_PORT=8085
 export PANOPTES_ROOT_DIRECTORY=/framegrabs
 export PANOPTES_ROOT_URL="${M3_HOST_NAME}/framegrabs"
 export PANOPTES_SIGNING_SECRET=bar
+
+# Vampire squid specific variables
 export VAMPIRESQUID_CLIENT_SECRET=foo
 export VAMPIRESQUID_DATABASE_DRIVER=${M3_JDBC_DRIVER}
 export VAMPIRESQUID_DATABASE_NAME=${M3_JDBC_NAME}
-export VAMPIRESQUID_DATABASE_PASSWORD=pwd
+export VAMPIRESQUID_DATABASE_PASSWORD=vars0sourceforge
 export VAMPIRESQUID_DATABASE_URL="${M3_JDBC_BASE_URL}/M3_VIDEO_ASSETS;create=true;user=m3;password=pwd"
-export VAMPIRESQUID_DATABASE_USER=m3
+export VAMPIRESQUID_DATABASE_USER=varsuser
 export VAMPIRESQUID_HTTP_CONTEXT_PATH=/vam
 export VAMPIRESQUID_PORT=8084
 export VAMPIRESQUID_SIGNING_SECRET=bar
+
+# KB Server specific variables
 export VARS_KB_DATABASE_DRIVER=${M3_JDBC_DRIVER}
 export VARS_KB_DATABASE_HIKARI_TEST="VALUES 1"
 export VARS_KB_DATABASE_NAME=${M3_JDBC_NAME}
-export VARS_KB_DATABASE_PASSWORD=pwd
-export VARS_KB_DATABASE_URL="${M3_JDBC_BASE_URL}/VARS_KB;create=true;user=m3;password=pwd"
-export VARS_KB_DATABASE_URL_FOR_APPS="jdbc:derby://localhost:1527/VARS_KB"
-export VARS_KB_DATABASE_USER=m3
+# export VARS_KB_DATABASE_PASSWORD=pwd
+# export VARS_KB_DATABASE_URL="${M3_JDBC_BASE_URL}/VARS_KB;create=true;user=m3;password=pwd"
+# export VARS_KB_DATABASE_URL_FOR_APPS="jdbc:derby://localhost:1527/VARS_KB"
+# export VARS_KB_DATABASE_USER=m3
 export VARS_KBSERVER_DATABASE_ALLOW_INIT=true
 export VARS_KBSERVER_HTTP_CONTEXT_PATH=/kb
 export VARS_KBSERVER_PORT=8083
 export VARS_QUERY_FRAME_TITLE="VARS Query"
+
+ # HACK For DARC testing
+export VARS_KB_DATABASE_PASSWORD=vars0sourceforge
+export VARS_KB_DATABASE_URL="${M3_JDBC_BASE_URL}/VARS"
+export VARS_KB_DATABASE_URL_FOR_APPS="jdbc:derby://localhost:1527/VARS"
+export VARS_KB_DATABASE_USER=varsuser
+
+# User server specific variables
 export VARS_USER_CLIENT_SECRET=foo
 export VARS_USER_HTTP_CONTEXT_PATH=/accounts
 export VARS_USER_PORT=8081
 export VARS_USER_SIGNING_SECRET=bar
 
+# Charybdis server specific variables
 export CHARYBDIS_PORT=8086
 export CHARYBDIS_ANNOSAURUS_URL="http://annosaurus:8080${ANNOSAURUS_HTTP_CONTEXT_PATH}/v1"
 export CHARYBDIS_ANNOSAURUS_TIMEOUT=PT20S

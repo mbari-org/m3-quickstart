@@ -8,4 +8,4 @@ BASE_DIR="$( cd "$( dirname "${MY_DIR}/../.." )" && pwd )"
 
 source "${BASE_DIR}/bin/docker-env.sh"
 cd "$BASE_DIR/docker"
-docker compose build
+docker-compose build

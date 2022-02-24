@@ -7,6 +7,7 @@ import requests
 import subprocess
 import sys
 import time as pytime
+import timeutil
 
 
 __author__ = "Brian Schlining"
@@ -457,12 +458,42 @@ class Annosaurus(JWTAuthtication):
         url = "{}/imagedmoments/{}".format(self.base_url, imaged_moment_uuid)
         return requests.delete(url, headers=headers)
 
+    def merge(self, video_reference_uuid: str,
+              rows: List[Dict],
+              client_secret: str = None,
+              jwt: str = None):
+        jwt = self.authorize(client_secret, jwt)
+        headers = self._auth_header(jwt)
+        url = "{}/ancillarydata/merge/{}".format(self.base_url, video_reference_uuid)
+        body = json.dumps(rows)
+        return requests.put(url, headers=headers, data=body).json()
+
+    def update_recorded_timestamp(self, imaged_moment_uuid: str,
+               recorded_timestamp: datetime,
+               client_secret: str = None,
+               jwt: str = None):
+        jwt = self.authorize(client_secret, jwt)
+        headers = self._auth_header(jwt)
+        headers['Content-type'] = "application/json"
+        url = f"{self.base_url}/index/tapetime"
+        d = [{"uuid": imaged_moment_uuid, "recorded_date": recorded_timestamp.isoformat()}]   
+        body = json.dumps(d)
+        return requests.put(url, headers=headers, data=body).json()
 
 class M3(object):
 
     def __init__(self, annosaurus: Annosaurus, vampire_squid: VampireSquid):
         self.annosaurus = annosaurus
         self.vampire_squid = vampire_squid
+
+    def find_annotations(self, video_sequence_name: str) -> JsonArray:
+        media = self.vampire_squid.find_media_by_video_sequence_name(video_sequence_name)
+        # print(f"Found {len(media)} media")
+        annos = []
+        for m in media:
+            xs = self.annosaurus.find_annotations(m['video_reference_uuid'])
+            annos.extend(xs)
+        return annos
 
     def find_concurrent_annotations(self, video_reference_uuid: str) -> JsonArray:
         """Find annotations from other media in the same video sequence that occur

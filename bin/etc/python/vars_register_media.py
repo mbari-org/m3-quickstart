@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from microservices import VampireSquid
 from pathlib import Path
 import argparse
@@ -36,53 +37,57 @@ def sha512_from_uri(uri: str) -> str:
     return checksum
 
 def main(camera_id: str, deployment_id: str, uri: str):
-    kb_url = os.environ["VAMPIRE_SQUID_URL"]
-    kb_secret = os.environ["VAMPIRESQUID_CLIENT_SECRET"]
-    vampire_squid = VampireSquid(kb_url)
+    vam_url = os.environ["VAMPIRE_SQUID_URL"]
+    vam_secret = os.environ["VAMPIRESQUID_CLIENT_SECRET"]
+    vampire_squid = VampireSquid(vam_url)
 
-    print(f"Reading video metadata from {uri}")
-    video_metadata = ffprobe.ffprobe(uri).video_metadata()
+    existing_media = vampire_squid.find_media_by_uri(uri)
+    if existing_media:
+        print(f"{uri} already exists in the database. Skipping.")
+    else:
+        print(f"Reading video metadata from {uri}")
+        video_metadata = ffprobe.ffprobe(uri).video_metadata()
 
-    start_time_utc = video_metadata.created.astimezone(datetime.timezone.utc)
-    time_str_full = start_time_utc.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-    time_str_compact = start_time_utc.strftime("%Y%m%dT%H%M%S.%fZ")
+        start_time_utc = video_metadata.created.astimezone(datetime.timezone.utc)
+        time_str_full = start_time_utc.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        time_str_compact = start_time_utc.strftime("%Y%m%dT%H%M%S.%fZ")
 
-    mime_type = media_type(uri)
-    print(f"Calculating checksum from {uri} (be patient)")
-    checksum = sha512_from_uri(uri)
+        mime_type = media_type(uri)
+        print(f"Calculating checksum from {uri} (be patient)")
+        checksum = sha512_from_uri(uri)
 
-    xs = {
-          "camera_id" : camera_id,
-          "container" : mime_type,
-          "duration_millis" : video_metadata.duration_millis,
-          "frame_rate" : video_metadata.frame_rate,
-          "height" : video_metadata.height_pixels,
-          "sha512" : f"{checksum}",
-          "size_bytes" : video_metadata.size_bytes,
-          "start_timestamp" : time_str_full,
-          "uri" : uri,
-          "video_codec": video_metadata.video_codec,
-          "video_name" : f"{deployment_id} {time_str_compact}",
-          "video_sequence_name" : deployment_id,
-          "width" : video_metadata.width_pixels,
-    }
+        xs = {
+            "camera_id" : camera_id,
+            "container" : mime_type,
+            "duration_millis" : video_metadata.duration_millis,
+            "frame_rate" : video_metadata.frame_rate,
+            "height" : video_metadata.height_pixels,
+            "sha512" : f"{checksum}",
+            "size_bytes" : video_metadata.size_bytes,
+            "start_timestamp" : time_str_full,
+            "uri" : uri,
+            "video_codec": video_metadata.video_codec,
+            "video_name" : f"{deployment_id} {time_str_compact}",
+            "video_sequence_name" : deployment_id,
+            "width" : video_metadata.width_pixels,
+        }
 
-    print(f"Registering {uri} in video asset manager")
-    r = vampire_squid.create_media(xs["video_sequence_name"], 
-      xs["video_name"], 
-      xs["camera_id"], 
-      xs["uri"], 
-      xs["start_timestamp"], 
-      client_secret=kb_secret, 
-      duration_millis=xs["duration_millis"],
-      width=xs["width"],
-      height=xs["height"],
-      size_bytes=xs["size_bytes"],
-      sha512=xs["sha512"],
-      frame_rate=xs["frame_rate"])
+        print(f"Registering {uri} in video asset manager")
+        r = vampire_squid.create_media(xs["video_sequence_name"], 
+            xs["video_name"], 
+            xs["camera_id"], 
+            xs["uri"], 
+            xs["start_timestamp"], 
+            client_secret=vam_secret, 
+            duration_millis=xs["duration_millis"],
+            width=xs["width"],
+            height=xs["height"],
+            size_bytes=xs["size_bytes"],
+            sha512=xs["sha512"],
+            frame_rate=xs["frame_rate"])
 
-    print("{uri} has been registered")
-    [print(key,':',value) for key, value in r.items()]
+        print("{uri} has been registered")
+        [print(key,':',value) for key, value in r.items()]
 
 
 
