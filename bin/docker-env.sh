@@ -42,7 +42,10 @@ export VAMPIRESQUID_CLIENT_SECRET=foo
 export VAMPIRESQUID_DATABASE_DRIVER=${M3_JDBC_DRIVER}
 export VAMPIRESQUID_DATABASE_NAME=${M3_JDBC_NAME}
 export VAMPIRESQUID_DATABASE_PASSWORD=vars0sourceforge
-export VAMPIRESQUID_DATABASE_URL="${M3_JDBC_BASE_URL}/M3_VIDEO_ASSETS;create=true;user=m3;password=pwd"
+# FOR RDBMS that an query across multiple databases, use the following:
+# export VAMPIRESQUID_DATABASE_URL="${M3_JDBC_BASE_URL}/M3_VIDEO_ASSETS;create=true;user=m3;password=pwd"
+# For RDBMS that can't query across databases, use the following:
+export VAMPIRESQUID_DATABASE_URL="${M3_JDBC_BASE_URL}/M3_ANNOTATIONS;create=true"
 export VAMPIRESQUID_DATABASE_USER=varsuser
 export VAMPIRESQUID_HTTP_CONTEXT_PATH=/vam
 export VAMPIRESQUID_PORT=8084
@@ -52,20 +55,14 @@ export VAMPIRESQUID_SIGNING_SECRET=bar
 export VARS_KB_DATABASE_DRIVER=${M3_JDBC_DRIVER}
 export VARS_KB_DATABASE_HIKARI_TEST="VALUES 1"
 export VARS_KB_DATABASE_NAME=${M3_JDBC_NAME}
-# export VARS_KB_DATABASE_PASSWORD=pwd
-# export VARS_KB_DATABASE_URL="${M3_JDBC_BASE_URL}/VARS_KB;create=true;user=m3;password=pwd"
-# export VARS_KB_DATABASE_URL_FOR_APPS="jdbc:derby://localhost:1527/VARS_KB"
-# export VARS_KB_DATABASE_USER=m3
+export VARS_KB_DATABASE_PASSWORD=pwd
+export VARS_KB_DATABASE_URL="${M3_JDBC_BASE_URL}/VARS_KB;create=true"
+export VARS_KB_DATABASE_URL_FOR_APPS="jdbc:derby://localhost:1527/VARS_KB"
+export VARS_KB_DATABASE_USER=m3
 export VARS_KBSERVER_DATABASE_ALLOW_INIT=true
 export VARS_KBSERVER_HTTP_CONTEXT_PATH=/kb
 export VARS_KBSERVER_PORT=8083
 export VARS_QUERY_FRAME_TITLE="VARS Query"
-
- # HACK For DARC testing
-export VARS_KB_DATABASE_PASSWORD=vars0sourceforge
-export VARS_KB_DATABASE_URL="${M3_JDBC_BASE_URL}/VARS"
-export VARS_KB_DATABASE_URL_FOR_APPS="jdbc:derby://localhost:1527/VARS"
-export VARS_KB_DATABASE_USER=varsuser
 
 # User server specific variables
 export VARS_USER_CLIENT_SECRET=foo
