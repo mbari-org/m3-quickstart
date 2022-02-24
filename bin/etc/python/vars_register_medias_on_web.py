@@ -9,11 +9,12 @@ __copyright__ = "Copyright 2022, Monterey Bay Aquarium Research Institute"
 
 def readDirListing(url: str) -> List[str]:
     cwd, listing = htmllistparse.fetch_listing(url, timeout=30)
-    return map(lambda x: f'{url}/{x.name}', listing)
+    return map(lambda x: f'{url}{x.name}', listing)
 
 def main(camera_id: str, deployment_id: str, url: str):
     urls = readDirListing(url)
     for uri in urls:
+        print(f"Processing {uri}")
         vars_register_media.main(camera_id, deployment_id, uri)
 
 if __name__ == "__main__":

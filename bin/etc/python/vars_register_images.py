@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from dataclasses import dataclass
 from datetime import datetime
 from datetime import timedelta
@@ -86,21 +87,24 @@ def main(video_sequence_name: str, url: str):
     vampire_squid = VampireSquid(vamp_url)
     media = vampire_squid.find_media_by_video_sequence_name(video_sequence_name)
     if media:
-        annosaurus = Annosaurus(anno_url)
-        annos = annosaurus.find_annotations(media['video_reference_uuid'])
         urls = readDirListing(url)
-        for imageUrl in urls:
-            t = readTimestamp(imageUrl)
-            __processImage(annosaurus, annos, media, imageUrl, t, client_secret=anno_secret)
+        if urls:
+                
+            annosaurus = Annosaurus(anno_url)
+            annos = annosaurus.find_annotations(media['video_reference_uuid'])
+            
+            for imageUrl in urls:
+                t = readTimestamp(imageUrl)
+                __processImage(annosaurus, annos, media, imageUrl, t, client_secret=anno_secret)
     else:
         raise RuntimeError(f"Unable to find any media for video sequence name '{video_sequence_name}")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("deployment_id", help="The deployment ID or expedition ID of the video. e.g. 'Doc Ricketts 1234'", 
+    parser.add_argument("video_sequence_name", help="The deployment ID or expedition ID of the video. e.g. 'Doc Ricketts 1234'", 
         type=str)
     parser.add_argument("url", help="The URL to the video directory e.g. http://my.servername.org/media/D1234_EX1234", 
         type=str)
     args = parser.parse_args()
-    main(args.deploymnet_id, args.url)
+    main(args.video_sequence_name, args.url)

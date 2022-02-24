@@ -9,6 +9,7 @@ import requests
 import subprocess
 import urllib.request
 import ffprobe
+import timeutil
 
 __author__ = "Brian Schlining"
 __copyright__ = "Copyright 2022, Monterey Bay Aquarium Research Institute"
@@ -48,8 +49,8 @@ def main(camera_id: str, deployment_id: str, uri: str):
         print(f"Reading video metadata from {uri}")
         video_metadata = ffprobe.ffprobe(uri).video_metadata()
 
-        start_time_utc = video_metadata.created.astimezone(datetime.timezone.utc)
-        time_str_full = start_time_utc.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        start_time_utc = timeutil.datetime_from_name(uri)
+        time_str_full = start_time_utc.isoformat()
         time_str_compact = start_time_utc.strftime("%Y%m%dT%H%M%S.%fZ")
 
         mime_type = media_type(uri)
@@ -59,7 +60,7 @@ def main(camera_id: str, deployment_id: str, uri: str):
         xs = {
             "camera_id" : camera_id,
             "container" : mime_type,
-            "duration_millis" : video_metadata.duration_millis,
+            "duration_millis" : round(video_metadata.duration_millis),
             "frame_rate" : video_metadata.frame_rate,
             "height" : video_metadata.height_pixels,
             "sha512" : f"{checksum}",
@@ -71,6 +72,8 @@ def main(camera_id: str, deployment_id: str, uri: str):
             "video_sequence_name" : deployment_id,
             "width" : video_metadata.width_pixels,
         }
+        for k, v in xs.items():
+            print(f"{k}: {v}")
 
         print(f"Registering {uri} in video asset manager")
         r = vampire_squid.create_media(xs["video_sequence_name"], 

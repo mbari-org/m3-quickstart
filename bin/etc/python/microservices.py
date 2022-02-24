@@ -113,19 +113,22 @@ class VampireSquid(JWTAuthtication):
 
     def find_media_by_uri(self, uri: str) -> Dict:
         """Find a single media by it's uri"""
-        url = "{}/media/uri/{}".format(self.base_url, quote(uri))
+        url = "{}/media/uri/{}".format(self.base_url, quote(uri, safe=''))
         r = requests.get(url)
-        r.raise_for_status()
-        print(r)
-        print(r.text)
-        return r.json()
+        # r.raise_for_status()
+        # print(r)
+        # print(r.text)
+        if r.status_code == 200:
+            return r.json()
+        else:
+            return dict()
 
     def find_media_by_video_sequence_name(self, video_sequence_name: str) -> JsonArray:
         """Find all media belonging to a video sequence"""
         url = "{}/media/videosequence/{}".format(
             self.base_url, video_sequence_name)
         r = requests.get(url)
-        r.raise_for_status()
+        # r.raise_for_status()
         # print(r)
         # print(r.text)
         return r.json()
