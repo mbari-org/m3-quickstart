@@ -213,7 +213,7 @@ class VampireSquid(JWTAuthtication):
 
         # Add start_timestamp as iso8601 string
         if isinstance(start_timestamp, datetime):
-            data["start_timestamp"] = datetime.isoformat()
+            data["start_timestamp"] = start_timestamp.isoformat()
         else:
             try:
                 # Parse str to make sure it's iso8601
@@ -370,7 +370,7 @@ class Annosaurus(JWTAuthtication):
         if elapsed_time_millis:
             data['elapsed_time_millis'] = elapsed_time_millis
         elif recorded_timestamp:
-            data['recorded_timestamp'] = "{}Z".format(
+            data['recorded_timestamp'] = "{}".format(
                 recorded_timestamp.isoformat())
         elif timecode:
             data['timecode'] = timecode
