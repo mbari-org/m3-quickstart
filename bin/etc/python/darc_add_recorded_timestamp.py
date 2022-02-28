@@ -37,14 +37,14 @@ def main():
 
                         # if the annotation is missing a recorded date add it
                         for a in annos:
-                            if 'recorded_timestamp' not in a:
-                                if 'elapsed_time_millis' in a:
-                                    dt = timedelta(milliseconds=a['elapsed_time_millis'])
-                                    recorded_timstamp = start_time + dt
-                                    # TODO update annotation
-                                    print(f"Setting annotation time to {recorded_timstamp.isoformat()}")
-                                    p = annosaurus.update_recorded_timestamp(a['imaged_moment_uuid'], recorded_timstamp, client_secret=anno_secret)
-                                    # print(p)
+                            # if 'recorded_timestamp' not in a:
+                            if 'elapsed_time_millis' in a:
+                                dt = timedelta(milliseconds=a['elapsed_time_millis'])
+                                recorded_timstamp = start_time + dt
+                                # TODO update annotation
+                                print(f"Setting annotation time to {recorded_timstamp.isoformat()}")
+                                p = annosaurus.update_recorded_timestamp(a['imaged_moment_uuid'], recorded_timstamp, client_secret=anno_secret)
+                                # print(p)
 
 
 if __name__ == "__main__":

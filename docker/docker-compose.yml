@@ -11,6 +11,22 @@ services:
     networks:
       - m3
 
+  # postgres:
+  #   image: postgres:14
+  #   restart: always
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     - POSTGRES_USER=${ANNOSAURUS_DATABASE_USER}
+  #     - POSTGRES_PASSWORD=${ANNOSAURUS_DATABASE_PASSWORD}
+  #     - POSTGRES_DB=${ANNOSAURUS_DATABASE_NAME}
+  #     - PGDATA=/var/lib/postgresql/data/pgdata
+  #   volumes:
+  #     - ${M3_HOST_DIR}/postgres:/var/lib/postgresql/data
+  #     - ${BASE_DIR}/docker/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+  #   networks:
+  #     - m3
+
   nginx:
     build: nginx/.
     image: m3/nginx
