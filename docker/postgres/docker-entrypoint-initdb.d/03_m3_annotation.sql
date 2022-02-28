@@ -122,9 +122,6 @@ CREATE  INDEX "idx_imaged_moments__recorded_timestamp"
 CREATE  INDEX "idx_imaged_moments__timecode"
 	ON "imaged_moments"("timecode");
 
-CREATE  INDEX "idx_merge_rov_histories__video_reference_uuid"
-	ON "merge_rov_histories"("video_reference_uuid");
-
 CREATE  INDEX "idx_observations__concept"
 	ON "observations"("concept");
 

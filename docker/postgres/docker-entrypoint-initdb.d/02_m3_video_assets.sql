@@ -17,7 +17,7 @@ CREATE TABLE video_sequences  (
 /* Postgresql foreign keys default to NO ACTION on delete or update */
 CREATE TABLE videos  ( 
 	"uuid"               	uuid PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-	"video_sequence_uuid"	varchar(255) NOT NULL,
+	"video_sequence_uuid"	uuid NOT NULL,
 	"description"        	varchar(2048) NULL,
 	"duration_millis"    	numeric(19,0) NULL,
 	"name"               	varchar(512) NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE videos  (
 
 CREATE TABLE video_references  ( 
 	"uuid"             	uuid PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
-	"video_uuid"       	varchar(255) NOT NULL,
+	"video_uuid"       	uuid NOT NULL,
 	"audio_codec"      	varchar(128) NULL,
 	"container"        	varchar(128) NULL,
 	"description"      	varchar(2048) NULL,

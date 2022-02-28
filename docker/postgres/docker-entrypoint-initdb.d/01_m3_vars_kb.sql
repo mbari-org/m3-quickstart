@@ -4,7 +4,7 @@ Database: VARS_KB
 Schema: dbo
 Objects: TABLE, VIEW, INDEX
 */
-CREATE TABLE Concept  ( 
+CREATE TABLE "Concept"  ( 
 	"id"                	bigint PRIMARY KEY NOT NULL,
 	"ParentConceptID_FK"	bigint NULL,
 	"Originator"        	varchar(255) NULL,
@@ -16,13 +16,13 @@ CREATE TABLE Concept  (
 	"TaxonomyType"      	varchar(20) NULL,
 	"LAST_UPDATED_TIME" 	timestamp NULL);
 
-CREATE TABLE ConceptDelegate  ( 
+CREATE TABLE "ConceptDelegate"  ( 
 	"id"               	bigint PRIMARY KEY NOT NULL,
 	"ConceptID_FK"     	bigint NOT NULL,
-	"LAST_UPDATED_TIME"	timestamp NULL);
-	-- CONSTRAINT fk_concept_delegate__concept 
-	--   FOREIGN KEY(ConceptID_FK) 
-	-- 	REFERENCES Concept("id"));
+	"LAST_UPDATED_TIME"	timestamp NULL,
+	CONSTRAINT fk_concept_delegate__concept 
+	  FOREIGN KEY("ConceptID_FK") 
+		REFERENCES "Concept"("id"));
 
 CREATE TABLE "Artifact"  ( 
 	"id"                  	bigint PRIMARY KEY NOT NULL,
@@ -37,10 +37,10 @@ CREATE TABLE "Artifact"  (
 	"Reference"           	varchar(1024) NOT NULL,
 	"Credit"              	varchar(1024) NULL,
 	"LAST_UPDATED_TIME"   	timestamp NOT NULL,
-	"CreationDate"        	timestamp NULL);
-	-- CONSTRAINT fk_artifact__concept_delegate
-	--   FOREIGN KEY(ConceptDelegateID_FK) 
-	-- 	REFERENCES ConceptDelegate("id"));
+	"CreationDate"        	timestamp NULL,
+	CONSTRAINT fk_artifact__concept_delegate
+	  FOREIGN KEY("ConceptDelegateID_FK") 
+		REFERENCES "ConceptDelegate"("id"));
 
 CREATE TABLE "ConceptName"  ( 
 	"id"               	bigint PRIMARY KEY NOT NULL,
@@ -49,10 +49,10 @@ CREATE TABLE "ConceptName"  (
 	"Author"           	varchar(255) NULL,
 	"NameType"         	varchar(10) NULL,
 	"LAST_UPDATED_TIME"	timestamp NULL,
-	UNIQUE("ConceptName"));
-	-- CONSTRAINT fk_concept_name__concept
-	--   FOREIGN KEY(ConceptID_FK) 
-	-- 	REFERENCES Concept("id"));
+	UNIQUE("ConceptName"),
+	CONSTRAINT fk_concept_name__concept
+	  FOREIGN KEY("ConceptID_FK") 
+		REFERENCES "Concept"("id"));
 
 CREATE TABLE "History"  ( 
 	"id"                  	bigint PRIMARY KEY NOT NULL,
@@ -68,10 +68,10 @@ CREATE TABLE "History"  (
 	"Action"              	varchar(16) NULL,
 	"Comment"             	varchar(2048) NULL,
 	"Approved"            	smallint NOT NULL,
-	"LAST_UPDATED_TIME"   	timestamp NULL);
-	-- CONSTRAINT fk_history__concept_delegate
-	--   FOREIGN KEY(ConceptDelegateID_FK) 
-	-- 	REFERENCES ConceptDelegate("id"));
+	"LAST_UPDATED_TIME"   	timestamp NULL,
+	CONSTRAINT fk_history__concept_delegate
+	  FOREIGN KEY("ConceptDelegateID_FK") 
+		REFERENCES "ConceptDelegate"("id"));
 
 CREATE TABLE "LinkRealization"  ( 
 	"id"                  	bigint PRIMARY KEY NOT NULL,
@@ -79,10 +79,10 @@ CREATE TABLE "LinkRealization"  (
 	"LinkName"            	varchar(50) NULL,
 	"ToConcept"           	varchar(128) NULL,
 	"LinkValue"           	varchar(2048) NULL,
-	"LAST_UPDATED_TIME"   	timestamp NULL);
-	-- CONSTRAINT fk_link_realization__concept_delegate
-	--   FOREIGN KEY(ConceptDelegateID_FK) 
-	-- 	REFERENCES ConceptDelegate("id"));
+	"LAST_UPDATED_TIME"   	timestamp NULL,
+	CONSTRAINT fk_link_realization__concept_delegate
+	  FOREIGN KEY("ConceptDelegateID_FK") 
+		REFERENCES "ConceptDelegate"("id"));
 
 CREATE TABLE "LinkTemplate"  ( 
 	"id"                  	bigint PRIMARY KEY NOT NULL,
@@ -90,23 +90,23 @@ CREATE TABLE "LinkTemplate"  (
 	"LinkName"            	varchar(50) NULL,
 	"ToConcept"           	varchar(128) NULL,
 	"LinkValue"           	varchar(2048) NULL,
-	"LAST_UPDATED_TIME"   	timestamp NULL);
-	-- CONSTRAINT fk_link_template__concept_delegate
-	--   FOREIGN KEY(ConceptDelegateID_FK) 
-	-- 	REFERENCES ConceptDelegate("id"));
+	"LAST_UPDATED_TIME"   	timestamp NULL,
+	CONSTRAINT fk_link_template__concept_delegate
+	  FOREIGN KEY("ConceptDelegateID_FK") 
+		REFERENCES "ConceptDelegate"("id"));
 
 CREATE TABLE "Media"  ( 
 	"id"                  	bigint PRIMARY KEY NOT NULL,
 	"ConceptDelegateID_FK"	bigint NULL,
 	"Url"                 	varchar(1024) NULL,
 	"MediaType"           	char(5) NULL,
-	"PrimaryMedia"        	BOOLEAN NULL,
+	"PrimaryMedia"        	smallint NULL,
 	"Credit"              	varchar(255) NULL,
 	"Caption"             	varchar(1000) NULL,
-	"LAST_UPDATED_TIME"   	timestamp NULL);
-	-- CONSTRAINT fk_media__concept_delegate
-	--   FOREIGN KEY(ConceptDelegateID_FK) 
-	-- 	REFERENCES ConceptDelegate("id"));
+	"LAST_UPDATED_TIME"   	timestamp NULL,
+	CONSTRAINT fk_media__concept_delegate
+	  FOREIGN KEY("ConceptDelegateID_FK") 
+		REFERENCES "ConceptDelegate"("id"));
 
 CREATE TABLE "Prefs"  ( 
 	"NodeName" 	varchar(255) NOT NULL,
@@ -119,10 +119,10 @@ CREATE TABLE "SectionInfo"  (
 	"ConceptDelegateID_FK"	bigint NOT NULL,
 	"Header"              	varchar(30) NOT NULL,
 	"Label"               	varchar(50) NOT NULL,
-	"Information"         	varchar(5000) NULL);
-	-- CONSTRAINT fk_section_info__concept_delegate
-	--   FOREIGN KEY(ConceptDelegateID_FK) 
-	-- 	REFERENCES ConceptDelegate("id"));
+	"Information"         	varchar(5000) NULL,
+	CONSTRAINT fk_section_info__concept_delegate
+	  FOREIGN KEY("ConceptDelegateID_FK") 
+		REFERENCES "ConceptDelegate"("id"));
 
 CREATE TABLE "UniqueID"  ( 
 	"tablename"	varchar(200) NOT NULL,
@@ -134,10 +134,10 @@ CREATE TABLE "Usage"  (
 	"ConceptDelegateID_FK" 	bigint NULL,
 	"EmbargoExpirationDate"	timestamp NULL,
 	"Specification"        	varchar(1000) NULL,
-	"LAST_UPDATED_TIME"    	timestamp NULL);
-	-- CONSTRAINT fk_usage__concept_delegate
-	--   FOREIGN KEY(ConceptDelegateID_FK) 
-	-- 	REFERENCES ConceptDelegate("id"));
+	"LAST_UPDATED_TIME"    	timestamp NULL,
+	CONSTRAINT fk_usage__concept_delegate
+	  FOREIGN KEY("ConceptDelegateID_FK") 
+		REFERENCES "ConceptDelegate"("id"));
 
 CREATE TABLE "UserAccount"  ( 
 	"id"               	bigint PRIMARY KEY NOT NULL,
