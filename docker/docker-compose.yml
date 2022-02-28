@@ -1,31 +1,31 @@
 version: "3.0"
 services:
 
-  derby:
-    build: derby/.
-    image: m3/derby
-    ports:
-      - "1527:1527"
-    volumes:
-      - ${M3_HOST_DIR}/derby:/dbs
-    networks:
-      - m3
-
-  # postgres:
-  #   image: postgres:14
-  #   restart: always
+  # derby:
+  #   build: derby/.
+  #   image: m3/derby
   #   ports:
-  #     - "5432:5432"
-  #   environment:
-  #     - POSTGRES_USER=${ANNOSAURUS_DATABASE_USER}
-  #     - POSTGRES_PASSWORD=${ANNOSAURUS_DATABASE_PASSWORD}
-  #     - POSTGRES_DB=${ANNOSAURUS_DATABASE_NAME}
-  #     - PGDATA=/var/lib/postgresql/data/pgdata
+  #     - "1527:1527"
   #   volumes:
-  #     - ${M3_HOST_DIR}/postgres:/var/lib/postgresql/data
-  #     - ${BASE_DIR}/docker/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+  #     - ${M3_HOST_DIR}/derby:/dbs
   #   networks:
   #     - m3
+
+  postgres:
+    image: postgres:14
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${M3_JDBC_USER}
+      - POSTGRES_PASSWORD=${M3_JDBC_PWD}
+      - POSTGRES_DB=${DATABASE_NAME}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ${M3_HOST_DIR}/postgres:/var/lib/postgresql/data
+      - ${BASE_DIR}/docker/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    networks:
+      - m3
 
   nginx:
     build: nginx/.
@@ -71,7 +71,7 @@ services:
       - ORG_MBARI_VARS_ANNOTATION_DATABASE_PRODUCTION_URL=${ANNOSAURUS_DATABASE_URL}
       - ORG_MBARI_VARS_ANNOTATION_DATABASE_PRODUCTION_USER=${ANNOSAURUS_DATABASE_USER}
     depends_on:
-      - derby
+      - postgres
     networks:
       - m3
 
@@ -115,7 +115,7 @@ services:
       - ORG_MBARI_VARS_VAM_DATABASE_PRODUCTION_URL=${VAMPIRESQUID_DATABASE_URL}
       - ORG_MBARI_VARS_VAM_DATABASE_PRODUCTION_USER=${VAMPIRESQUID_DATABASE_USER}
     depends_on:
-      - derby
+      - postgres
     networks:
       - m3
 
@@ -136,7 +136,7 @@ services:
       - ORG_MBARI_VARS_KBSERVER_DATABASE_PRODUCTION_URL=${VARS_KB_DATABASE_URL}
       - ORG_MBARI_VARS_KBSERVER_DATABASE_PRODUCTION_USER=${VARS_KB_DATABASE_USER}
     depends_on:
-      - derby
+      - postgres
     networks:
       - m3
 
@@ -160,7 +160,7 @@ services:
       - ORG_MBARI_VARS_KB_DATABASE_PRODUCTION_URL=${VARS_KB_DATABASE_URL}
       - ORG_MBARI_VARS_KB_DATABASE_PRODUCTION_USER=${VARS_KB_DATABASE_USER}
     depends_on:
-      - derby
+      - postgres
     networks:
       - m3
 
