@@ -5,13 +5,14 @@ Brian Schlining
 Copyright 2022, Monterey Bay Aquarium Research Institute
 */
 
+//> using lib "com.microsoft.sqlserver:mssql-jdbc:9.4.1.jre11"
+//> using lib "com.oracle.ojdbc:ojdbc8:19.3.0.0"
 //> using lib "org.apache.derby:derby:10.15.2.0"
 //> using lib "org.apache.derby:derbyclient:10.15.2.0"
 //> using lib "org.apache.derby:derbynet:10.15.2.0"
 //> using lib "org.apache.derby:derbyshared:10.15.2.0"
-//> using lib "com.microsoft.sqlserver:mssql-jdbc:9.4.1.jre11"
-//> using lib "com.oracle.ojdbc:ojdbc8:19.3.0.0"
 //> using lib "org.jasypt:jasypt:1.9.3"
+//> using lib "org.postgresql:postgresql:42.3.3"
 
 import java.sql.Connection
 import java.sql.DriverManager
@@ -39,10 +40,18 @@ def createUser(dbUrl: String, dbUser: String, dbPwd: String, username: String): 
     val affiliation = console.readLine("Affiliation: ")
     val pw0 = new String(console.readPassword())
     val pw1 = new String(console.readPassword())
+
     if (pw0 != pw1) {
       println("The passwords you entered do not match.")
     }
     else {
+
+      require(pw0.size > 0, "Password must be at least one character long")
+      require(firstName.size > 1, "First name must be at least two characters long")
+      require(lastName.size > 1, "Last name must be at least two characters long")
+      require(email.size > 5, "Email must be at least five characters long")      
+      require(affiliation.size > 1, "Affiliation must be at least two characters long")
+
       val encryptor = new BasicPasswordEncryptor
       val pw = encryptor.encryptPassword(pw0)
       val stmt = connection.createStatement
@@ -58,7 +67,7 @@ def createUser(dbUrl: String, dbUser: String, dbPwd: String, username: String): 
 }
 
 if (args.length != 3) {
-  println("""Change a users password in the VARS_KB database
+  println("""Create a new user in the VARS_KB database
     | 
     | Usage: 
     |   export VARS_PWD=<database password>
