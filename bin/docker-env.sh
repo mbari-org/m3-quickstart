@@ -16,8 +16,8 @@ export M3_JDBC_BASE_URL="jdbc:postgresql://postgres:5432"
 export M3_JDBC_DRIVER="org.postgresql.Driver"
 export M3_JDBC_NAME=PostgreSQL
 export M3_JDBC_PWD=sumptuous_code
-export M3_JDBC_URL_FOR_APPS="jdbc:postgresql://${HOST_IP}:5432/${DATABASE_NAME}"
-export M3_JDBC_URL="${M3_JDBC_BASE_URL}/${DATABASE_NAME}"
+export M3_JDBC_URL_FOR_APPS="jdbc:postgresql://${HOST_IP}:5432/${DATABASE_NAME}?sslmode=disable"
+export M3_JDBC_URL="${M3_JDBC_BASE_URL}/${DATABASE_NAME}?sslmode=disable"
 export M3_JDBC_USER=m3
   
 # Annosaurus specific variables
@@ -59,7 +59,8 @@ export VAMPIRESQUID_SIGNING_SECRET=bar
 
 # KB Server specific variables
 export VARS_KB_DATABASE_DRIVER=${M3_JDBC_DRIVER}
-# export VARS_KB_DATABASE_HIKARI_TEST="VALUES 1"
+# export VARS_KB_DATABASE_HIKARI_TEST="VALUES 1" # Derby
+export VARS_KB_DATABASE_HIKARI_TEST="SELECT 1" # Everything else mostly
 export VARS_KB_DATABASE_NAME=${M3_JDBC_NAME}
 export VARS_KB_DATABASE_PASSWORD=${M3_JDBC_PWD}
 export VARS_KB_DATABASE_URL_FOR_APPS="${M3_JDBC_URL_FOR_APPS}"
