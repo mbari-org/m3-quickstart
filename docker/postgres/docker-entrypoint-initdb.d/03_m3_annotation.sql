@@ -131,4 +131,7 @@ CREATE  INDEX "idx_observations__imaged_moment_uuid"
 CREATE  INDEX "idx_video_reference_information__video_reference_uuid"
 	ON "video_reference_information"("video_reference_uuid");
 
-
+-- JPA Fix for UUIDs on Postgres - https://www.eclipse.org/forums/index.php?t=msg&th=1073632&goto=1719530&#msg_1719530
+drop cast if exists (character varying as uuid);
+create or replace function uuid(_text character varying) returns uuid language sql as 'select uuid_in(_text::cstring)';
+create cast (character varying as uuid) with function uuid(character varying) as assignment;

@@ -30,6 +30,7 @@ def checkUserExists(db: Connection, user: String): Boolean = {
 
 def createUser(dbUrl: String, dbUser: String, dbPwd: String, username: String): Unit = {
   val connection = DriverManager.getConnection(dbUrl, dbUser, dbPwd)
+  connection.setAutoCommit(false)
   val exists = checkUserExists(connection, username)
   if (!exists) {
     println(s"Creating user '$username'")
@@ -38,7 +39,9 @@ def createUser(dbUrl: String, dbUser: String, dbPwd: String, username: String): 
     val lastName = console.readLine("Last name: ")
     val email = console.readLine("Email: ")
     val affiliation = console.readLine("Affiliation: ")
+    print("Password: ")
     val pw0 = new String(console.readPassword())
+    print("Password (again): ")
     val pw1 = new String(console.readPassword())
 
     if (pw0 != pw1) {
@@ -55,7 +58,13 @@ def createUser(dbUrl: String, dbUser: String, dbPwd: String, username: String): 
       val encryptor = new BasicPasswordEncryptor
       val pw = encryptor.encryptPassword(pw0)
       val stmt = connection.createStatement
-      stmt.executeUpdate(s"insert into USERACCOUNT (username, firstname, lastname, email, affiliation, password) values ('$username', '$firstName', '$lastName', '$email', '$affiliation', '$pw')")
+      val rs = stmt.executeQuery("select nextid from uniqueid u where tablename = 'UserName'")
+      rs.next
+      val id = rs.getInt(1)
+      val nextId = id + 1
+      stmt.executeUpdate(s"update uniqueid set nextid = $nextId where tablename = 'UserName'")
+      stmt.executeUpdate(s"insert into USERACCOUNT (id, username, firstname, lastname, email, affiliation, password) values ($nextId, '$username', '$firstName', '$lastName', '$email', '$affiliation', '$pw')")
+      connection.commit()
       stmt.close
       print("User created.")
     }
@@ -89,7 +98,15 @@ else {
     println("Please set an environment variable `VARS_PWD` with the VARS_KB database password")
   }
   else {
-    createUser(args(0), args(1), dbPwd, args(2))
+    var username = args(2)
+    if (username.size < 2) {
+      println("Username must be at least two characters long")
+    }
+    else {
+      val dbUrl = args(0)
+      val dbUser = args(1)
+      createUser(dbUrl, dbUser, dbPwd, username)
+    }
   }
   
 }
