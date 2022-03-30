@@ -467,6 +467,7 @@ class Annosaurus(JWTAuthtication):
               jwt: str = None):
         jwt = self.authorize(client_secret, jwt)
         headers = self._auth_header(jwt)
+        headers['Content-type'] = "application/json"
         url = "{}/ancillarydata/merge/{}".format(self.base_url, video_reference_uuid)
         body = json.dumps(rows)
         return requests.put(url, headers=headers, data=body).json()
