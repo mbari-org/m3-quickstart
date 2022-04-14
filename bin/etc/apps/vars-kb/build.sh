@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
+echo "--- BUILDING VARS Knowledgebase Application"
+
 MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASE_DIR="$( cd "$( dirname "${MY_DIR}/../../../.." )" && pwd )"
-echo $BASE_DIR
+echo "Base Directory:      $BASE_DIR"
 
 # The first argument should be the env file that defines the env vars
 source "$1" 
@@ -17,6 +19,10 @@ export ORG_MBARI_VARS_KNOWLEDGEBASE_PRODUCTION_PASSWORD="${VARS_KB_DATABASE_PASS
 export ORG_MBARI_VARS_KNOWLEDGEBASE_PRODUCTION_URL="${VARS_KB_DATABASE_URL_FOR_APPS}"
 export ORG_MBARI_VARS_KNOWLEDGEBASE_PRODUCTION_USER="${VARS_KB_DATABASE_USER}"
 export ORG_MBARI_VARS_KNOWLEDGEBASE_PRODUCTION_NAME="${VARS_KB_DATABASE_NAME}"
+
+echo "HOST:                ${M3_HOST_NAME}"
+echo "ANNOSAURUS REST URL: $ANNOTATION_SERVICE_URL"
+echo "KB JDBC URL:         $ORG_MBARI_VARS_KNOWLEDGEBASE_PRODUCTION_URL"
 
 # -- Create directory to clone source into
 REPO_DIR="$BASE_DIR/temp/repos"

@@ -23,14 +23,10 @@ To get M3/VARS built and running on your own server. Do the following in a termi
 # Get setup
 git clone git@github.com:mbari-media-management/m3-quickstart.git
 cd m3-quickstart
-pip install -r bin/etc/python/requirements.txt
 
 # Start the web server, database, and VARS services
 # The first time it's run it takes a while. Be patient.
 bin/docker_start.sh
-
-# Load a phylogenetic tree of marine terms into the VARS database
-bin/vars_init_kb.sh
 
 # Builds some custom VARS apps under temp/apps
 # You need GITHUB_TOKEN and GITHUB_USERNAME environment variables set.
@@ -38,12 +34,15 @@ bin/vars_init_kb.sh
 export GITHUB_TOKEN=<your github token>
 export GITHUB_USERNAME=<your github username>
 bin/vars_build.sh
+
+# Next steps needed to run python support scripts
+pip install -r bin/etc/python/requirements.txt
 ```
 
 ### Next Steps
 
 1. Open a browser to <http://localhost> to verify that things are working.
-2. Run the _VARS Knowledgebase_ application. The first time it's run it will ask you to create an admin account. It will be located in `m3-quickstart/temp/apps`.
+2. Run the _VARS Knowledgebase_ application. The first time it's run it will ask you to create an admin account. It will be located in `m3-quickstart/temp/apps`. __Remember your admin password!!__
 3. Register your first video with VARS. You can use any video with a URL or you can put them in `m3-quickstart/temp/media` and browse to it (e.g. <http://localhost>). Once you have a URL use `bin/vars_register_media.sh` to register it in the VARS Video Asset Manager.
 4. Download [VARS Annotation](https://github.com/mbari-media-management/vars-annotation/releases) and configure it as described [here](https://docs.mbari.org/vars-annotation/setup/).
 

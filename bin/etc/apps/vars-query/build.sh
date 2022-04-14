@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
+echo "--- BUILDING VARS Query Application"
+
 MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASE_DIR="$( cd "$( dirname "${MY_DIR}/../../../.." )" && pwd )"
-echo $BASE_DIR
+echo "Base Directory:      $BASE_DIR"
 
 # -- Set environment variables needed for jpackage
 source "$1"
@@ -17,6 +19,10 @@ export CONCEPT_SERVICE_TIMEOUT=60seconds
 export SHARKTOPODA_PORT=8800
 export VARS_ANNOTATION_START_DATE="1982-01-01T00:00:00Z"
 export VARS_QUERY_RESULTS_COALESCE_KEY="index_elapsed_time_millis"
+
+echo "HOST:                ${M3_HOST_NAME}"
+echo "ANNOSAURUS JDBC URL: $ANNOSAURUS_JDBC_URL"
+echo "KB REST URL:         $CONCEPT_SERVICE_URL"
 
 # -- Create directory to clone source into
 REPO_DIR="$BASE_DIR/temp/repos"

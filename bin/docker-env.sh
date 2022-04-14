@@ -11,13 +11,13 @@ export DATABASE_NAME=M3_VARS
 
 export LOGBACK_LEVEL=DEBUG
 export M3_HOST_DIR="${BASE_DIR}/temp"
-export M3_HOST_NAME="http://${Host_IP}"
+export M3_HOST_NAME="http://${HOST_IP}"
 export M3_JDBC_BASE_URL="jdbc:postgresql://postgres:5432"
 export M3_JDBC_DRIVER="org.postgresql.Driver"
 export M3_JDBC_NAME=PostgreSQL
 export M3_JDBC_PWD=sumptuous_code
-export M3_JDBC_URL_FOR_APPS="jdbc:postgresql://${HOST_IP}:5432/${DATABASE_NAME}?sslmode=disable"
-export M3_JDBC_URL="${M3_JDBC_BASE_URL}/${DATABASE_NAME}?sslmode=disable"
+export M3_JDBC_URL_FOR_APPS="jdbc:postgresql://${HOST_IP}:5432/${DATABASE_NAME}?sslmode=disable&stringType=unspecified"
+export M3_JDBC_URL="${M3_JDBC_BASE_URL}/${DATABASE_NAME}?sslmode=disable&stringType=unspecified"
 export M3_JDBC_USER=m3
   
 # Annosaurus specific variables
