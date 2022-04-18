@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [ "$#" -ne 2 ]; then
+  echo "Usage: $0 <target JDBC URL> <target database user>"
+  exit 1
+fi
+
 MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 BASE_DIR="$( cd "$( dirname "${MY_DIR}/../.." )" && pwd )"
 
