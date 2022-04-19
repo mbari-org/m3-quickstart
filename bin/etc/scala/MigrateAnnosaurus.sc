@@ -1,6 +1,8 @@
 #!/usr/bin/env -S scala-cli shebang --scala-version 3.1.1
 
 /*
+bin/vars_migrate_vampiresquid.sh "jdbc:derby://localhost:1527/M3_ANNOTATIONS" varsuser "jdbc:postgresql://localhost:5432/M3_VARS?sslmode=disable&stringType=unspecified" m3
+
 Brian Schlining
 Copyright 2022, Monterey Bay Aquarium Research Institute
 */
@@ -18,7 +20,22 @@ import java.sql.DriverManager
 import java.sql.ResultSet
 import java.sql.Connection
 
-case class TableCol[T](name: String, fn: ResultSet => T)
+trait TableCol[T] {
+  def name: String
+  def fn: ResultSet => T
+}
+
+final case class StringCol(name: String) extends TableCol[String] {
+  val fn: ResultSet => String = rs => {
+    Option(rs.getObject(name)) match {
+      case None => "NULL"
+      case Some(v) => s"'${v.toString.replace("'", "''")}'"
+    }
+  }
+}
+
+final case class ObjectCol[T](name: String, fn: ResultSet => T) extends TableCol[T]
+
 case class TableSrc(table: String, cols: Seq[TableCol[_]], orderCol: Option[String] = None)
 
 def copy(tableSrc: TableSrc, src: Connection, dest: Connection): Unit = {
@@ -35,7 +52,9 @@ def copy(tableSrc: TableSrc, src: Connection, dest: Connection): Unit = {
   |""".stripMargin
   println(sqlSelect)
   val rows = srcStmt.executeQuery(sqlSelect)
+  val n = 0
   while(rows.next) {
+    n = n + 1
     val values = tableSrc.cols
       .map(_.fn(rows))
       .map(v => v match {
@@ -50,7 +69,11 @@ def copy(tableSrc: TableSrc, src: Connection, dest: Connection): Unit = {
     |  (${values.map(v => s"${v}").mkString(", ")})
     |""".stripMargin
     println(sqlInsert)
-    destStmt.executeUpdate(sqlInsert)
+    destStmt.addBatch(sqlInsert)
+    if (n % 200 == 0) {
+      destStmt.executeBatch()
+    }
+    // destStmt.executeUpdate(sqlInsert)
   }
   dest.commit() 
   srcStmt.close()
@@ -59,14 +82,14 @@ def copy(tableSrc: TableSrc, src: Connection, dest: Connection): Unit = {
 
 def copyImagedMoments(src: Connection, dest: Connection): Unit = {
   println("Copying imaged_moments")
-  val srcs = TableSrc("IMAGED_MOMENTS",
+  val srcs = TableSrc("imaged_moments",
     Seq(
-      TableCol("UUID", rs => rs.getObject("UUID").toString.toLowerCase),
-      TableCol("ELAPSED_TIME_MILLIS", rs => rs.getLong("ELAPSED_TIME_MILLIS")),
-      TableCol("LAST_UPDATED_TIMESTAMP", rs => rs.getTimestamp("LAST_UPDATED_TIME")),
-      TableCol("RECORDED_TIMESTAMP", rs => rs.getTimestamp("RECORDED_TIMESTAMP")),
-      TableCol("TIMECODE", rs => rs.getString("TIMECODE")),
-      TableCol("VIDEO_REFERENCE_UUID", rs => rs.getObject("VIDEO_REFERENCE_UUID").toString.toLowerCase),
+      ObjectCol("uuid", rs => s"'${rs.getObject("uuid").toString.toLowerCase}'"),
+      ObjectCol("elapsed_time_millis", _.getLong("elapsed_time_millis")),
+      StringCol("last_updated_timestamp"),
+      StringCol("recorded_timestamp"),
+      StringCol("timecode"),
+      ObjectCol("video_reference_uuid", rs => s"'${rs.getObject("video_reference_uuid").toString.toLowerCase}'"),
     )
   )
   copy(srcs, src, dest)
@@ -74,16 +97,16 @@ def copyImagedMoments(src: Connection, dest: Connection): Unit = {
 
 def copyImageReferences(src: Connection, dest: Connection): Unit = {
   println("Copying image_references")
-  val srcs = TableSrc("IMAGE_REFERENCES", 
+  val srcs = TableSrc("image_references", 
     Seq(
-      TableCol("UUID", rs => rs.getObject("UUID").toString.toLowerCase),
-      TableCol("DESCRIPTION", rs => rs.getString("DESCRIPTION")),
-      TableCol("FORMAT", rs => rs.getString("FORMAT")),
-      TableCol("HEIGHT_PIXELS", rs => rs.getInt("HEIGHT_PIXELS")),
-      TableCol("LAST_UPDATED_TIMESTAMP", rs.getTimestamp("LAST_UPDATED_TIMESTAMP")),
-      TableCol("URL", rs => rs.getString("URL")),
-      TableCol("WIDTH_PIXELS", rs => rs.getInt("WIDTH_PIXELS")),
-      TableCol("IMAGED_MOMENT_UUID", rs => rs.getObject("IMAGED_MOMENT_UUID").toString.toLowerCase)
+      ObjectCol("uuid", rs => s"'${rs.getObject("uuid").toString.toLowerCase}'"),
+      StringCol("description"),
+      StringCol("format"),
+      ObjectCol("height_pixels", _.getInt("height_pixels")),
+      StringCol("last_updated_timestamp"),
+      StringCol("url"),
+      ObjectCol("width_pixels", _.getInt("width_pixels")),
+      ObjectCol("imaged_moment_uuid", rs => s"'${rs.getObject("imaged_moment_uuid").toString.toLowerCase}'")
     )
   )
   copy(srcs, src, dest)
@@ -92,28 +115,28 @@ def copyImageReferences(src: Connection, dest: Connection): Unit = {
 
 def copyAncillaryData(src: Connection, dest: Connection): Unit = {
   println("Copying ancillary_data")
-  val srcs = TableSrc("ANCILLARY_DATA", 
+  val srcs = TableSrc("ancillary_data", 
     Seq(
-      TableCol("UUID", rs => rs.getObject("UUID").toString.toLowerCase),
-      TableCol("ALTITUDE", rs => rs.getDouble("ALTITUDE")),
-      TableCol("COORDINATE_REFERENCE_SYSTEM", rs => rs.getString("COORDINATE_REFERENCE_SYSTEM")),
-      TableCol("LAST_UPDATED_TIMESTAMP", rs.getTimestamp("LAST_UPDATED_TIMESTAMP")),
-      TableCol("DEPTH_METERS", rs => rs.getDouble("DEPTH_METERS")),
-      TableCol("LATITUDE", rs => rs.getDouble("LATITUDE")),
-      TableCol("LONGITUDE", rs => rs.getDouble("LONGITUDE")),
-      TableCol("OXYGEN_ML_PER_L", rs => rs.getDouble("OXYGEN_ML_PER_L")),
-      TableCol("PHI", rs => rs.getDouble("phi")),
-      TableCol("XYZ_POSITION_UNITS", rs => rs.getString("XYZ_POSITION_UNITS")),
-      TableCol("PRESSURE_DBAR", rs => rs.getDouble("PRESSURE_DBAR")),
-      TableCol("PSI", rs => rs.getDouble("psi")),
-      TableCol("SALINITY", rs => rs.getDouble("SALINITY")),
-      TableCol("TEMPERATURE_CELSIUS", rs => rs.getDouble("TEMPERATURE_CELSIUS")),
-      TableCol("THETA", rs => rs.getDouble("theta")),
-      TableCol("X", rs => rs.getDouble("X")),
-      TableCol("Y", rs => rs.getDouble("Y")),
-      TableCol("Z", rs => rs.getDouble("Z")),
-      TableCol("IMAGED_MOMENT_UUID", rs => rs.getObject("IMAGED_MOMENT_UUID").toString.toLowerCase),
-      TableCol("LIGHT_TRANSMISSION", rs => rs.getDouble("LIGHT_TRANSMISSION"))
+      ObjectCol("uuid", rs => s"'${rs.getObject("uuid").toString.toLowerCase}'"),
+      ObjectCol("altitude", _.getDouble("altitude")),
+      StringCol("coordinate_reference_system"),
+      StringCol("last_updated_timestamp"),
+      ObjectCol("depth_meters", _.getDouble("depth_meters")),
+      ObjectCol("latitude", _.getDouble("latitude")),
+      ObjectCol("longitude", _.getDouble("longitude")),
+      ObjectCol("oxygen_ml_per_l", _.getDouble("oxygen_ml_per_l")),
+      ObjectCol("phi", _.getDouble("phi")),
+      StringCol("xyz_position_units"),
+      ObjectCol("pressure_dbar", _.getDouble("pressure_dbar")),
+      ObjectCol("psi", _.getDouble("psi")),
+      ObjectCol("salinity", _.getDouble("salinity")),
+      ObjectCol("temperature_celsius", _.getDouble("temperature_celsius")),
+      ObjectCol("theta", _.getDouble("theta")),
+      ObjectCol("x", _.getDouble("x")),
+      ObjectCol("y", _.getDouble("y")),
+      ObjectCol("z", _.getDouble("z")),
+      ObjectCol("imaged_moment_uuid", rs => s"'${rs.getObject("imaged_moment_uuid").toString.toLowerCase}'"),
+      ObjectCol("light_transmission", _.getDouble("light_transmission"))
     )
   )
   copy(srcs, src, dest)
@@ -121,17 +144,17 @@ def copyAncillaryData(src: Connection, dest: Connection): Unit = {
 
 def copyObservations(src: Connection, dest: Connection): Unit = {
   println("Copying observations")
-  val srcs = TableSrc("OBSERVATIONS", 
+  val srcs = TableSrc("observations", 
     Seq(
-      TableCol("UUID", rs => rs.getObject("UUID").toString.toLowerCase),
-      TableCol("ACTIVITY", rs => rs.getString("ACTIVITY")),
-      TableCol("CONCEPT", rs => rs.getString("CONCEPT")),
-      TableCol("DURATION_MILLIS", rs => rs.getLong("DURATION_MILLIS")),
-      TableCol("OBSERVATION_GROUP", rs => rs.getString("OBSERVATION_GROUP")),
-      TableCol("LAST_UPDATED_TIMESTAMP", rs.getTimestamp("LAST_UPDATED_TIMESTAMP")),
-      TableCol("OBSERVATION_TIMESTAMP", rs => rs.getTimestamp("OBSERVATION_TIMESTAMP")),
-      TableCol("OBSERVER", rs => rs.getString("OBSERVER")),
-      TableCol("IMAGED_MOMENT_UUID", rs => rs.getObject("IMAGED_MOMENT_UUID").toString.toLowerCase)
+      ObjectCol("uuid", rs => s"'${rs.getObject("uuid").toString.toLowerCase}'"),
+      StringCol("activity"),
+      StringCol("concept"),
+      ObjectCol("duration_millis", _.getLong("duration_millis")),
+      StringCol("observation_group"),
+      StringCol("last_updated_timestamp"),
+      StringCol("observation_timestamp"),
+      StringCol("observer"),
+      ObjectCol("imaged_moment_uuid", rs => s"'${rs.getObject("imaged_moment_uuid").toString.toLowerCase}'")
     )
   )
   copy(srcs, src, dest)
@@ -139,15 +162,15 @@ def copyObservations(src: Connection, dest: Connection): Unit = {
 
 def copyAssociations(src: Connection, dest: Connection): Unit = {
   println("Copying associations")
-  val srcs = TableSrc("ASSOCIATIONS", 
+  val srcs = TableSrc("associations", 
     Seq(
-      TableCol("UUID", rs => rs.getObject("UUID").toString.toLowerCase),
-      TableCol("LAST_UPDATED_TIMESTAMP", rs.getTimestamp("LAST_UPDATED_TIMESTAMP")),
-      TableCol("LINK_NAME", rs => rs.getString("LINK_NAME")),
-      TableCol("LINK_VALUE", rs => rs.getString("LINK_VALUE")),
-      TableCol("TO_CONCEPT", rs => rs.getString("TO_CONCEPT")),
-      TableCol("OBSERVATION_UUID", rs => rs.getObject("OBSERVATION_UUID").toString.toLowerCase),
-      TableCol("MIME_TYPE", rs => rs.getString("MIME_TYPE")),
+      ObjectCol("uuid", rs => s"'${rs.getObject("uuid").toString.toLowerCase}'"),
+      StringCol("last_updated_timestamp"),
+      StringCol("link_name"),
+      StringCol("link_value"),
+      StringCol("to_concept"),
+      ObjectCol("observation_uuid", rs => s"'${rs.getObject("observation_uuid").toString.toLowerCase}'"),
+      StringCol("mime_type"),
     )
   )
   copy(srcs, src, dest)
@@ -155,14 +178,14 @@ def copyAssociations(src: Connection, dest: Connection): Unit = {
 
 def copyVideoReferenceInformation(src: Connection, dest: Connection): Unit = {
   println("Copying video_reference_information")
-  val srcs = TableSrc("VIDEO_REFERENCE_INFORMATION", 
+  val srcs = TableSrc("video_reference_information", 
     Seq(
-      TableCol("UUID", rs => rs.getObject("UUID").toString.toLowerCase),
-      TableCol("LAST_UPDATED_TIMESTAMP", rs.getTimestamp("LAST_UPDATED_TIMESTAMP")),
-      TableCol("MISSION_CONTACT", rs => rs.getString("MISSION_CONTACT")),
-      TableCol("MISSION_ID", rs => rs.getString("MISSION_ID")),
-      TableCol("PLATFORM_NAME", rs => rs.getString("PLATFORM_NAME")),
-      TableCol("VIDEO_REFERENCE_UUID", rs => rs.getObject("VIDEO_REFERENCE_UUID").toString.toLowerCase)
+      ObjectCol("uuid", rs => s"'${rs.getObject("uuid").toString.toLowerCase}'"),
+      StringCol("last_updated_timestamp"),
+      StringCol("mission_contact"),
+      StringCol("mission_id"),
+      StringCol("platform_name"),
+      ObjectCol("video_reference_uuid", rs => s"'${rs.getObject("video_reference_uuid").toString.toLowerCase}'")
     )
   )
   copy(srcs, src, dest)

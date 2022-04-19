@@ -18,7 +18,22 @@ import java.sql.DriverManager
 import java.sql.ResultSet
 import java.sql.Connection
 
-case class TableCol[T](name: String, fn: ResultSet => T)
+trait TableCol[T] {
+  def name: String
+  def fn: ResultSet => T
+}
+
+final case class StringCol(name: String) extends TableCol[String] {
+  val fn: ResultSet => String = rs => {
+    Option(rs.getObject(name)) match {
+      case None => "NULL"
+      case Some(v) => s"'${v.toString.replace("'", "''")}'"
+    }
+  }
+}
+
+final case class ObjectCol[T](name: String, fn: ResultSet => T) extends TableCol[T]
+
 case class TableSrc(table: String, cols: Seq[TableCol[_]], orderCol: Option[String] = None)
 
 def copy(tableSrc: TableSrc, src: Connection, dest: Connection): Unit = {
@@ -59,28 +74,28 @@ def copy(tableSrc: TableSrc, src: Connection, dest: Connection): Unit = {
 
 def copyVideoSequences(src: Connection, dest: Connection): Unit = {
   println("Copying video_sequences")
-  val srcs = TableSrc("VIDEO_SEQUENCES", 
+  val srcs = TableSrc("video_sequences", 
     Seq(
-      TableCol("UUID", rs => s"'${rs.getObject("UUID").toString.toLowerCase}'"),
-      TableCol("\"NAME\"", rs => s"'${rs.getString(2)}'"),
-      TableCol("CAMERA_ID", rs => s"'${rs.getString("CAMERA_ID")}'"),
-      TableCol("DESCRIPTION", rs => s"'${rs.getString("DESCRIPTION")}'"),
-      TableCol("LAST_UPDATED_TIME", rs => s"'${rs.getTimestamp("LAST_UPDATED_TIME")}'")
+      ObjectCol("uuid", rs => s"'${rs.getObject("uuid").toString.toLowerCase}'"),
+      ObjectCol("name", rs => s"'${rs.getString(2)}'"),
+      StringCol("camera_id"),
+      StringCol("description"),
+      ObjectCol("last_updated_time", rs => s"'${rs.getTimestamp("last_updated_time")}'")
     ))
   copy(srcs, src, dest)   
 }
 
 def copyVideos(src: Connection, dest: Connection): Unit = {
   println("Copying videos")
-  val srcs = TableSrc("VIDEOS", 
+  val srcs = TableSrc("videos", 
     Seq(
-      TableCol("UUID", rs => s"'${rs.getObject("UUID").toString.toLowerCase}'"),
-      TableCol("VIDEO_SEQUENCE_UUID", rs => s"'${rs.getObject("VIDEO_SEQUENCE_UUID").toString.toLowerCase}'"),
-      TableCol("\"NAME\"", rs => s"'${rs.getString(3)}'"),
-      TableCol("START_TIME", rs => s"'${rs.getTimestamp("START_TIME")}'"),
-      TableCol("DURATION_MILLIS", _.getLong("DURATION_MILLIS")),
-      TableCol("DESCRIPTION", rs => s"'${rs.getString("DESCRIPTION")}'"),
-      TableCol("LAST_UPDATED_TIME", rs => s"'${rs.getTimestamp("LAST_UPDATED_TIME")}'")
+      ObjectCol("uuid", rs => s"'${rs.getObject("uuid").toString.toLowerCase}'"),
+      ObjectCol("video_sequence_uuid", rs => s"'${rs.getObject("video_sequence_uuid").toString.toLowerCase}'"),
+      ObjectCol("name", rs => s"'${rs.getString(3)}'"),
+      ObjectCol("start_time", rs => s"'${rs.getTimestamp("start_time")}'"),
+      ObjectCol("duration_millis", _.getLong("duration_millis")),
+      StringCol("description"),
+      ObjectCol("last_updated_time", rs => s"'${rs.getTimestamp("last_updated_time")}'")
     ))
   copy(srcs, src, dest)
 }
@@ -89,21 +104,21 @@ def copyVideoReferences(src: Connection, dest: Connection): Unit = {
   println("Copying video_references")
   // UUID, AUDIO_CODEC, CONTAINER, DESCRIPTION, FRAME_RATE (double), HEIGHT(int), LAST_UPDATED_TIME,
   // SHA512, SIZE_BYTES(long), URI, VIDEO_CODEC, WIDTH(int), VIDEO_UUID
-  val srcs = TableSrc("VIDEO_REFERENCES", 
+  val srcs = TableSrc("video_references", 
   Seq(
-    TableCol("UUID", rs => s"'${rs.getObject("UUID").toString.toLowerCase}'"),
-    TableCol("AUDIO_CODEC", rs => s"'${rs.getString("AUDIO_CODEC")}'"),
-    TableCol("CONTAINER", rs => s"'${rs.getString("CONTAINER")}'"),
-    TableCol("DESCRIPTION", rs => s"'${rs.getString("DESCRIPTION")}'"),
-    TableCol("FRAME_RATE", rs => rs.getDouble("FRAME_RATE")),
-    TableCol("HEIGHT", rs => rs.getInt("HEIGHT")),
-    TableCol("SHA512", rs => s"'${rs.getString("SHA512")}'"),
-    TableCol("SIZE_BYTES", rs => rs.getLong("SIZE_BYTES")),
-    TableCol("URI", rs =>  s"'${rs.getString("URI").replace("'", "''")}'"),
-    TableCol("VIDEO_CODEC", rs => s"'${rs.getString("VIDEO_CODEC")}'"),
-    TableCol("WIDTH", rs => rs.getInt("WIDTH")),
-    TableCol("VIDEO_UUID", rs => s"'${rs.getObject("VIDEO_UUID").toString.toLowerCase}'")
-  ), Some("URI"))
+    ObjectCol("uuid", rs => s"'${rs.getObject("uuid").toString.toLowerCase}'"),
+    StringCol("audio_codec"),
+    StringCol("container"),
+    StringCol("description"),
+    ObjectCol("frame_rate", _.getDouble("frame_rate")),
+    ObjectCol("height", _.getInt("height")),
+    StringCol("sha512"),
+    ObjectCol("size_bytes", _.getLong("size_bytes")),
+    ObjectCol("uri", rs =>  s"'${rs.getString("uri").replace("'", "''")}'"),
+    StringCol("video_codec"),
+    ObjectCol("width", _.getInt("width")),
+    ObjectCol("video_uuid", rs => s"'${rs.getObject("video_uuid").toString.toLowerCase}'")
+  ), Some("uri"))
   copy(srcs, src, dest)
 }
 

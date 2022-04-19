@@ -1,6 +1,25 @@
 #!/usr/bin/env -S scala-cli shebang --scala-version 3.1.1
 
 /*
+
+May need to drop any orphaned ConceptDelegates using:
+
+DELETE FROM CONCEPTDELEGATE del
+WHERE 
+	del.ID IN (
+		SELECT 
+			cd.id
+		FROM 	
+			CONCEPTDELEGATE cd LEFT JOIN
+			CONCEPT c ON c.ID = cd.CONCEPTID_FK 
+		WHERE 
+			c.ID IS NULL 
+)
+
+Example usage:
+
+bin/vars_migrate_kb.sh "jdbc:derby://anicca.wifi.mbari.org:1527/VARS" varsuser "jdbc:postgresql://localhost:5432/M3_VARS?sslmode=disable&stringType=unspecified" m3
+
 Brian Schlining
 Copyright 2022, Monterey Bay Aquarium Research Institute
 */
@@ -18,7 +37,21 @@ import java.sql.DriverManager
 import java.sql.ResultSet
 import java.sql.Connection
 
-case class TableCol[T](name: String, fn: ResultSet => T)
+trait TableCol[T] {
+  def name: String
+  def fn: ResultSet => T
+}
+
+final case class StringCol(name: String) extends TableCol[String] {
+  val fn: ResultSet => String = rs => {
+    Option(rs.getObject(name)) match {
+      case None => "NULL"
+      case Some(v) => s"'${v.toString.replace("'", "''")}'"
+    }
+  }
+}
+final case class ObjectCol[T](name: String, fn: ResultSet => T) extends TableCol[T]
+
 case class TableSrc(table: String, cols: Seq[TableCol[_]], orderCol: Option[String] = None)
 
 def copy(tableSrc: TableSrc, src: Connection, dest: Connection): Unit = {
@@ -59,34 +92,34 @@ def copy(tableSrc: TableSrc, src: Connection, dest: Connection): Unit = {
 
 def copyConcepts(src: Connection, dest: Connection): Unit = {
   println("Copying concept")
-  val srcs = TableSrc("CONCEPT", 
+  val srcs = TableSrc("concept", 
     Seq(
-      TableCol("ID", rs => rs.getLong("ID")),
-      TableCol("PARENTCONCEPTID_FK", rs => rs.getLong("PARENTCONCEPTID_FK")),
-      TableCol("ORIGINATOR", rs => rs.getString("ORIGINATOR")),
-      TableCol("StructureType", rs => rs.getString("StructureType")),
-      TableCol("REFERENCE", rs => rs.getString("REFERENCE")),
-      TableCol("NODCCODE", rs => rs.getString("NODCCODE")),
-      TableCol("RANKNAME", rs => rs.getString("RANKNAME")),
-      TableCol("RANKLEVEL", rs => rs.getInt("RANKLEVEL")),
-      TableCol("TAXONOMYTYPE", rs => rs.getString("TAXONOMYTYPE")),
-      TableCol("LAST_UPDATED_TIME", rs => rs.getTimestamp("LAST_UPDATED_TIME"))
+      ObjectCol("id", _.getLong("id")),
+      ObjectCol("parentconceptid_fk", _.getLong("parentconceptid_fk")),
+      StringCol("originator"),
+      StringCol("structuretype"),
+      StringCol("reference"),
+      StringCol("nodccode"),
+      StringCol("rankname"),
+      StringCol("ranklevel"),
+      StringCol("taxonomytype"),
+      StringCol("last_updated_time")
     ),
-    Some("ID")
+    Some("id")
   )
   copy(srcs, src, dest)
 }
 
 def copyConceptName(src: Connection, dest: Connection): Unit = {
   println("Copying conceptname")
-  val srcs = TableSrc("CONCEPTNAME", 
+  val srcs = TableSrc("conceptname", 
     Seq(
-      TableCol("ID", rs => rs.getLong("ID")),
-      TableCol("CONCEPTID_FK", rs => rs.getLong("CONCEPTID_FK")),
-      TableCol("CONCEPTNAME", rs => rs.getString("CONCEPTNAME")),
-      TableCol("AUTHOR", rs => rs.getString("AUTHOR")),
-      TableCol("NAMETYPE", rs => rs.getString("NAMETYPE")),
-      TableCol("LAST_UPDATED_TIME", rs => rs.getTimestamp("LAST_UPDATED_TIME"))
+      ObjectCol("id", _.getLong("id")),
+      ObjectCol("conceptid_fk", _.getLong("conceptid_fk")),
+      StringCol("conceptname"),
+      StringCol("author"),
+      StringCol("nametype"),
+      StringCol("last_updated_time")
     )
   )
   copy(srcs, src, dest)
@@ -94,11 +127,11 @@ def copyConceptName(src: Connection, dest: Connection): Unit = {
 
 def copyConceptDelegate(src: Connection, dest: Connection): Unit = {
   println("Copying conceptdelegate")
-  val srcs = TableSrc("CONCEPTDELEGATE", 
+  val srcs = TableSrc("conceptdelegate", 
     Seq(
-      TableCol("ID", rs => rs.getLong("ID")),
-      TableCol("CONCEPTID_FK", rs => rs.getLong("CONCEPTID_FK")),
-      TableCol("LAST_UPDATED_TIME", rs => rs.getTimestamp("LAST_UPDATED_TIME"))
+      ObjectCol("id", _.getLong("id")),
+      ObjectCol("conceptid_fk", _.getLong("conceptid_fk")),
+      StringCol("last_updated_time")
     )
   )
   copy(srcs, src, dest)
@@ -106,14 +139,14 @@ def copyConceptDelegate(src: Connection, dest: Connection): Unit = {
 
 def copyLinkTempate(src: Connection, dest: Connection): Unit = {
   println("Copying linktemplate")
-  val srcs = TableSrc("LINKTEMPLATE", 
+  val srcs = TableSrc("linktemplate", 
     Seq(
-      TableCol("ID", rs => rs.getLong("ID")),
-      TableCol("CONCEPTDELEGATEID_FK", rs => rs.getLong("CONCEPTDELEGATEID_FK")),
-      TableCol("LAST_UPDATED_TIME", rs => rs.getTimestamp("LAST_UPDATED_TIME")),
-      TableCol("LINKNAME", rs => rs.getString("LINKNAME")),
-      TableCol("TOCONCEPT", rs => rs.getString("TOCONCEPT")),
-      TableCol("LINKVALUE", rs => rs.getString("LINKVALUE"))
+      ObjectCol("id", _.getLong("id")),
+      ObjectCol("conceptdelegateid_fk", _.getLong("conceptdelegateid_fk")),
+      StringCol("last_updated_time"),
+      StringCol("linkname"),
+      StringCol("toconcept"),
+      StringCol("linkvalue")
     )
   )
   copy(srcs, src, dest)
@@ -123,20 +156,19 @@ def copyHistory(src: Connection, dest: Connection): Unit = {
   println("Copying history")
   val srcs = TableSrc("HISTORY", 
     Seq(
-      TableCol("ID", rs => rs.getLong("ID")),
-      TableCol("CONCEPTDELEGATEID_FK", rs => rs.getLong("CONCEPTDELEGATEID_FK")),
-      TableCol("LAST_UPDATED_TIME", rs => rs.getTimestamp("LAST_UPDATED_TIME")),
-      TabelCol("PROCESSEDDTG", rs => rs.getTimestamp("PROCESSEDDTG")),
-      TableCol("CREATEDDTG", rs => rs.getTimestamp("CREATEDDTG")),
-      TableCol("DESCRIPTION", rs => rs.getString("DESCRIPTION")),
-      TableCol("CREATORNAME", rs => rs.getString("CREATORNAME")),
-      TableCol("PROCESSORNAME", rs => rs.getString("PROCESSORNAME")),
-      TableCol("FIELD", rs => rs.getString("FIELD")),
-      TableCol("OLDVALUE", rs => rs.getString("OLDVALUE")),
-      TableCol("NEWVALUE", rs => rs.getString("NEWVALUE")),
-      TableCol("ACTION", rs => rs.getString("ACTION")),
-      TableCol("COMMENT", rs => rs.getString("COMMENT")),
-      TableCol("APPROVED", rs => rs.getBoolean("APPROVED"))
+      ObjectCol("id", _.getLong("id")),
+      ObjectCol("conceptdelegateid_fk", _.getLong("conceptdelegateid_fk")),
+      StringCol("last_updated_time"),
+      StringCol("processeddtg"),
+      StringCol("creationdtg"),
+      StringCol("creatorname"),
+      StringCol("processorname"),
+      StringCol("field"),
+      StringCol("oldvalue"),
+      StringCol("newvalue"),
+      StringCol("action"),
+      StringCol("comment"),
+      ObjectCol("approved", _.getBoolean("approved"))
     )
   )
   copy(srcs, src, dest)
@@ -146,14 +178,14 @@ def copyMedia(src: Connection, dest: Connection): Unit = {
   println("Copying media")
   val srcs = TableSrc("MEDIA", 
     Seq(
-      TabelCol("ID", rs => rs.getLong("ID")),
-      TableCol("CONCEPTDELEGATEID_FK", rs => rs.getLong("CONCEPTDELEGATEID_FK")),
-      TableCol("LAST_UPDATED_TIME", rs => rs.getTimestamp("LAST_UPDATED_TIME")),
-      TableCol("URL", rs => rs.getString("URL")),
-      TableCol("MEDIATYPE", rs => rs.getString("MEDIATYPE")),
-      TableCol("PRIMARYMEDIA", rs => rs.getBoolean("PRIMARYMEDIA")),
-      TableCol("CREDIT", rs => rs.getString("CREDIT")),
-      TableCol("CAPTION", rs => rs.getString("CAPTION"))
+      ObjectCol("id", _.getLong("id")),
+      ObjectCol("conceptdelegateid_fk", _.getLong("conceptdelegateid_fk")),
+      StringCol("last_updated_time"),
+      StringCol("url"),
+      StringCol("mediatype"),
+      ObjectCol("primarymedia", _.getBoolean("primarymedia")),
+      StringCol("credit"),
+      StringCol("caption")
     )
   )
   copy(srcs, src, dest)
@@ -161,14 +193,14 @@ def copyMedia(src: Connection, dest: Connection): Unit = {
 
 def copyLinkRealization(src: Connection, dest: Connection): Unit = {
   println("Copying linkrealization")
-  val srcs = TableSrc("LINKREALIZATION", 
+  val srcs = TableSrc("linkrealization", 
     Seq(
-      TableCol("ID", rs => rs.getLong("ID")),
-      TableCol("CONCEPTDELEGATEID_FK", rs => rs.getLong("CONCEPTDELEGATEID_FK")),
-      TableCol("LAST_UPDATED_TIME", rs => rs.getTimestamp("LAST_UPDATED_TIME")),
-      TableCol("LINKNAME", rs => rs.getString("LINKNAME")),
-      TableCol("TOCONCEPT", rs => rs.getString("TOCONCEPT")),
-      TableCol("LINKVALUE", rs => rs.getString("LINKVALUE"))
+      ObjectCol("id", _.getLong("id")),
+      ObjectCol("conceptdelegateid_fk", _.getLong("conceptdelegateid_fk")),
+      StringCol("last_updated_time"),
+      StringCol("linkname"),
+      StringCol("toconcept"),
+      StringCol("linkvalue")
     )
   )
   copy(srcs, src, dest)
@@ -176,11 +208,11 @@ def copyLinkRealization(src: Connection, dest: Connection): Unit = {
 
 def copyPref(src: Connection, dest: Connection): Unit = {
   println("Copying prefs")
-  val srcs = TableSrc("PREFS",
+  val srcs = TableSrc("prefs",
     Seq(
-      TableCol("NODENAME", rs => rs.getString("NODENAME")),
-      TableCol("PREFKEY", rs => rs.getString("PREFKEY")),
-      TableCol("PREFVALUE", rs => rs.getString("PREFVALUE"))
+      StringCol("nodename"),
+      StringCol("prefkey"),
+      StringCol("prefvalue")
     )
   )
   copy(srcs, src, dest)
@@ -188,17 +220,17 @@ def copyPref(src: Connection, dest: Connection): Unit = {
 
 def copyUserAccount(src: Connection, dest: Connection): Unit = {
   println("Copying useraccount")
-  val srcs = TableSrc("USERACCOUNT", 
+  val srcs = TableSrc("useraccount", 
     Seq(
-      TabelCol("ID", rs => rs.getLong("ID")),
-      TableCol("USERNAME", rs => rs.getString("USERNAME")),
-      TableCol("PASSWORD", rs => rs.getString("PASSWORD")),
-      TableCol("ROLE", rs => rs.getString("ROLE")),
-      TableCol("LAST_UPDATED_TIME", rs => rs.getTimestamp("LAST_UPDATED_TIME")),
-      TableCol("AFFILIATION", rs => rs.getString("AFFILIATION")),
-      TableCol("FIRSTNAME", rs => rs.getString("FIRSTNAME")),
-      TableCol("LASTNAME", rs => rs.getString("LASTNAME")),
-      TabelCol("EMAIL", rs => rs.getString("EMAIL"))
+      ObjectCol("id", _.getLong("id")),
+      StringCol("username"),
+      StringCol("password"),
+      StringCol("role"),
+      StringCol("last_updated_time"),
+      StringCol("affiliation"),
+      StringCol("firstname"),
+      StringCol("lastname"),
+      StringCol("email")
     )
   )
   copy(srcs, src, dest)
@@ -206,10 +238,10 @@ def copyUserAccount(src: Connection, dest: Connection): Unit = {
 
 def copyUniqueID(src: Connection, dest: Connection): Unit = {
   println("Copying uniqueid")
-  val srcs = TableSrc("UNIQUEID", 
+  val srcs = TableSrc("uniqueid", 
     Seq(
-      TableCol("NEXTID", rs => rs.getLong("NEXTID")),
-      TableCol("TABLENAME", rs => rs.getString("TABLENAME"))
+      ObjectCol("nextid", _.getLong("nextid")),
+      StringCol("tablename")
     )
   )
   copy(srcs, src, dest)

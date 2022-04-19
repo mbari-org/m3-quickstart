@@ -1,15 +1,15 @@
 version: "3.0"
 services:
 
-  # derby:
-  #   build: derby/.
-  #   image: m3/derby
-  #   ports:
-  #     - "1527:1527"
-  #   volumes:
-  #     - ${M3_HOST_DIR}/derby:/dbs
-  #   networks:
-  #     - m3
+  derby:
+    build: derby/.
+    image: m3/derby
+    ports:
+      - "1527:1527"
+    volumes:
+      - ${M3_HOST_DIR}/derby:/dbs
+    networks:
+      - m3
 
   postgres:
     image: postgres:14
