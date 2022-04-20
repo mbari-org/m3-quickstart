@@ -52,7 +52,7 @@ def copy(tableSrc: TableSrc, src: Connection, dest: Connection): Unit = {
   |""".stripMargin
   println(sqlSelect)
   val rows = srcStmt.executeQuery(sqlSelect)
-  val n = 0
+  var n = 0
   while(rows.next) {
     n = n + 1
     val values = tableSrc.cols
@@ -68,13 +68,15 @@ def copy(tableSrc: TableSrc, src: Connection, dest: Connection): Unit = {
     |VALUES
     |  (${values.map(v => s"${v}").mkString(", ")})
     |""".stripMargin
-    println(sqlInsert)
+    // println(sqlInsert)
     destStmt.addBatch(sqlInsert)
     if (n % 200 == 0) {
       destStmt.executeBatch()
+      println(s"$n rows inserted")
     }
     // destStmt.executeUpdate(sqlInsert)
   }
+  destStmt.executeBatch()
   dest.commit() 
   srcStmt.close()
   destStmt.close()  
