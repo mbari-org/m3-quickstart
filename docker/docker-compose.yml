@@ -24,6 +24,7 @@ services:
     volumes:
       - ${M3_HOST_DIR}/postgres:/var/lib/postgresql/data
       - ${BASE_DIR}/docker/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ${BASE_DIR}/docker/postgres/my-postgres.conf:/etc/postgresql/postgresql.conf
     networks:
       - m3
 

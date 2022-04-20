@@ -17,5 +17,5 @@ if [ -z "${GITHUB_USERNAME}" ]; then
   exit 1
 fi
  
-"$BASE_DIR/bin/etc/apps/vars-kb/build.sh" "$ENV_FILE"
+# "$BASE_DIR/bin/etc/apps/vars-kb/build.sh" "$ENV_FILE"
 "$BASE_DIR/bin/etc/apps/vars-query/build.sh" "$ENV_FILE"

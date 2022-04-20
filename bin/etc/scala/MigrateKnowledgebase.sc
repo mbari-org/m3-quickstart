@@ -168,7 +168,7 @@ def copyHistory(src: Connection, dest: Connection): Unit = {
       StringCol("newvalue"),
       StringCol("action"),
       StringCol("comment"),
-      ObjectCol("approved", _.getBoolean("approved"))
+      ObjectCol("approved", _.getInt("approved"))
     )
   )
   copy(srcs, src, dest)
@@ -183,7 +183,7 @@ def copyMedia(src: Connection, dest: Connection): Unit = {
       StringCol("last_updated_time"),
       StringCol("url"),
       StringCol("mediatype"),
-      ObjectCol("primarymedia", _.getBoolean("primarymedia")),
+      ObjectCol("primarymedia", _.getInt("primarymedia")),
       StringCol("credit"),
       StringCol("caption")
     )
