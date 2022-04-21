@@ -16,6 +16,10 @@ WHERE
 			c.ID IS NULL 
 )
 
+May need to set the roots parentconceptid_fk to null using:
+
+update concept set parentconceptid_fk = null where id = 1;
+
 Example usage:
 
 bin/vars_migrate_kb.sh "jdbc:derby://anicca.wifi.mbari.org:1527/VARS" varsuser "jdbc:postgresql://localhost:5432/M3_VARS?sslmode=disable&stringType=unspecified" m3
