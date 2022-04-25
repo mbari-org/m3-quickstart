@@ -107,6 +107,7 @@ def copyVideoReferences(src: Connection, dest: Connection): Unit = {
   val srcs = TableSrc("video_references", 
   Seq(
     ObjectCol("uuid", rs => s"'${rs.getObject("uuid").toString.toLowerCase}'"),
+    ObjectCol("video_uuid", rs => s"'${rs.getObject("video_uuid").toString.toLowerCase}'"),
     StringCol("audio_codec"),
     StringCol("container"),
     StringCol("description"),
@@ -117,7 +118,7 @@ def copyVideoReferences(src: Connection, dest: Connection): Unit = {
     ObjectCol("uri", rs =>  s"'${rs.getString("uri").replace("'", "''")}'"),
     StringCol("video_codec"),
     ObjectCol("width", _.getInt("width")),
-    ObjectCol("video_uuid", rs => s"'${rs.getObject("video_uuid").toString.toLowerCase}'")
+    ObjectCol("last_updated_time", rs => s"'${rs.getTimestamp("last_updated_time")}'")
   ), Some("uri"))
   copy(srcs, src, dest)
 }

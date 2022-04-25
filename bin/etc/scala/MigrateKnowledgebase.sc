@@ -162,9 +162,9 @@ def copyHistory(src: Connection, dest: Connection): Unit = {
     Seq(
       ObjectCol("id", _.getLong("id")),
       ObjectCol("conceptdelegateid_fk", _.getLong("conceptdelegateid_fk")),
-      StringCol("last_updated_time"),
       StringCol("processeddtg"),
       StringCol("creationdtg"),
+      StringCol("description"),
       StringCol("creatorname"),
       StringCol("processorname"),
       StringCol("field"),
@@ -172,7 +172,8 @@ def copyHistory(src: Connection, dest: Connection): Unit = {
       StringCol("newvalue"),
       StringCol("action"),
       StringCol("comment"),
-      ObjectCol("approved", _.getInt("approved"))
+      ObjectCol("approved", _.getInt("approved")),
+      StringCol("last_updated_time")
     )
   )
   copy(srcs, src, dest)
