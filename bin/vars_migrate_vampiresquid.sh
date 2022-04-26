@@ -13,10 +13,12 @@ export SRC_USER=$2
 export DEST_URL=$3
 export DEST_USER=$4
 
-echo "WARNING! This script will migrate the following databases:
-1. vampire-squid: $SRC_URL to $DEST_URL
+echo "WARNING! This script will copy the video asset database from:
+$SRC_URL to $DEST_URL
 
-Be sure that the database tables at $DEST_URL are empty. Hit [ctrl]+[c] to cancel this script.
+Be sure that the database tables at $DEST_URL are empty. 
+
+Hit [ctrl]+[c] to cancel this script.
 "
 
 read -s -p "Password for $SRC_USER @ $SRC_URL: " SRC_PWD
