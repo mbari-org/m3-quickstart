@@ -77,6 +77,13 @@ export VARS_USER_HTTP_CONTEXT_PATH=/accounts
 export VARS_USER_PORT=8081
 export VARS_USER_SIGNING_SECRET=bar
 
+# Beholder server specific variables
+export BEHOLDER_API_KEY=foo
+export BEHOLDER_CACHE_FREEPCT=0.20
+export BEHOLDER_CACHE_SIZE=1000
+export BEHOLDER_PORT=8088
+export BEHOLDER_TIMEOUT="10 seconds"
+
 # Charybdis server specific variables
 export CHARYBDIS_ANNOSAURUS_TIMEOUT=PT20S
 export CHARYBDIS_ANNOSAURUS_URL="http://annosaurus:8080${ANNOSAURUS_HTTP_CONTEXT_PATH}/v1"
@@ -84,14 +91,16 @@ export CHARYBDIS_PORT=8086
 export CHARYBDIS_VAMPIRESQUID_TIMEOUT=PT20S
 export CHARYBDIS_VAMPIRESQUID_URL="http://vampire-squid:8080${VAMPIRESQUID_HTTP_CONTEXT_PATH}/v1"
 
+
 # Need URLs for each service for Raziel configuration
-export RAZIEL_HTTP_CONTEXT=/config
+export RAZIEL_HTTP_CONTEXT=config
 export RAZIEL_JWT_SIGNING_SECRET=foo
 export RAZIEL_MASTER_KEY=inflatable_ducks
 export RAZIEL_PORT=8400
 
 # These are the URLs' for the services outside of the container
 export ANNOSAURUS_URL="http://${HOST_IP}:${ANNOSAURUS_PORT}${ANNOSAURUS_HTTP_CONTEXT_PATH}/v1"
+export BEHOLDER_URL="http://${HOST_IP}:${BEHOLDER_PORT}"
 export CHARYBDIS_URL="http://${HOST_IP}:${CHARYBDIS_PORT}"
 export PANOPTES_URL="http://${HOST_IP}:${PANOPTES_PORT}${PANOPTES_HTTP_CONTEXT_PATH}/v1"
 export VAMPIRE_SQUID_URL="http://${HOST_IP}:${VAMPIRESQUID_PORT}${VAMPIRESQUID_HTTP_CONTEXT_PATH}/v1"
@@ -100,7 +109,8 @@ export VARS_USER_SERVER_URL="http://${HOST_IP}:${VARS_USER_PORT}${VARS_USER_HTTP
 
 # These are the URLs' for the services inside of the container
 export ANNOSAURUS_INTERNAL_URL="http://annosaurus:8080${ANNOSAURUS_HTTP_CONTEXT_PATH}/v1"
-export CHARYBDIS_INTERNAL_URL="http://charybdis:8080${CHARYBDIS_HTTP_CONTEXT_PATH}"
+export BEHOLDER_INTERNAL_URL="http://beholder:8080"
+export CHARYBDIS_INTERNAL_URL="http://charybdis:8080"
 export PANOPTES_INTERNAL_URL="http://panoptes:8080${PANOPTES_HTTP_CONTEXT_PATH}/v1"
 export VAMPIRE_SQUID_INTERNAL_URL="http://vampire-squid:8080${VAMPIRESQUID_HTTP_CONTEXT_PATH}/v1"
 export VARS_KB_SERVER_INTERNAL_URL="http://vars-kb-server:8080${VARS_KBSERVER_HTTP_CONTEXT_PATH}/v1"
