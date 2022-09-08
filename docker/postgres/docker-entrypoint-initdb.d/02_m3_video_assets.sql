@@ -11,7 +11,7 @@ CREATE TABLE video_sequences  (
 	"camera_id"        	varchar(256) NOT NULL,
 	"description"      	varchar(2048) NULL,
 	"name"             	varchar(512) NOT NULL,
-	"last_updated_time"	timestamp NULL,
+	"last_updated_time"	timestamp NOT NULL DEFAULT now(),
 	UNIQUE("name"));
 
 /* Postgresql foreign keys default to NO ACTION on delete or update */
@@ -22,7 +22,7 @@ CREATE TABLE videos  (
 	"duration_millis"    	numeric(19,0) NULL,
 	"name"               	varchar(512) NOT NULL,
 	"start_time"         	timestamp NOT NULL,	/* start_time is the start time of the video */	
-	"last_updated_time"  	timestamp NULL,
+	"last_updated_time"  	timestamp NOT NULL DEFAULT now(),
 	UNIQUE("name"),
 	CONSTRAINT fk_videos__video_seqeunces 
 	  FOREIGN KEY(video_sequence_uuid) 
@@ -41,7 +41,7 @@ CREATE TABLE video_references  (
 	"uri"              	varchar(1024) NOT NULL,
 	"video_codec"      	varchar(128) NULL,
 	"width"            	integer NULL,
-	"last_updated_time"	timestamp NULL,
+	"last_updated_time"	timestamp NOT NULL DEFAULT now(),
 	UNIQUE("uri"),
 	CONSTRAINT fk_videos_references__videos
 	  FOREIGN KEY(video_uuid) 

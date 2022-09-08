@@ -67,7 +67,7 @@ def compare(src: Connection, dest: Connection): Unit = {
     }
   }
 
-  val leftovers = targets.diff(source)
+  val leftovers = targets.diff(sources)
   for {
     missing <- leftovers
   } {

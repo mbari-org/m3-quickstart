@@ -106,6 +106,11 @@ class VampireSquid(JWTAuthtication):
         url = "{}/videosequences/names".format(self.base_url)
         return requests.get(url).json()
 
+    def list_media_by_filename(self, filename: str) -> JsonArray:
+        """Find all media with a given filename"""
+        url = "{}/media/videoreference/filename/{}".format(self.base_url, quote(filename, safe=''))
+        return requests.get(url).json()
+
     def find_media_by_sha512(self, sha512: str) -> Dict:
         """Find a single media by its sha512 checksum"""
         url = "{}/media/sha512/{}".format(self.base_url, sha512)
@@ -122,6 +127,12 @@ class VampireSquid(JWTAuthtication):
             return r.json()
         else:
             return dict()
+
+    def find_media_by_video_name(self, video_name: str) -> JsonArray:
+        """Find all media belonging to a video"""
+        url = "{}/media/video/{}".format(self.base_url, video_name)
+        r = requests.get(url)
+        return r.json()
 
     def find_media_by_video_sequence_name(self, video_sequence_name: str) -> JsonArray:
         """Find all media belonging to a video sequence"""
@@ -249,7 +260,7 @@ class VampireSquid(JWTAuthtication):
         url = "{}/videosequences/{}".format(self.base_url, video_sequence_uuid)
         requests.delete(url, headers=headers)
 
-    def updated_checksum(self,
+    def update_checksum(self,
                          video_reference_uuid: str,
                          sha512: str,
                          client_secret: str = None,
@@ -261,6 +272,76 @@ class VampireSquid(JWTAuthtication):
         data['sha512'] = sha512
         headers = self._auth_header(jwt)
         return requests.put(url, data=data, headers=headers).json()
+
+    def move_video_reference(self,
+                             video_reference_uuid: str,
+                             video_name: str,
+                             start_timestamp: datetime,
+                             client_secret: str = None,
+                              jwt: str = None):
+        """Move a video reference to a new video and start_timestamp
+
+        Args:
+            video_reference_uuid (str): The UUID of an existing video reference
+            video_name (str): The new name of a video reference
+            start_timestamp (str): The new start_timestamp of a video reference
+            client_secret (str, optional): authorization secret. Defaults to None.
+            jwt (str, optional): JWT authorization. Defaults to None.
+
+        Returns:
+            Dict: Media object as dict. None if the video_reference_uuid is not found or 
+                  if it can't be changed using the give parameters
+        """
+        jwt = self.authorize(client_secret, jwt)
+        media = self.find_media_by_video_reference_uuid(video_reference_uuid)
+        if media:
+            url = "{}/media/move/{}".format(self.base_url,
+                                                video_reference_uuid)
+            data = dict()
+            data['start_timestamp'] = start_timestamp.isoformat()
+            data['duration_millis'] = media['duration_millis']
+            data['video_name'] = video_name
+            headers = self._auth_header(jwt)
+            return requests.put(url, data=data, headers=headers).json()
+        else: 
+            return None
+
+
+
+    def update_start_timestamp(self,
+                               video_reference_uuid: str,
+                               start_timestamp: datetime,
+                               client_secret: str = None,
+                               jwt: str = None):
+        """Update the Start Timestamp of a Media
+
+        Args:
+            video_reference_uuid (str): The UUID of the media
+            start_timestamp (datetime): The new timestamp it MUST have a timezone set. 
+                e.g. d = datetime.datetime.now(datetime.timezone.utc)
+            client_secret (str, optional): The client secret used for authentication. Defaults to None. Not 
+                required if jwt is provided
+            jwt (str, optional): The authentication token. Defaults to None.
+
+        Returns:
+            Media: The updated media object as JSON/dict
+        """
+        jwt = self.authorize(client_secret, jwt)
+        url = "{}/media/{}".format(self.base_url,
+                                             video_reference_uuid)
+        data = dict()
+        data['start_timestamp'] = start_timestamp.isoformat()
+        headers = self._auth_header(jwt)
+        return requests.put(url, data=data, headers=headers).json()
+
+    def update_media(self, 
+                     media: JsonArray,
+                     client_secret: str = None,
+                     jwt: str = None) -> JsonArray:
+        jwt = self.authorize(client_secret, jwt)
+        url = "{}/media/{}".format(self.base_url, media['video_reference_uuid'])
+        headers = self._auth_header(jwt)
+        return requests.put(url, data=media, headers=headers).json()
 
 
 class Annosaurus(JWTAuthtication):

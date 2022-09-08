@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 import argparse
 import iso8601
+import math
 import os
+import pandas as pd
+
+import json
 
 
 from microservices import Annosaurus, VampireSquid
@@ -21,29 +25,45 @@ def main(file_name, video_sequence_name: str, delimiter=","):
     vampire_squid = VampireSquid(vamp_url)
     media = vampire_squid.find_media_by_video_sequence_name(video_sequence_name)
     if media:
-        data = __parse(file_name, delimiter)
+        data = __parse_using_pandas(file_name, delimiter)
         d = list(data)
+        # print(json.dumps(d, indent=4))
         for m in media:
             print(f"Sending CTD/NAV data to be merged for {m['uri']}")
             annosaurus.merge(m["video_reference_uuid"], d, client_secret=anno_secret)
             pass
 
-def __parse(file_name, delimiter):
-    with open(file_name) as f:
-        lines = f.readlines()
+def __parse_using_pandas(file_name, delimiter):
+    data = pd.read_csv(file_name, delimiter=delimiter)
+    for index, row in data.iterrows():
+        altitude = __get_value("Alt", row, 999.9)
+        latitude = __get_value("Latitude", row)
+        longitude = __get_value("Longitude", row)
+        depth_meters = __get_value("Depth", row)
+        temperature = __get_value("Temperature", row)
+        oxygen = __get_value("Oxygen", row)
+        salinity = __get_value("Salinity", row)
 
-    for line in lines[1:]:
-        parts = line.split(delimiter)
-        latitude = float(parts[0])
-        longitude = float(parts[1])
-        depth = float(parts[2])
-        temperature = float(parts[3])
-        oxygen = float(parts[4])
-        salinity = float(parts[5])
-        date = iso8601.parse_date(parts[6]).strftime('%Y-%m-%dT%H:%M:%S.%f') + 'Z'
-        yield {"latitude": latitude, "longitude": longitude, "depth_meters": depth, "temperature_celsius": temperature, "oxygen_ml_l": oxygen, "salinity": salinity, "recorded_timestamp": date}
+        date = iso8601.parse_date(row["Date"]).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+
+        yield {"latitude": latitude, "longitude": longitude, 
+          "depth_meters": depth_meters, "temperature_celsius": temperature, 
+          "oxygen_ml_l": oxygen, "salinity": salinity, 
+          "recorded_timestamp": date, "altitude": altitude}
 
 
+def __get_value(name, row, bad_value=None):
+    v = None
+    if name in row:
+        v = row[name]
+        if math.isnan(v):
+            v = None
+        if bad_value and v == bad_value:
+            v = None
+    return v
+
+        
+        
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("video_sequence_name", help="Video Sequence Name is the deployment ID or expedition ID of the video. e.g. 'Doc Ricketts 1234'", 

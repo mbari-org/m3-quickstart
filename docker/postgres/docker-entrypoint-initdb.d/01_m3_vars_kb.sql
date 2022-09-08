@@ -14,7 +14,7 @@ CREATE TABLE Concept  (
 	RankName          	varchar(20) NULL,
 	RankLevel         	varchar(20) NULL,
 	TaxonomyType      	varchar(20) NULL,
-	LAST_UPDATED_TIME 	timestamp NULL);
+	LAST_UPDATED_TIME 	timestamp NOT NULL DEFAULT now());
 
 CREATE TABLE ConceptDelegate  ( 
 	id               	bigint PRIMARY KEY NOT NULL,
@@ -36,8 +36,8 @@ CREATE TABLE Artifact  (
 	Caption             	varchar(1024) NULL,
 	Reference           	varchar(1024) NOT NULL,
 	Credit              	varchar(1024) NULL,
-	LAST_UPDATED_TIME   	timestamp NOT NULL,
-	CreationDate        	timestamp NULL,
+	LAST_UPDATED_TIME   	timestamp NOT NULL DEFAULT now(),
+	CreationDate        	timestamp NOT NULL DEFAULT now(),
 	CONSTRAINT fk_artifact__concept_delegate
 	  FOREIGN KEY(ConceptDelegateID_FK) 
 		REFERENCES ConceptDelegate(id));
@@ -48,7 +48,7 @@ CREATE TABLE ConceptName  (
 	ConceptID_FK     	bigint NULL,
 	Author           	varchar(255) NULL,
 	NameType         	varchar(10) NULL,
-	LAST_UPDATED_TIME	timestamp NULL,
+	LAST_UPDATED_TIME	timestamp NOT NULL DEFAULT now(),
 	UNIQUE(ConceptName),
 	CONSTRAINT fk_concept_name__concept
 	  FOREIGN KEY(ConceptID_FK) 
@@ -68,7 +68,7 @@ CREATE TABLE History  (
 	Action              	varchar(16) NULL,
 	Comment             	varchar(2048) NULL,
 	Approved            	smallint NOT NULL,
-	LAST_UPDATED_TIME   	timestamp NULL,
+	LAST_UPDATED_TIME   	timestamp NOT NULL DEFAULT now(),
 	CONSTRAINT fk_history__concept_delegate
 	  FOREIGN KEY(ConceptDelegateID_FK) 
 		REFERENCES ConceptDelegate(id));
@@ -79,7 +79,7 @@ CREATE TABLE LinkRealization  (
 	LinkName            	varchar(50) NULL,
 	ToConcept           	varchar(128) NULL,
 	LinkValue           	varchar(2048) NULL,
-	LAST_UPDATED_TIME   	timestamp NULL,
+	LAST_UPDATED_TIME   	timestamp NOT NULL DEFAULT now(),
 	CONSTRAINT fk_link_realization__concept_delegate
 	  FOREIGN KEY(ConceptDelegateID_FK) 
 		REFERENCES ConceptDelegate(id));
@@ -90,7 +90,7 @@ CREATE TABLE LinkTemplate  (
 	LinkName            	varchar(50) NULL,
 	ToConcept           	varchar(128) NULL,
 	LinkValue           	varchar(2048) NULL,
-	LAST_UPDATED_TIME   	timestamp NULL,
+	LAST_UPDATED_TIME   	timestamp NOT NULL DEFAULT now(),
 	CONSTRAINT fk_link_template__concept_delegate
 	  FOREIGN KEY(ConceptDelegateID_FK) 
 		REFERENCES ConceptDelegate(id));
@@ -103,7 +103,7 @@ CREATE TABLE Media  (
 	PrimaryMedia        	smallint NULL,
 	Credit              	varchar(255) NULL,
 	Caption             	varchar(1000) NULL,
-	LAST_UPDATED_TIME   	timestamp NULL,
+	LAST_UPDATED_TIME   	timestamp NOT NULL DEFAULT now(),
 	CONSTRAINT fk_media__concept_delegate
 	  FOREIGN KEY(ConceptDelegateID_FK) 
 		REFERENCES ConceptDelegate(id));
@@ -134,7 +134,7 @@ CREATE TABLE Usage  (
 	ConceptDelegateID_FK 	bigint NULL,
 	EmbargoExpirationDate	timestamp NULL,
 	Specification        	varchar(1000) NULL,
-	LAST_UPDATED_TIME    	timestamp NULL,
+	LAST_UPDATED_TIME    	timestamp NOT NULL DEFAULT now(),
 	CONSTRAINT fk_usage__concept_delegate
 	  FOREIGN KEY(ConceptDelegateID_FK) 
 		REFERENCES ConceptDelegate(id));
@@ -144,7 +144,7 @@ CREATE TABLE UserAccount  (
 	UserName         	varchar(50) NOT NULL,
 	Password         	varchar(50) NULL,
 	Role             	varchar(10) NULL,
-	LAST_UPDATED_TIME	timestamp NULL,
+	LAST_UPDATED_TIME	timestamp NOT NULL DEFAULT now(),
 	Affiliation      	varchar(50) NULL,
 	FirstName        	varchar(50) NULL,
 	LastName         	varchar(50) NULL,
