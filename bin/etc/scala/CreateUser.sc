@@ -1,4 +1,4 @@
-#!/usr/bin/env -S scala-cli shebang --scala-version 3.1.1
+#!/usr/bin/env -S scala-cli shebang --scala-version 3.2.0
 
 /*
 Brian Schlining

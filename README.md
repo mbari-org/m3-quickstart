@@ -54,16 +54,6 @@ If you want to shutdown the M3/VARS software stack, run `m3-quickstart/bin/docke
 
 ## Details
 
-
-### Creating a knowledgebase
-
-A knowledgebase is used to constrain the terms and associations used for annotations. To help get you started, this project provides a script that can initialize the knowledgebase with a subset of MBARI's data. You can use this a starter to help uild and refine your own lexicon of terms. Note that this is not required, you an use the VARS knowledgebase application to build your own from scratch.
-
-```bash
-cd m3-quickstart
-bin/vars_init_kb.sh
-```
-
 ### Registering a video
 
 Before a video can be annotated, VARS needs to know about it. The first step is to make your video web accessible. If you've already run `docker_start.sh`, you have a web server running that is capable of serving video. You can put the video in `m3-quickstart/temp/media` and browse to it under <http://localhost/media>.

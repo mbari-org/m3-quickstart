@@ -1,18 +1,19 @@
 version: "3.0"
 services:
 
-  derby:
-    build: derby/.
-    image: m3/derby
-    ports:
-      - "1527:1527"
-    volumes:
-      - ${M3_HOST_DIR}/derby:/dbs
-    networks:
-      - m3
+  # derby:
+  #   build: derby/.
+  #   image: m3/derby
+  #   ports:
+  #     - "1527:1527"
+  #   volumes:
+  #     - ${M3_HOST_DIR}/derby:/dbs
+  #   networks:
+  #     - m3
 
+  # Postgres:14.5 (latest) does not work. See https://github.com/mbari-org/m3-quickstart/issues/8#issuecomment-1260233442
   postgres:
-    image: postgres:14
+    image: postgres:14.2
     restart: always
     ports:
       - "5432:5432"
