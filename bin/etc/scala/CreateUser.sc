@@ -18,6 +18,9 @@ import java.sql.Connection
 import java.sql.DriverManager
 import org.jasypt.util.password.BasicPasswordEncryptor
 
+// HACK: Not sure why this is needed now. Was working previously without it
+Class.forName("org.postgresql.Driver") 
+
 def checkUserExists(db: Connection, user: String): Boolean = {
   val stmt = db.createStatement
   val rs = stmt.executeQuery(s"select count(*) from USERACCOUNT where username = '$user'")
