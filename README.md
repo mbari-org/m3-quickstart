@@ -6,7 +6,8 @@ A simple and easy method to run MBARI's Video Annotation and Reference System.
 
 - [Docker](https://www.docker.com) - Required to launch the VARS microservices
 - [Python >= 3.7](https://www.python.org) - Runs the supporting scripts. The additional python requirements are in [bin/etc/python/requirements.txt](requirements.txt)
-- [Java 17](https://jdk.java.net/17/) - Builds the VARS Query and VARS Knowledgebase applications.
+- [Java 17+](https://jdk.java.net/17/) - Builds the VARS Query and VARS Knowledgebase applications.
+- [scala-cli](https://scala-cli.virtuslab.org) - Runs some of the supporting scripts.
 - [VARS Annotation](https://github.com/mbari-media-management/vars-annotation/releases) - The annotation application
 - A VARS Friendly-video player. It can be anyone of the following:
   - [Sharktopoda](https://github.com/mbari-media-management/Sharktopoda/releases) - macOS-only
