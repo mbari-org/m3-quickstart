@@ -22,7 +22,7 @@ class ImageData:
 def read_imagelist_from_web(url: str) -> List[ImageData]:
     cwd, listing = htmllistparse.fetch_listing(url, timeout=30)
     urls =  map(lambda x: f'{url}{x.name}', listing)
-    return map(lambda x: ImageData(x, timeutil.datetime_from_name(x)), urls)
+    return list(map(lambda x: ImageData(x, timeutil.datetime_from_name(x)), urls))
 
 
 def __find_media(t: datetime, time_bounds: Dict[Dict, Tuple[datetime, datetime]]) -> Dict:
@@ -121,6 +121,7 @@ def main(video_sequence_name: str, url: str, force: bool = False):
 
     if media:
         image_data = read_imagelist_from_web(url)
+        print(f"Found {len(image_data)} images")
         image_media = __find_or_create_image_media(video_sequence_name, image_data, vampire_squid, vamp_secret)
         if image_data:
             annosaurus = Annosaurus(anno_url)

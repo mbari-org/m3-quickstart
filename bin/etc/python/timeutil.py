@@ -32,5 +32,9 @@ def datetime_from_name(name: str) -> datetime:
     if m:
         d = m[-1][:8] + "T" + m[-1][9:15] + "." + m[-1][15:]
         return iso8601.parse_date(d)
+    m = re.search(r'(?P<year>\d{4})_(?P<month>\d{2})_(?P<day>\d{2})_(?P<hour>\d{2})_(?P<minute>\d{2})_(?P<second>\d{2})_(?P<millisec>\d{4})', name)
+    if m:
+        d = f"{m['year']}-{m['month']}-{m['day']}T{m['hour']}:{m['minute']}:{m['second']}.{m['millisec']}"
+        return iso8601.parse_date(d)
     raise RuntimeError(f'Failed to parse time from {name}')
 
