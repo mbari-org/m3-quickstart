@@ -2,6 +2,10 @@
 
 A simple and easy method to run MBARI's Video Annotation and Reference System.
 
+## News
+
+- 2024-02-08 - We are currently doing some major updates to the backend services, [annosaurus](https://github.com/mbari-org/annosaurus/pull/41) and [vampire-squid](https://github.com/mbari-org/vampire-squid/pull/9). If you're currently using m3-quickstart to run a VARS system, there's not need for you to do anything at the moemnt. I've pinned the correct versions of the services for you to continue running VARS uninterruped on your systems. Going forward, I will provide migration scripts to update postgres and sql server databases to work with the updated services providing a migration path for users. __If you are planning to set up a new VARS system in the near future, I would advise you to wait unti about the end of February 2024._ At that point I will have update this project to work with the new services and you can run with the latest and greatest changes.
+
 ## Prerequisites
 
 - [Docker](https://www.docker.com) - Required to launch the VARS microservices
@@ -9,7 +13,7 @@ A simple and easy method to run MBARI's Video Annotation and Reference System.
 - [ffmpeg](https://ffmpeg.org) - Required to use the pyhon video registration scripts
 - [Java 17+](https://jdk.java.net/17/) - Builds the VARS Query and VARS Knowledgebase applications.
 - [scala-cli](https://scala-cli.virtuslab.org) - Runs some of the supporting scripts.
-- [VARS Annotation](https://github.com/mbari-media-management/vars-annotation/releases) - The annotation application
+- [VARS Annotation v1.5.3 or earlier](https://github.com/mbari-org/vars-annotation/releases/tag/1.5.3) - The annotation application
 - A VARS Friendly-video player. It can be anyone of the following:
   - [Sharktopoda](https://github.com/mbari-media-management/Sharktopoda/releases) - macOS-only
   - [jsharktopoda](https://github.com/mbari-media-management/jsharktopoda/releases) - cross-platform
