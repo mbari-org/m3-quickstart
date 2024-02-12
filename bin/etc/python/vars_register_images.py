@@ -106,7 +106,20 @@ def __find_or_create_image_media(video_sequence_name: str,
               client_secret=vamp_secret)
     else:
         print(f"Found image collection media for {video_sequence_name}")
-        return image_media[0]
+        # Update the time bounds if necessary
+        im = image_media[0]
+        start_timestamp = iso8601.parse_date(im['start_timestamp'])
+        duration_millis = im['duration_millis']
+        end_timestamp = start_timestamp + timedelta(milliseconds=duration_millis)
+        time_bounds = __timebounds_for_images(image_data)
+        if time_bounds[0] != start_timestamp or time_bounds[1] != end_timestamp:
+            im['start_timestamp'] = time_bounds[0].isoformat()
+            im['duration_millis'] = time_bounds[2]
+            print(f"Updating image collection media for {video_sequence_name}")
+            return vampire_squid.update_media(im, client_secret=vamp_secret)
+        else:
+            print(f"Image collection media for {video_sequence_name} is up to date")
+            return im
 
 
 def main(video_sequence_name: str, url: str, force: bool = False):
@@ -121,7 +134,7 @@ def main(video_sequence_name: str, url: str, force: bool = False):
 
     if media:
         image_data = read_imagelist_from_web(url)
-        print(f"Found {len(image_data)} images")
+        print(f"Found {len(image_data)} images at {url}")
         image_media = __find_or_create_image_media(video_sequence_name, image_data, vampire_squid, vamp_secret)
         if image_data:
             annosaurus = Annosaurus(anno_url)

@@ -1,3 +1,5 @@
+![MBARI logo](bin/etc/assets/logo-mbari-3b.png)
+
 # m3-quickstart
 
 A simple and easy method to run MBARI's Video Annotation and Reference System.
