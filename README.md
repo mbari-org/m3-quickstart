@@ -8,7 +8,7 @@ A simple and easy method to run MBARI's Video Annotation and Reference System.
 
 We are currently doing some major updates to the backend services, [annosaurus](https://github.com/mbari-org/annosaurus/pull/41) and [vampire-squid](https://github.com/mbari-org/vampire-squid/pull/9).
 
-f you're currently using m3-quickstart to run a VARS system, there's no need for you to do anything at the moment. I've pinned the correct versions of the services for you to continue running VARS uninterrupted on your systems.
+f you're currently using m3-quickstart to run a VARS system, run `git pull`. Beyond that, there's no need for you to do anything at the moment. I've pinned the correct versions of the services for you to continue running VARS uninterrupted on your systems.
 
  Going forward, I will provide migration scripts to update PostgreSQL and SQL Server databases to work with the updated services, providing a migration path for users.
 
