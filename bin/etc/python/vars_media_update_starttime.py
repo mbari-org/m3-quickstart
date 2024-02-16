@@ -45,7 +45,7 @@ def generate_valid_name(media: dict, start_timestamp: datetime, vampire_squid: V
     new_video_name = media['video_name']
     while not is_valid_name(new_video_name, start_timestamp, media['duration_millis'], vampire_squid):
         if n > 0:
-            new_video_name = f"{new_video_name} {n}"
+            new_video_name = f"{media['video_name']} {n}"
         n += 1
 
     return new_video_name

@@ -1,4 +1,4 @@
-#!/usr/bin/env -S scala-cli shebang --scala-version 3.1.1
+#!/usr/bin/env -S scala-cli shebang
 
 /*
 bin/vars_migrate_vampiresquid.sh "jdbc:derby://localhost:1527/M3_ANNOTATIONS" varsuser "jdbc:postgresql://localhost:5432/M3_VARS?sslmode=disable&stringType=unspecified" m3
@@ -7,14 +7,7 @@ Brian Schlining
 Copyright 2022, Monterey Bay Aquarium Research Institute
 */
 
-//> using lib "org.apache.derby:derby:10.15.2.0"
-//> using lib "org.apache.derby:derbyclient:10.15.2.0"
-//> using lib "org.apache.derby:derbynet:10.15.2.0"
-//> using lib "org.apache.derby:derbyshared:10.15.2.0"
-//> using lib "com.microsoft.sqlserver:mssql-jdbc:9.4.1.jre11"
-//> using lib "com.oracle.ojdbc:ojdbc8:19.3.0.0"
-//> using lib "org.jasypt:jasypt:1.9.3"
-//> using lib "org.postgresql:postgresql:42.3.3"
+
 
 import java.sql.DriverManager
 import java.sql.ResultSet

@@ -334,6 +334,35 @@ class VampireSquid(JWTAuthtication):
         headers = self._auth_header(jwt)
         return requests.put(url, data=data, headers=headers).json()
 
+
+
+    def update_duration(self,
+                               video_reference_uuid: str,
+                               duration_millis: int,
+                               client_secret: str = None,
+                               jwt: str = None):
+        """Update the duration of a media record (added by Rob)
+
+        Args:
+            video_reference_uuid (str): The UUID of the media
+            duration_millis): The new duration of the media in milliseconds 
+            client_secret (str, optional): The client secret used for authentication. Defaults to None. Not 
+                required if jwt is provided
+            jwt (str, optional): The authentication token. Defaults to None.
+
+        Returns:
+            Media: The updated media object as JSON/dict
+        """
+        jwt = self.authorize(client_secret, jwt)
+        url = "{}/media/{}".format(self.base_url,
+                                             video_reference_uuid)
+        data = dict()
+        data['duration_millis'] = duration_millis
+        headers = self._auth_header(jwt)
+        return requests.put(url, data=data, headers=headers).json()
+
+
+
     def update_media(self, 
                      media: JsonArray,
                      client_secret: str = None,
@@ -561,7 +590,7 @@ class Annosaurus(JWTAuthtication):
         headers = self._auth_header(jwt)
         headers['Content-type'] = "application/json"
         url = f"{self.base_url}/index/tapetime"
-        d = [{"uuid": imaged_moment_uuid, "recorded_date": recorded_timestamp.isoformat()}]   
+        d = [{"uuid": imaged_moment_uuid, "recorded_timestamp": recorded_timestamp.isoformat()}]   
         body = json.dumps(d)
         return requests.put(url, headers=headers, data=body).json()
 

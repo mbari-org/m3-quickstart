@@ -65,7 +65,7 @@ services:
       - vars-user-server
 
   annosaurus:
-    image: mbari/annosaurus:0.16.0
+    image: mbari/annosaurus
     restart: always
     ports:
       - "${ANNOSAURUS_PORT}:8080"
@@ -114,7 +114,7 @@ services:
 
 
   vampire-squid:
-    image: mbari/vampire-squid:0.5.2
+    image: mbari/vampire-squid
     restart: always
     ports:
       - "${VAMPIRESQUID_PORT}:8080"
