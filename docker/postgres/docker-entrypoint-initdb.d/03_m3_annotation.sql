@@ -47,7 +47,7 @@ CREATE TABLE "observations"  (
 	"concept"               	varchar(256) NULL,
 	"duration_millis"       	bigint NULL,
 	"observation_group"     	varchar(128) NULL,
-	"observation_timestamp" 	timestamp NULL,
+	"observation_timestamp" 	timestamp with time zone NULL,
 	"observer"              	varchar(128) NULL,
 	"last_updated_timestamp"	timestamp NOT NULL DEFAULT now(),
 	CONSTRAINT fk_observations__imaged_moments 

@@ -21,7 +21,7 @@ CREATE TABLE videos  (
 	"description"        	varchar(2048) NULL,
 	"duration_millis"    	bigint NULL,
 	"name"               	varchar(512) NOT NULL,
-	"start_time"         	timestamp NOT NULL,	/* start_time is the start time of the video */	
+	"start_time"         	timestamp(6) with time zone NOT NULL,	/* start_time is the start time of the video */	
 	"last_updated_time"  	timestamp NOT NULL DEFAULT now(),
 	UNIQUE("name"),
 	CONSTRAINT fk__videos__video_sequences__uuid 
