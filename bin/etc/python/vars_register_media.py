@@ -37,7 +37,7 @@ def sha512_from_uri(uri: str) -> str:
     p.unlink()  # Delete the file
     return checksum
 
-def main(camera_id: str, deployment_id: str, uri: str):
+def main(camera_id: str, deployment_id: str, uri: str, extracttime: bool=False) -> None:
     vam_url = os.environ["VAMPIRE_SQUID_URL"]
     vam_secret = os.environ["VAMPIRESQUID_CLIENT_SECRET"]
     vampire_squid = VampireSquid(vam_url)
@@ -49,8 +49,12 @@ def main(camera_id: str, deployment_id: str, uri: str):
         print(f"Reading video metadata from {uri}")
         video_metadata = ffprobe.ffprobe(uri).video_metadata()
 
-        start_time_utc = timeutil.datetime_from_name(uri)
-        time_str_full = start_time_utc.isoformat()
+        if extracttime:
+            start_time_utc = video_metadata.created
+        else:
+            start_time_utc = timeutil.datetime_from_name(uri)
+            
+        time_str_full = start_time_utc.isoformat()  
         time_str_compact = start_time_utc.strftime("%Y%m%dT%H%M%S.%fZ")
 
         mime_type = media_type(uri)
@@ -102,5 +106,6 @@ if __name__ == "__main__":
         type=str)
     parser.add_argument("uri", help="The URL to the media file e.g. http://my.servername.org/media/D1234_20190201T120000Z.mp4", 
         type=str)
+    parser.add_argument('-e', '--extracttime', action='store_true', help="Extract the creation time from the video metadata. Default is to parse the filename" )
     args = parser.parse_args()
-    main(args.camera_id, args.deployment_id, args.uri)
+    main(args.camera_id, args.deployment_id, args.uri, args.extracttime)
