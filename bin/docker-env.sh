@@ -107,6 +107,10 @@ export VAMPIRE_SQUID_URL="http://${HOST_IP}:${VAMPIRESQUID_PORT}/v1"
 export VARS_KB_SERVER_URL="http://${HOST_IP}:${VARS_KBSERVER_PORT}${VARS_KBSERVER_HTTP_CONTEXT_PATH}/v1"
 export VARS_USER_SERVER_URL="http://${HOST_IP}:${VARS_USER_PORT}${VARS_USER_HTTP_CONTEXT_PATH}/v1"
 
+# Override these URLs for use against MBARI services. Only works if you're on the MBARI network
+# export ANNOSAURUS_URL="http://m3.shore.mbari.org/anno/v1"
+# export VAMPIRE_SQUID_URL="http://m3.shore.mbari.org/vam/v1"
+
 # These are the URLs' for the services inside of the container
 export ANNOSAURUS_INTERNAL_URL="http://annosaurus:8080/v1"
 export BEHOLDER_INTERNAL_URL="http://beholder:8080"

@@ -390,13 +390,14 @@ class Annosaurus(JWTAuthtication):
             self.base_url, video_reference_uuid)
         return requests.get(url).json()
 
-    def find_annotations(self, video_reference_uuid: str,
+    def find_annotations(self, video_reference_uuid: str, data: bool = False,
                          timeout: int = 20) -> JsonArray:
         """Find all annotations for a specific media/video"""
         # url = "{}/annotations/videoreference/chunked/{}?timeout={}".format(
         #     self.base_url, video_reference_uuid, timeout)
-        url = "{}/fast/videoreference/{}".format(
-            self.base_url, video_reference_uuid)
+        query =  "?data=true"
+        url = "{}/fast/videoreference/{}{}".format(
+            self.base_url, video_reference_uuid, query)
         r = requests.get(url)
         r.raise_for_status()
         return r.json()

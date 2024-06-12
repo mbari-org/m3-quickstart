@@ -13,6 +13,9 @@ import os
 import re
 import timeutil
 
+__author__ = "Brian Schlining"
+__copyright__ = "Copyright 2022, Monterey Bay Aquarium Research Institute"
+
 
 @dataclass
 class ImageData:
