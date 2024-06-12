@@ -1,12 +1,11 @@
 #!/usr/bin/env -S scala-cli shebang
 
+//> using file project.scala
+
 /*
 Brian Schlining
 Copyright 2022, Monterey Bay Aquarium Research Institute
 */
-
-//> using dep "org.jasypt:jasypt:1.9.3"
-//> using dep "org.postgresql:postgresql:42.3.3"
 
 import java.sql.Connection
 import java.sql.DriverManager

@@ -92,7 +92,6 @@ export CHARYBDIS_PORT=8086
 export CHARYBDIS_VAMPIRESQUID_TIMEOUT=PT20S
 export CHARYBDIS_VAMPIRESQUID_URL="http://vampire-squid:8080/v1"
 
-
 # Need URLs for each service for Raziel configuration
 export RAZIEL_HTTP_CONTEXT=config
 export RAZIEL_JWT_SIGNING_SECRET=foo

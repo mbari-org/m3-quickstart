@@ -1,5 +1,7 @@
 #!/usr/bin/env -S scala-cli shebang
 
+//> using file project.scala
+
 import java.sql.DriverManager
 
 import java.io.{BufferedInputStream, File, FileInputStream, InputStream}

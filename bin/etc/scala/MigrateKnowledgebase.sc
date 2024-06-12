@@ -1,5 +1,7 @@
 #!/usr/bin/env -S scala-cli shebang
 
+//> using file project.scala
+
 /*
 
 May need to drop any orphaned ConceptDelegates using:

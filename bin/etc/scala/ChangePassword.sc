@@ -1,9 +1,14 @@
 #!/usr/bin/env -S scala-cli shebang
 
+//> using file project.scala
+
 /*
 Brian Schlining
 Copyright 2022, Monterey Bay Aquarium Research Institute
 */
+
+
+//> using file project.scala
 
 import java.sql.DriverManager
 import org.jasypt.util.password.BasicPasswordEncryptor

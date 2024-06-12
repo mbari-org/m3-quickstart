@@ -1,5 +1,7 @@
 #!/usr/bin/env -S scala-cli shebang
 
+//> using file project.scala
+
 /*
 bin/vars_migrate_vampiresquid.sh "jdbc:derby://localhost:1527/M3_ANNOTATIONS" varsuser "jdbc:postgresql://localhost:5432/M3_VARS?sslmode=disable&stringType=unspecified" m3
 
