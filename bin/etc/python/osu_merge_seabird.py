@@ -6,6 +6,7 @@ from typing import List
 import datetime
 import math
 from microservices import Annosaurus, VampireSquid
+import os
 
 __author__ = "Brian Schlining"
 __copyright__ = "Copyright 2024, Monterey Bay Aquarium Research Institute"
@@ -15,6 +16,10 @@ def main(cnv_file: str, video_sequence_name: str, year: int) -> None:
     anno_url = os.environ["ANNOSAURUS_URL"]
     anno_secret = os.environ["ANNOSAURUS_CLIENT_SECRET"]
     vamp_url = os.environ["VAMPIRE_SQUID_URL"]
+    # Uncomment theses lines if you want to test the script without the microservices.
+    # You'll need to comment out the lines below that use the microservices too.
+    # data = __parse(cnv_file, year)
+    # print(list(data))
     annosaurus = Annosaurus(anno_url)
     vampire_squid = VampireSquid(vamp_url)
     media = vampire_squid.find_media_by_video_sequence_name(video_sequence_name)
@@ -29,19 +34,20 @@ def main(cnv_file: str, video_sequence_name: str, year: int) -> None:
 
 def __parse(cnv_file: str, year: int):
     profile = fCNV(cnv_file)
-    df = profile.as_DataFrame()
-    for index, row in df.iterrows():
-        timeJ = row['timeJ']
-        altitude = __get_value("altM", row, 999.9)
+    n = len(profile['timeJ'])
+    for i in range(n):
+    # for index, row in df.iterrows():
+        timeJ = profile['timeJ'][i]
+        altitude = profile["altM"][i]
      #    latitude = __get_value("Latitude", row)
      #    longitude = __get_value("Longitude", row)
-        depth_meters = __get_value("DEPTH", row)
-        temperature = __get_value("potemperature", row)
-        oxygen = __get_value("oxygen_ml_L", row)
+        depth_meters = profile["DEPTH"][i]
+        temperature = profile["potemperature"][i]
+        oxygen = profile["oxygen_ml_L"][i]
      #    salinity = __get_value("Salinity", row)
 
         # https://info.seabird.com/2026_SeaBird_c-mult_c-June-Newsletter_landing-Page-2.html
-        dt = datetime.date(year, 1, 1) + datetime.timedelta(timeJ - 1)
+        dt = datetime.datetime(year, 1, 1) + datetime.timedelta(days=(timeJ - 1))
         date = dt.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
         yield {
