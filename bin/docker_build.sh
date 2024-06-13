@@ -1,11 +1,4 @@
 #!/usr/bin/env bash
 
-MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-BASE_DIR="$( cd "$( dirname "${MY_DIR}/../.." )" && pwd )"
-
-
-"$BASE_DIR/bin/docker_update.sh"
-
-source "${BASE_DIR}/bin/docker-env.sh"
-cd "$BASE_DIR/docker"
-docker-compose build
+"$(dirname "$0")/docker_update.sh"
+"$(dirname "$0")/__docker.sh" build

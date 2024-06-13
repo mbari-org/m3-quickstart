@@ -12,9 +12,7 @@ if [ "$SCRIPT_EXTENSION" = "py" ]; then
     exit
 elif [ "$SCRIPT_EXTENSION" = "sc" ]; then
     source "$BASE_DIR/bin/docker-env.sh"
-    scala "$BASE_DIR/bin/etc/scala/$1" "${@:2}"
+    export VARS_PWD="$VARS_KB_DATABASE_PASSWORD"
+    "$BASE_DIR/bin/etc/scala/$1" "${@:2}"
     exit
 fi
-
-# source "$BASE_DIR/bin/docker-env.sh"
-# python "$BASE_DIR/bin/etc/python/$1" "${@:2}"
