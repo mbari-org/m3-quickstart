@@ -1,15 +1,5 @@
 services:
 
-  # derby:
-  #   build: derby/.
-  #   image: m3/derby
-  #   ports:
-  #     - "1527:1527"
-  #   volumes:
-  #     - ${M3_HOST_DIR}/derby:/dbs
-  #   networks:
-  #     - m3
-
   # sqlserver:
   #   image: mcr.microsoft.com/mssql/server
   #   # image: mcr.microsoft.com/azure-sql-edge
@@ -25,7 +15,6 @@ services:
   #   networks: 
   #     - m3
 
-  # Postgres:14.5 (latest) does not work. See https://github.com/mbari-org/m3-quickstart/issues/8#issuecomment-1260233442
   postgres:
     image: postgres:16
     restart: always

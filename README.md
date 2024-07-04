@@ -4,32 +4,45 @@
 
 A simple and easy method to run MBARI's Video Annotation and Reference System.
 
-## News
+## tl;dr
 
-### February 8, 2024
+To start a web server, database, and VARS services you will need to have [Docker](https://www.docker.com) installed. Then run the following:
 
-We are currently doing some major updates to the backend services, [annosaurus](https://github.com/mbari-org/annosaurus/pull/41) and [vampire-squid](https://github.com/mbari-org/vampire-squid/pull/9).
+```sh
+# Get the source code.
+git clone https://github.com/mbari-org/m3-quickstart.git  
 
-f you're currently using m3-quickstart to run a VARS system, run `git pull`. Beyond that, there's no need for you to do anything at the moment. I've pinned the correct versions of the services for you to continue running VARS uninterrupted on your systems.
+# Start the web server, database, and VARS services
+# The first time it's run it takes a while. Be patient.
+cd m3-quickstart
+bin/docker_start.sh
+```
 
- Going forward, I will provide migration scripts to update PostgreSQL and SQL Server databases to work with the updated services, providing a migration path for users.
+## All the glorious details
 
- If you are planning to set up a new VARS system in the near future, I would advise you to wait until about the end of February 2024. At that point, I will have updated this project to work with the new services, and you can run with the latest and greatest changes.
+### Software Prerequisites
 
-## Prerequisites
+#### For Services and supporting scripts
 
 - [Docker](https://www.docker.com) - Required to launch the VARS microservices
 - [Python >= 3.7](https://www.python.org) - Runs the supporting scripts. The additional python requirements are in [bin/etc/python/requirements.txt](requirements.txt)
-- [ffmpeg](https://ffmpeg.org) - Required to use the pyhon video registration scripts
-- [Java 17+](https://jdk.java.net/17/) - Builds the VARS Query and VARS Knowledgebase applications.
-- [scala-cli](https://scala-cli.virtuslab.org) - Runs some of the supporting scripts.
-- [VARS Annotation v1.5.3 or earlier](https://github.com/mbari-org/vars-annotation/releases/tag/1.5.3) - The annotation application
-- A VARS Friendly-video player. It can be anyone of the following:
-  - [Sharktopoda](https://github.com/mbari-media-management/Sharktopoda/releases) - macOS-only
-  - [jsharktopoda](https://github.com/mbari-media-management/jsharktopoda/releases) - cross-platform
-  - [Cthulhu](https://github.com/mbari-media-management/cthulhu/releases/tag/1.0.0) - macOS (amd64, not support on arm64) and Linux. This video player allows users to draw bounding boxes directly on video. Requires that [VLC](https://www.videolan.org) is installed too.
+- [ffmpeg](https://ffmpeg.org) - Required to use the python video registration scripts
+- [scala-cli](https://scala-cli.virtuslab.org) - (Optional) Runs some of the supporting scripts.
 
-## tl;dr
+#### To build the VARS Query and Knowledgebase
+
+We are in the process of creating web versions of these applications, so this step may go away
+
+- [Java 17+](https://jdk.java.net/17/) - Builds the VARS Query and VARS Knowledgebase applications.
+
+#### Prebuilt applications
+
+- [VARS Annotation](https://github.com/mbari-org/vars-annotation/releases) - The annotation application
+- A VARS Friendly-video player. It can be one of the following:
+  - [Sharktopoda](https://github.com/mbari-org/Sharktopoda/releases) - macOS-only (Recommended)
+  - [jsharktopoda](https://github.com/mbari-org/jsharktopoda/releases) - cross-platform
+
+## Building the VARS Query and VARS Knowledgebase
 
 ### Build everyting
 
@@ -37,12 +50,8 @@ To get M3/VARS built and running on your own server. Do the following in a termi
 
 ```bash
 # Get setup
-git clone git@github.com:mbari-media-management/m3-quickstart.git
+git clone https://github.com/mbari-org/m3-quickstart.git
 cd m3-quickstart
-
-# Start the web server, database, and VARS services
-# The first time it's run it takes a while. Be patient.
-bin/docker_start.sh
 
 # Builds some custom VARS apps under temp/apps
 # You need GITHUB_TOKEN and GITHUB_USERNAME environment variables set.
