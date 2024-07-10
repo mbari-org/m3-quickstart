@@ -809,3 +809,21 @@ class VarsKnowledgebase(object):
             if 'children' in concept:
                 VarsKnowledgebase.__accumulate_names(
                     concept["children"], accum)
+
+class Beholder(object):
+
+    def __init__(self, base_url: str, x_api_key: str):
+        self.base_url = base_url
+        self.x_api_key = x_api_key
+
+    def capture_to_file(self, video_url: str, elapsed_time_millis: int, image_file: str):
+        url = "{}/capture".format(self.base_url)
+        headers = {"X-API-Key": self.x_api_key, "Content-Type": "application/json"}
+        data = {"videoUrl": video_url, "elapsedTimeMillis": elapsed_time_millis}
+        r = requests.post(url, data=json.dumps(data), headers=headers)
+        # print(r)
+        # print(data)
+        if (r.status_code == 200):
+            with open(image_file, 'wb') as f:
+                bytes = r.content
+                f.write(bytes)

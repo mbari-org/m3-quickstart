@@ -36,29 +36,36 @@ def main(file_name, video_sequence_name: str, delimiter=","):
 def __parse_using_pandas(file_name, delimiter):
     data = pd.read_csv(file_name, delimiter=delimiter)
     for index, row in data.iterrows():
-        altitude = __get_value("Alt", row, 999.9)
+        altitude = __get_value("Alt", row, [999.9, 0])
         latitude = __get_value("Latitude", row)
         longitude = __get_value("Longitude", row)
         depth_meters = __get_value("Depth", row)
         temperature = __get_value("Temperature", row)
-        oxygen = __get_value("Oxygen", row)
+        # oxygen = __get_value("Oxygen", row)
+        oxygen_mg_l = __get_value("oxygen_mg_per_l", row) # added to explicitly specify units
+        oxygen_ml_l = __get_value("oxygen_ml_per_l", row)
+
+        # if ml/L is not there, convert mg/L to ml/L
+        if not oxygen_ml_l and oxygen_mg_l:
+            oxygen_ml_l = round(oxygen_mg_l / 1.429, 5)
+        
         salinity = __get_value("Salinity", row)
 
         date = iso8601.parse_date(row["Date"]).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
         yield {"latitude": latitude, "longitude": longitude, 
           "depth_meters": depth_meters, "temperature_celsius": temperature, 
-          "oxygen_ml_l": oxygen, "salinity": salinity, 
+          "oxygen_ml_l": oxygen_ml_l, "salinity": salinity, 
           "recorded_timestamp": date, "altitude": altitude}
 
 
-def __get_value(name, row, bad_value=None):
+def __get_value(name, row, bad_values=None):
     v = None
     if name in row:
         v = row[name]
         if math.isnan(v):
             v = None
-        if bad_value and v == bad_value:
+        if bad_values and v in bad_values:
             v = None
     return v
 

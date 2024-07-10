@@ -5,18 +5,21 @@ export BASE_DIR="$( cd "$( dirname "${MY_DIR}/../.." )" && pwd )"
 
 # export HOST_IP=$(curl -4 ifconfig.co)
 # export HOST_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | head -1)
-export HOST_IP="anicca.shore.mbari.org"
+export HOST_IP="localhost"
 export IMAGE_COPYRIGHT_OWNER="Creative Commons (CC)"
 export JWT_ISSUER=http://www.mbari.org
 export DATABASE_NAME=M3_VARS
 
-export LOGBACK_LEVEL=INFO
+# 2024-07-08: DEBUG gerenates a ton of hibernate log messages in Oni
+# Those message cause connection timeouts
+export LOGBACK_LEVEL=INFO  
 export M3_HOST_DIR="${BASE_DIR}/temp"
 export M3_HOST_NAME="http://${HOST_IP}"
 export M3_JDBC_BASE_URL="jdbc:postgresql://postgres:5432"
 export M3_JDBC_DRIVER="org.postgresql.Driver"
 export M3_JDBC_NAME=PostgreSQL
-export M3_JDBC_PWD=sumptuous_code
+export M3_JDBC_PWD=vars0sourceforge
+# export M3_JDBC_PWD=sumptuous_code
 export M3_JDBC_URL_FOR_APPS="jdbc:postgresql://${HOST_IP}:5432/${DATABASE_NAME}?sslmode=disable&stringType=unspecified"
 export M3_JDBC_URL="${M3_JDBC_BASE_URL}/${DATABASE_NAME}?sslmode=disable&stringType=unspecified"
 # export M3_JDBC_URL_FOR_APPS="jdbc:postgresql://${HOST_IP}:5432/${DATABASE_NAME}?sslmode=disable"
