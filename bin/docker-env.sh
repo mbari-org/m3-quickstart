@@ -26,6 +26,8 @@ export M3_JDBC_USER=m3
 
 # ---------------------------------------------------------------------
 # Application specific variables
+# *_INTERNAL_URL is a services endpoint on the docker network
+# *_URL is a services public endpoint URL
 
 # Annosaurus - annotation service
 export ANNOSAURUS_CLIENT_SECRET=foo
