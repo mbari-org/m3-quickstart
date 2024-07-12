@@ -8,6 +8,7 @@ import subprocess
 import sys
 import time as pytime
 import timeutil
+from base64 import b64encode
 
 
 __author__ = "Brian Schlining"
@@ -594,6 +595,32 @@ class Annosaurus(JWTAuthtication):
         d = [{"uuid": imaged_moment_uuid, "recorded_timestamp": recorded_timestamp.isoformat()}]   
         body = json.dumps(d)
         return requests.put(url, headers=headers, data=body).json()
+    
+class Oni:
+
+    def __init__(self, base_url: str):
+        self.base_url = base_url
+
+    def login(self, username: str, password: str) -> str:
+        url = "{}/auth/login".format(self.base_url)
+        token = b64encode(f"{username}:{password}".encode('utf-8')).decode("ascii")
+        headers = {"Authorization": "Basic {}".format(token)}
+        r = requests.post(url, headers=headers)
+        return r.json()['access_token']
+    
+    def taxa(self, concept: str) -> Dict:
+        url = "{}/phylogeny/taxa/{}".format(self.base_url, concept)
+        return requests.get(url).json()
+    
+    def delete_concept(self, concept: str, jwt: str) -> bool:
+        t = self.taxa(concept)
+        if len(t) > 1:
+            raise ValueError("Concept has children. Can't delete")
+
+        url = "{}/concept/{}".format(self.base_url, concept)
+        headers = {"Authorization": "Bearer {}".format(jwt)}
+        r = requests.delete(url, headers=headers)
+        return r.status_code == 200
 
 class M3(object):
 
