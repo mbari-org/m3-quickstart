@@ -12,7 +12,7 @@ export DATABASE_NAME=M3_VARS
 
 # ---------------------------------------------------------------------
 # Shared variables
-export LOGBACK_LEVEL=WARN 
+export LOGBACK_LEVEL=DEBUG 
 export M3_HOST_DIR="${BASE_DIR}/temp"
 export M3_HOST_NAME="http://${HOST_IP}"
 export M3_JDBC_BASE_URL="jdbc:postgresql://postgres:5432"
