@@ -1,6 +1,6 @@
-FROM ubuntu:23.04
+FROM ubuntu:24.10
 
-ENV NGINX_VERSION 1.25.0
+ENV NGINX_VERSION 1.27.0
 ENV SRC_ROOT /usr/local/src
 ENV NGINX_HOME=/usr/local/nginx
 
