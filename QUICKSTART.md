@@ -5,7 +5,7 @@
 Install the following:
 
 - [Docker](https://www.docker.com) - Required to launch the VARS microservices
-- [Python >= 3.7](https://www.python.org) - Runs the supporting scripts. The additional python requirements are in [bin/etc/python/requirements.txt](requirements.txt)
+- [Python >= 3.7](https://www.python.org) - Runs the supporting scripts. The additional python requirements are in [bin/etc/python/requirements.txt](https://github.com/mbari-org/m3-quickstart/blob/main/bin/etc/python/requirements.txt)
 - [ffmpeg](https://ffmpeg.org) - Required to use the python video registration scripts
 - [VARS Annotation](https://github.com/mbari-org/vars-annotation/releases) - The annotation application
 - A VARS Friendly-video player. It can be one of the following:
