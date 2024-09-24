@@ -18,6 +18,8 @@ Optional:
 
 ## Start
 
+The first time you run this project, it will download a lot of content. Be sure to do this on a relatively fast network.
+
 ```sh
 # Get the source code.
 git clone https://github.com/mbari-org/m3-quickstart.git  
