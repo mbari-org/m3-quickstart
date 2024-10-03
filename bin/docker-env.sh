@@ -41,7 +41,8 @@ export ANNOSAURUS_INTERNAL_URL="http://annosaurus:8080/v1"
 export ANNOSAURUS_PORT=8082
 export ANNOSAURUS_SIGNING_SECRET=bar
 export ANNOSAURUS_TIMEOUT="60 seconds"
-export ANNOSAURUS_URL="http://${HOST_IP}:${ANNOSAURUS_PORT}/v1"
+export ANNOSAURUS_URL="http://${HOST_IP}/anno/v1"
+# export ANNOSAURUS_URL="http://${HOST_IP}:${ANNOSAURUS_PORT}/v1"
 export ANNOSAURUS_ZEROMQ_ENABLE=true
 export ANNOSAURUS_ZEROMQ_PORT=5563
 export ANNOSAURUS_ZEROMQ_TOPIC=vars
@@ -64,7 +65,8 @@ export ONI_DATABASE_USER="${M3_JDBC_USER}"
 export ONI_INTERNAL_URL="http://oni:8080/v1"
 export ONI_PORT=8083
 export ONI_SIGNING_SECRET=bar
-export ONI_URL="http://${HOST_IP}:${ONI_PORT}/v1"
+# export ONI_URL="http://${HOST_IP}:${ONI_PORT}/v1"
+export ONI_URL="http://${HOST_IP}/kb/v1"
 export ONI_URL_FOR_APPS="${M3_JDBC_URL_FOR_APPS}"
 
 # Panoptes - image archiving service
@@ -107,7 +109,8 @@ export VAMPIRESQUID_DATABASE_USER="${M3_JDBC_USER}"
 export VAMPIRESQUID_PORT=8084
 export VAMPIRESQUID_SIGNING_SECRET=bar
 export VAMPIRE_SQUID_INTERNAL_URL="http://vampire-squid:8080/v1"
-export VAMPIRE_SQUID_URL="http://${HOST_IP}:${VAMPIRESQUID_PORT}/v1"
+# export VAMPIRE_SQUID_URL="http://${HOST_IP}:${VAMPIRESQUID_PORT}/v1"
+export VAMPIRE_SQUID_URL="http://${HOST_IP}/vam/v1"
 
 # Miscellaneous
 export VARS_KB_SERVER_URL="${ONI_URL}"
