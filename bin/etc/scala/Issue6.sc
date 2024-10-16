@@ -1,7 +1,8 @@
-#!/usr/bin/env -S scala-cli shebang 
+#!/usr/bin/env -S scala shebang 
 
 
 //> using dep "com.microsoft.sqlserver:mssql-jdbc:9.4.1.jre11"
+//> using dep "org.postgresql:postgresql:42.7.4"
 
 import scala.util.Failure
 import scala.util.Using
@@ -11,6 +12,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.util.Success
 
 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver") 
+Class.forName("org.postgresql.Driver")
 
 def fix(dbUrl: String, dbUser: String, dbPwd: String): Unit = {
     
