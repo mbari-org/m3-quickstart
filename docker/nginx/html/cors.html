@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .result {
+            margin-bottom: 10px;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>CORS Test Page</h1>
+    <button id="testCorsBtn">Test CORS for all URLs</button>
+    
+    <div class="results" id="results"></div>
+
+    <script>
+        const services = [
+            {"name": "raziel", "url": "http://localhost/config/endpoints", "timeoutMillis": 10000},
+            {"name": "annosaurus", "url": "http://localhost/anno/v1/health", "timeoutMillis": 60000},
+            {"name": "oni", "url": "http://localhost/kb/v1/health", "timeoutMillis": 10000},
+            {"name": "vampire-squid", "url": "http://localhost/vam/v1/health", "timeoutMillis": 10000}
+        ];
+
+        const resultsDiv = document.getElementById('results');
+        const testCorsBtn = document.getElementById('testCorsBtn');
+
+        // Function to test CORS for each URL
+        async function testCORS(service) {
+            const resultElement = document.createElement('div');
+            resultElement.classList.add('result');
+            resultElement.innerHTML = `Testing ${service.name} (${service.url})...`;
+
+            try {
+                const response = await fetch(service.url, {
+                    method: 'GET',
+                    mode: 'cors',  // Enforces CORS
+                });
+                
+                if (response.ok) {
+                    resultElement.classList.add('success');
+                    resultElement.innerHTML += ' Success!';
+                } else {
+                    resultElement.classList.add('error');
+                    resultElement.innerHTML += ` Failed with status: ${response.status}`;
+                }
+            } catch (error) {
+                resultElement.classList.add('error');
+                resultElement.innerHTML += ` Error: ${error.message}`;
+            }
+
+            resultsDiv.appendChild(resultElement);
+        }
+
+        // Test CORS for all services
+        async function testAllCORS() {
+            resultsDiv.innerHTML = '';  // Clear previous results
+            for (const service of services) {
+                await testCORS(service);
+            }
+        }
+
+        // Event listener for button click
+        testCorsBtn.addEventListener('click', testAllCORS);
+    </script>
+
+</body>
+</html>
