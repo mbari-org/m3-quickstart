@@ -18,18 +18,18 @@ def main(cnv_file: str, video_sequence_name: str, year: int) -> None:
     vamp_url = os.environ["VAMPIRE_SQUID_URL"]
     # Uncomment theses lines if you want to test the script without the microservices.
     # You'll need to comment out the lines below that use the microservices too.
-    data = __parse(cnv_file, year)
-    print(list(data))
-    # annosaurus = Annosaurus(anno_url)
-    # vampire_squid = VampireSquid(vamp_url)
-    # media = vampire_squid.find_media_by_video_sequence_name(video_sequence_name)
-    # if media:
-    #     data = __parse(cnv_file, year)
-    #     d = list(data)
-    #     for m in media:
-    #         print(f"Sending Seabird data to be merged for {m['uri']}")
-    #         annosaurus.merge(m["video_reference_uuid"], d, client_secret=anno_secret)
-    #         pass
+    # data = __parse(cnv_file, year)
+    # print(list(data))
+    annosaurus = Annosaurus(anno_url)
+    vampire_squid = VampireSquid(vamp_url)
+    media = vampire_squid.find_media_by_video_sequence_name(video_sequence_name)
+    if media:
+        data = __parse(cnv_file, year)
+        d = list(data)
+        for m in media:
+            print(f"Sending Seabird data to be merged for {m['uri']}")
+            annosaurus.merge(m["video_reference_uuid"], d, client_secret=anno_secret)
+            pass
 
 
 def __parse(cnv_file: str, year: int):
