@@ -34,31 +34,31 @@ def main(cnv_file: str, video_sequence_name: str, year: int) -> None:
 
 def __parse(cnv_file: str, year: int):
     profile = fCNV(cnv_file)
-    n = len(profile['timeM'])
-    start = profile.attributes['datetime']
-
-
+    n = len(profile['timeJ'])
     for i in range(n):
-        timeM = profile['timeM'][i]
-        t = start + datetime.timedelta(minutes=timeM)
-
-        latitude = profile["LATITUDE"][i]
-        longitude = profile["LONGITUDE"][i]
+    # for index, row in df.iterrows():
+        timeJ = profile['timeJ'][i]
+        altitude = profile["altM"][i]
+     #    latitude = __get_value("Latitude", row)
+     #    longitude = __get_value("Longitude", row)
         depth_meters = profile["DEPTH"][i]
         temperature = profile["potemperature"][i]
-        salinity = profile["PSAL"][i]
+        oxygen = profile["oxygen_ml_L"][i]
+     #    salinity = __get_value("Salinity", row)
 
         # https://info.seabird.com/2026_SeaBird_c-mult_c-June-Newsletter_landing-Page-2.html
-        # dt = datetime.datetime(year, 1, 1) + datetime.timedelta(days=(timeJ - 1))
-        date = t.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        dt = datetime.datetime(year, 1, 1) + datetime.timedelta(days=(timeJ - 1))
+        date = dt.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
         yield {
-            "latitude": latitude,
-            "longitude": longitude,
+          #   "latitude": latitude,
+          #   "longitude": longitude,
             "depth_meters": depth_meters,
             "temperature_celsius": temperature,
-            "salinity": salinity,
+            "oxygen_ml_l": oxygen,
+          #   "salinity": salinity,
             "recorded_timestamp": date,
+            "altitude": altitude,
         }
 
 
