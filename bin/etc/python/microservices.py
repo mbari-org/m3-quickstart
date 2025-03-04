@@ -327,11 +327,15 @@ class VampireSquid(JWTAuthtication):
         Returns:
             Media: The updated media object as JSON/dict
         """
+        media = self.find_media_by_video_reference_uuid(video_reference_uuid)
         jwt = self.authorize(client_secret, jwt)
         url = "{}/media/{}".format(self.base_url,
                                              video_reference_uuid)
         data = dict()
         data['start_timestamp'] = start_timestamp.isoformat()
+        data['camera_id'] = media['camera_id']
+        data['video_name'] = media['video_name']
+        data['video_sequence_name'] = media['video_sequence_name']
         headers = self._auth_header(jwt)
         return requests.put(url, data=data, headers=headers).json()
 
