@@ -625,6 +625,23 @@ class Oni:
         headers = {"Authorization": "Bearer {}".format(jwt)}
         r = requests.delete(url, headers=headers)
         return r.status_code == 200
+    
+    def add_concept(self, concept: str, parent_concept: str, jwt: str, rank_level: str=None, rank_name: str=None) -> bool:
+        t = self.taxa(parent_concept)
+        if len(t) < 1:
+            raise ValueError("Parent concept '{}' does not exist. Can't add {}".format(parent_concept, concept))
+        
+        url = "{}/concept/"
+        headers = {"Authorization": "Bearer {}".format(jwt)}
+        data = {"name": concept, "parentName": parent_concept}
+        if rank_level and rank_name:
+            data["rank_level"] = rank_level
+
+        if rank_name:
+            data["rank_name"] = rank_name
+        
+        r = requests.post(url, headers=headers, data=data)
+        return r.status_code == 200
 
 class M3(object):
 
