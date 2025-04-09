@@ -14,6 +14,7 @@ CREATE TABLE Concept  (
 	RankName          	varchar(20) NULL,
 	RankLevel         	varchar(20) NULL,
 	TaxonomyType      	varchar(20) NULL,
+	AphiaId				bigint NULL,
 	LAST_UPDATED_TIME 	timestamp NOT NULL DEFAULT now());
 
 CREATE TABLE ConceptDelegate  ( 
@@ -99,7 +100,7 @@ CREATE TABLE Media  (
 	id                  	bigint PRIMARY KEY NOT NULL,
 	ConceptDelegateID_FK	bigint NULL,
 	Url                 	varchar(1024) NULL,
-	MediaType           	char(5) NULL,
+	MediaType           	varchar(5) NULL,
 	PrimaryMedia        	smallint NULL,
 	Credit              	varchar(255) NULL,
 	Caption             	varchar(1000) NULL,
@@ -150,6 +151,12 @@ CREATE TABLE UserAccount  (
 	LastName         	varchar(50) NULL,
 	Email            	varchar(50) NULL,
 	UNIQUE(UserName));
+
+create table Reference (
+    LAST_UPDATED_TIME datetime2,
+    id        bigint not null primary key,
+    citation  varchar(2048) not null,
+    doi       varchar(2048));
 
 CREATE UNIQUE INDEX idx_Artifact__special1
 	ON Artifact(ConceptDelegateID_FK, GroupId, ArtifactId, Version, Classifier);
