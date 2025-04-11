@@ -8,4 +8,4 @@ INSERT INTO UniqueID (tablename, nextid) VALUES ('LinkTemplate', 1330);
 INSERT INTO UniqueID (tablename, nextid) VALUES ('Media', 3800);
 INSERT INTO UniqueID (tablename, nextid) VALUES ('Reference', 0);
 INSERT INTO UniqueID (tablename, nextid) VALUES ('SectionInfo', 317);
-INSERT INTO UniqueID (tablename, nextid) VALUES ('UserName', 247);
+INSERT INTO UniqueID (tablename, nextid) VALUES ('UserName', 248);

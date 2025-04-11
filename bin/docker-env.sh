@@ -15,6 +15,8 @@ export DATABASE_NAME=M3_VARS
 export LOGBACK_LEVEL=DEBUG 
 export M3_HOST_DIR="${BASE_DIR}/temp"
 export M3_HOST_NAME="http://${HOST_IP}"
+
+# Postgresql
 export M3_JDBC_BASE_URL="jdbc:postgresql://postgres:5432"
 export M3_JDBC_DRIVER="org.postgresql.Driver"
 export M3_JDBC_NAME=PostgreSQL
@@ -23,6 +25,15 @@ export M3_JDBC_PWD=vars0sourceforge
 export M3_JDBC_URL_FOR_APPS="jdbc:postgresql://${HOST_IP}:5432/${DATABASE_NAME}?sslmode=disable&stringType=unspecified"
 export M3_JDBC_URL="${M3_JDBC_BASE_URL}/${DATABASE_NAME}?sslmode=disable&stringType=unspecified"
 export M3_JDBC_USER=m3
+
+# SQL Server
+# export M3_JDBC_BASE_URL="jdbc:sqlserver://sqlserver:5432"
+# export M3_JDBC_DRIVER="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+# export M3_JDBC_NAME=SQLServer
+# export M3_JDBC_PWD=vars0Sourceforge
+# export M3_JDBC_URL_FOR_APPS="jdbc:sqlserver://${HOST_IP}:1433;databaseName=${DATABASE_NAME};trustServerCertificate=true"
+# export M3_JDBC_URL="${M3_JDBC_BASE_URL};databaseName=${DATABASE_NAME};trustServerCertificate=true"
+# export M3_JDBC_USER=m3
 
 # ---------------------------------------------------------------------
 # Application specific variables
