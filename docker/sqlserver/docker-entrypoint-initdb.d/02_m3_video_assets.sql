@@ -12,7 +12,6 @@ CREATE TABLE "dbo"."video_references"  (
 	"video_codec"      	varchar(128) NULL,
 	"width"            	int NULL,
 	"video_uuid"       	varchar(255) NOT NULL,
-	"rowguid"          	uniqueidentifier ROWGUIDCOL NOT NULL CONSTRAINT "MSmerge_df_rowguid_588B50A09EE94860B9B5F65FF1D825ED"  DEFAULT (newsequentialid()),
 	CONSTRAINT "PK__video_re__7F427930D0AE73A2" PRIMARY KEY CLUSTERED("uuid")
  ON [PRIMARY]);
 CREATE TABLE "dbo"."video_sequences"  ( 
@@ -21,7 +20,6 @@ CREATE TABLE "dbo"."video_sequences"  (
 	"description"      	varchar(2048) NULL,
 	"last_updated_time"	datetime2 NULL,
 	"name"             	varchar(512) NOT NULL,
-	"rowguid"          	uniqueidentifier ROWGUIDCOL NOT NULL CONSTRAINT "MSmerge_df_rowguid_642CAB49C27A4CF9B146188E8D657686"  DEFAULT (newsequentialid()),
 	CONSTRAINT "PK__video_se__7F4279308D60CFC3" PRIMARY KEY CLUSTERED("uuid")
  ON [PRIMARY]);
 CREATE TABLE "dbo"."videos"  ( 
@@ -32,7 +30,6 @@ CREATE TABLE "dbo"."videos"  (
 	"name"               	varchar(512) NOT NULL,
 	"start_time"         	datetime2 NOT NULL,
 	"video_sequence_uuid"	varchar(255) NOT NULL,
-	"rowguid"            	uniqueidentifier ROWGUIDCOL NOT NULL CONSTRAINT "MSmerge_df_rowguid_94715AE17496492A874E2133A870E1E5"  DEFAULT (newsequentialid()),
 	CONSTRAINT "PK__videos__7F427930696ABA50" PRIMARY KEY CLUSTERED("uuid")
  ON [PRIMARY]);
 CREATE VIEW "dbo"."unique_videos"
