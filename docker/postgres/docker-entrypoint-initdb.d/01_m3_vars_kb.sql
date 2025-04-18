@@ -14,6 +14,7 @@ CREATE TABLE Concept  (
 	RankName          	varchar(20) NULL,
 	RankLevel         	varchar(20) NULL,
 	TaxonomyType      	varchar(20) NULL,
+	AphiaId             bigint,
 	LAST_UPDATED_TIME 	timestamp NOT NULL DEFAULT now());
 
 CREATE TABLE ConceptDelegate  ( 
@@ -99,7 +100,7 @@ CREATE TABLE Media  (
 	id                  	bigint PRIMARY KEY NOT NULL,
 	ConceptDelegateID_FK	bigint NULL,
 	Url                 	varchar(1024) NULL,
-	MediaType           	char(5) NULL,
+	MediaType           	varchar(5) NULL,
 	PrimaryMedia        	smallint NULL,
 	Credit              	varchar(255) NULL,
 	Caption             	varchar(1000) NULL,
@@ -123,6 +124,20 @@ CREATE TABLE SectionInfo  (
 	CONSTRAINT fk_section_info__concept_delegate
 	  FOREIGN KEY(ConceptDelegateID_FK) 
 		REFERENCES ConceptDelegate(id));
+
+CREATE TABLE Reference (
+	id bigint PRIMARY KEY NOT NULL,
+	LAST_UPDATED_TIME timestamp(6), 
+	citation varchar(2048) not null, 
+	doi varchar(2048) unique);
+
+CREATE TABLE Reference_ConceptDelegate (
+	ConceptDelegateID_FK bigint not null, 
+	ReferenceID_FK bigint not null, 
+	primary key (ConceptDelegateID_FK, ReferenceID_FK),
+	CONSTRAINT fk_RCD__ConceptDelegate_id foreign key (ConceptDelegateID_FK) references ConceptDelegate,
+	CONSTRAINT fk_RCD__Reference_id foreign key (ReferenceID_FK) references Reference);
+
 
 CREATE TABLE UniqueID  ( 
 	tablename	varchar(200) NOT NULL,
