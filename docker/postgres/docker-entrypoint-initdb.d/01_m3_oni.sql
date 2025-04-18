@@ -125,19 +125,23 @@ CREATE TABLE SectionInfo  (
 	  FOREIGN KEY(ConceptDelegateID_FK) 
 		REFERENCES ConceptDelegate(id));
 
-CREATE TABLE Reference (
-	id bigint PRIMARY KEY NOT NULL,
-	LAST_UPDATED_TIME timestamp(6), 
-	citation varchar(2048) not null, 
-	doi varchar(2048) unique);
+create table Reference (
+    id        bigint PRIMARY KEY NOT NULL,
+	LAST_UPDATED_TIME timestamp NOT NULL DEFAULT now(),
+    citation  varchar(2048) not null,
+    doi       varchar(2048) NULL);
 
-CREATE TABLE Reference_ConceptDelegate (
+
+create table Reference_ConceptDelegate (
 	ConceptDelegateID_FK bigint not null, 
 	ReferenceID_FK bigint not null, 
 	primary key (ConceptDelegateID_FK, ReferenceID_FK),
-	CONSTRAINT fk_RCD__ConceptDelegate_id foreign key (ConceptDelegateID_FK) references ConceptDelegate,
-	CONSTRAINT fk_RCD__Reference_id foreign key (ReferenceID_FK) references Reference);
-
+	CONSTRAINT fk_RCD__ConceptDelegate_id
+		FOREIGN KEY(ConceptDelegateID_FK) 
+			REFERENCES ConceptDelegate(id),
+	CONSTRAINT fk_RCD__Reference_id
+		FOREIGN KEY(ReferenceID_FK) 
+			REFERENCES Reference(id));
 
 CREATE TABLE UniqueID  ( 
 	tablename	varchar(200) NOT NULL,
@@ -165,26 +169,6 @@ CREATE TABLE UserAccount  (
 	LastName         	varchar(50) NULL,
 	Email            	varchar(50) NULL,
 	UNIQUE(UserName));
-
-create table Reference (
-    id        bigint PRIMARY KEY NOT NULL,
-	LAST_UPDATED_TIME timestamp NOT NULL DEFAULT now(),
-    citation  varchar(2048) not null,
-    doi       varchar(2048) NULL);
-
--- alter table if exists Reference_ConceptDelegate add constraint fk_RCD__ConceptDelegate_id foreign key (ConceptDelegateID_FK) references ConceptDelegate;
--- alter table if exists Reference_ConceptDelegate add constraint fk_RCD__Reference_id foreign key (ReferenceID_FK) references Reference;
-
-create table Reference_ConceptDelegate (
-	ConceptDelegateID_FK bigint not null, 
-	ReferenceID_FK bigint not null, 
-	primary key (ConceptDelegateID_FK, ReferenceID_FK),
-	CONSTRAINT fk_RCD__ConceptDelegate_id
-		FOREIGN KEY(ConceptDelegateID_FK) 
-			REFERENCES ConceptDelegate(id),
-	CONSTRAINT fk_RCD__Reference_id
-		FOREIGN KEY(ReferenceID_FK) 
-			REFERENCES Reference(id));
 
 CREATE UNIQUE INDEX idx_Artifact__special1
 	ON Artifact(ConceptDelegateID_FK, GroupId, ArtifactId, Version, Classifier);
