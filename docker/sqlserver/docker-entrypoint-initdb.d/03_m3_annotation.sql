@@ -19,7 +19,6 @@ CREATE TABLE "dbo"."ancillary_data"  (
 	"z"                          	float NULL,
 	"imaged_moment_uuid"         	uniqueidentifier NOT NULL,
 	"light_transmission"         	real NULL,
-	"rowguid"                    	uniqueidentifier ROWGUIDCOL NOT NULL CONSTRAINT "MSmerge_df_rowguid_CF72EE1FA6DD4BB8A4BBE2D3A22FDAEB" ,
 	CONSTRAINT "PK__ancillar__7F4279302B7518A4" PRIMARY KEY CLUSTERED("uuid")
  ON [PRIMARY]);
 CREATE TABLE "dbo"."associations"  ( 
@@ -30,7 +29,6 @@ CREATE TABLE "dbo"."associations"  (
 	"to_concept"            	varchar(128) NULL,
 	"observation_uuid"      	uniqueidentifier NOT NULL,
 	"mime_type"             	varchar(64) NOT NULL,
-	"rowguid"               	uniqueidentifier ROWGUIDCOL NOT NULL CONSTRAINT "MSmerge_df_rowguid_5194C31F54434E78A2686F9058CB0992" ,
 	CONSTRAINT "PK__associat__7F427930B6C824FA" PRIMARY KEY CLUSTERED("uuid")
  ON [PRIMARY]);
 CREATE TABLE "dbo"."image_references"  ( 
@@ -42,7 +40,6 @@ CREATE TABLE "dbo"."image_references"  (
 	"url"                   	varchar(1024) NOT NULL,
 	"width_pixels"          	int NULL,
 	"imaged_moment_uuid"    	uniqueidentifier NOT NULL,
-	"rowguid"               	uniqueidentifier ROWGUIDCOL NOT NULL CONSTRAINT "MSmerge_df_rowguid_829FD926DB0A457FA758D7DD753E81A4" ,
 	CONSTRAINT "PK__image_re__7F427930F815F257" PRIMARY KEY CLUSTERED("uuid")
  ON [PRIMARY]);
 CREATE TABLE "dbo"."imaged_moments"  ( 
@@ -52,7 +49,6 @@ CREATE TABLE "dbo"."imaged_moments"  (
 	"recorded_timestamp"    	datetime2 NULL,
 	"timecode"              	varchar(255) NULL,
 	"video_reference_uuid"  	uniqueidentifier NULL,
-	"rowguid"               	uniqueidentifier ROWGUIDCOL NOT NULL CONSTRAINT "MSmerge_df_rowguid_D0E359180F194E76BFF80D2159F66774" ,
 	CONSTRAINT "PK__imaged_m__7F4279303DEE847D" PRIMARY KEY CLUSTERED("uuid")
  ON [PRIMARY]);
 CREATE TABLE "dbo"."observations"  ( 
@@ -65,7 +61,6 @@ CREATE TABLE "dbo"."observations"  (
 	"observation_timestamp" 	datetime2 NULL,
 	"observer"              	varchar(128) NULL,
 	"imaged_moment_uuid"    	uniqueidentifier NOT NULL,
-	"rowguid"               	uniqueidentifier ROWGUIDCOL NOT NULL CONSTRAINT "MSmerge_df_rowguid_87DCC5C4D532452AA8F46B0FDC85F05C" ,
 	CONSTRAINT "PK__observat__7F4279305ACD8084" PRIMARY KEY CLUSTERED("uuid")
  ON [PRIMARY]);
 CREATE TABLE "dbo"."video_reference_information"  ( 
@@ -75,7 +70,6 @@ CREATE TABLE "dbo"."video_reference_information"  (
 	"mission_id"            	varchar(256) NOT NULL,
 	"platform_name"         	varchar(64) NOT NULL,
 	"video_reference_uuid"  	uniqueidentifier NOT NULL,
-	"rowguid"               	uniqueidentifier ROWGUIDCOL NOT NULL CONSTRAINT "MSmerge_df_rowguid_F1690DA155554551A98CD85D65F1471D" ,
 	CONSTRAINT "PK__video_re__7F427930B246FB6C" PRIMARY KEY CLUSTERED("uuid")
  ON [PRIMARY]);
 CREATE NONCLUSTERED INDEX "ids_adjust_file_histories__video_reference_uuid"
