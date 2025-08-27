@@ -1,4 +1,4 @@
-INSERT INTO LinkTemplate (id, ConceptDelegateID_FK, LinkName, ToConcept, LinkValue, LAST_UPDATED_TIME) VALUES (102, 101, 'comment', 'huma', 'nil', '2009-01-01 00:00:00.000');
+INSERT INTO LinkTemplate (id, ConceptDelegateID_FK, LinkName, ToConcept, LinkValue, LAST_UPDATED_TIME) VALUES (102, 101, 'comment', 'human', 'nil', '2009-01-01 00:00:00.000');
 INSERT INTO LinkTemplate (id, ConceptDelegateID_FK, LinkName, ToConcept, LinkValue, LAST_UPDATED_TIME) VALUES (103, 101, 'comment', 'self', 'nil', '2009-01-01 00:00:00.000');
 INSERT INTO LinkTemplate (id, ConceptDelegateID_FK, LinkName, ToConcept, LinkValue, LAST_UPDATED_TIME) VALUES (104, 101, 'audio-comment', 'self', 'nil', '2009-01-01 00:00:00.000');
 INSERT INTO LinkTemplate (id, ConceptDelegateID_FK, LinkName, ToConcept, LinkValue, LAST_UPDATED_TIME) VALUES (105, 114, 'rov-dive', 'ship', 'western-flyer', '2009-01-01 00:00:00.000');
