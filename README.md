@@ -74,7 +74,7 @@ bin/vars_register_media.sh "Doc Ricketts" "Doc Ricketts 2309" "http://m3.shore.m
 
 ## Applications
 
->[!IMPORTANT] The web applications, VARS Query and VARS Knowledgebase Editor, work best when the web server if configured with SSL/HTTPS. We're working on providing a build and docs to help you with that.
+> [!IMPORTANT] The web applications, VARS Query and VARS Knowledgebase Editor, work best when the web server if configured with SSL/HTTPS. We're working on providing a build and docs to help you with that.
 
 ### VARS Annotation
 
