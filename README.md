@@ -57,7 +57,7 @@ bin/docker_start.sh
 #### Services and Supporting Scripts
 
 - [Docker](https://www.docker.com) - Required to launch the VARS microservices
-- [Python >= 3.7](https://www.python.org) - Required for supporting scripts. Additional requirements: [bin/etc/python/requirements.txt](requirements.txt)
+- [Python >= 3.7](https://www.python.org) - Required for supporting scripts. Additional requirements: [bin/etc/python/requirements.txt](bin/etc/python/requirements.txt)
 - [ffmpeg](https://ffmpeg.org) - Required for the Python video registration scripts
 - [Scala](https://www.scala-lang.org) - (Optional) Used by some supporting scripts.
 
