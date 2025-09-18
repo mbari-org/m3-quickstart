@@ -57,7 +57,7 @@ If you want to shutdown the M3/VARS software stack, run `m3-quickstart/bin/docke
 
 ### VARS Annotation
 
-VARS Annotation is one of the applications used to create annotations on video. It will run on Window, macOS, and Linux. At MBARI, we use macOS. If you need a build of VARS Annotation for your operating system submit create a request [here](https://github.com/mbari-media-management/vars-annotation/issues). It requires a separate VARS-compatible video player. (See the [Prebuilt Applications section above](#Prebuilt-applications)).
+VARS Annotation is one of the applications used to create annotations on video. It will run on Window, macOS, and Linux. At MBARI, we use macOS. If you need a build of VARS Annotation for your operating system submit create a request [here](https://github.com/mbari-media-management/vars-annotation/issues). It requires a separate VARS-compatible video player. (See the ["For Basic Video Annotation" secsion above](#For-Basic-Video-Annotation)).
 
 ### VARS Query (beta)
 
