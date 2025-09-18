@@ -118,6 +118,10 @@ A web application for editing the knowledge base (lexicon and phylogenetic tree 
 
 ## FAQ
 
+### What's M3?
+
+M3 stands for "MBARI Media Managment". VARS (the Video Annotation and Reference System) is the largest component of M3.
+
 ### Registering a Video
 
 Before annotating, VARS must know about your video.
