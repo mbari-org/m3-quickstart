@@ -69,7 +69,7 @@ VARS Knowledgebase Editor is a web application that is used to modify the knowle
 
 ### VARS Gridview
 
-[VARS Gridiview](https://github.com/mbari-org/vars-gridview) is a bulk editing tool for reviewing and correcting bounding box annotations, such as machine learning generated annotations.
+[VARS Gridview](https://github.com/mbari-org/vars-gridview) is a bulk editing tool for reviewing and correcting bounding box annotations, such as machine learning generated annotations.
 
 ### Mondrian (alpha)
 
