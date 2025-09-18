@@ -18,7 +18,8 @@ cd m3-quickstart
 bin/docker_start.sh
 ```
 
-A default account is created as user: `admin`, pwd: `admin`. If an application asks for a configuration URL, it is typically `http://<server-running-m3-quickstarts-name>/config`. 
+> [!Note]
+> A default account is created as user: `admin`, pwd: `admin`. If an application asks for a configuration URL, it is typically `http://<server-running-m3-quickstarts-name>/config`.
 
 ## Getting Started
 
