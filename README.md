@@ -13,10 +13,12 @@ To start a web server, database, and VARS services you will need to have [Docker
 git clone https://github.com/mbari-org/m3-quickstart.git  
 
 # Start the web server, database, and VARS services
-# The first time it's run it takes a while. Be patient.
+# The first time it's run, it takes a while. Be patient.
 cd m3-quickstart
 bin/docker_start.sh
 ```
+
+A default account is created as user: `admin`, pwd: `admin`. If an application asks for a configuration URL, it is typically `http://<server-running-m3-quickstarts-name>/config`. 
 
 ## All the glorious details
 
@@ -70,6 +72,24 @@ bin/vars_register_media.sh <camera id> <deployment id> <video url>
 bin/vars_register_media.sh "Doc Ricketts" "Doc Ricketts 2309" "http://m3.shore.mbari.org/videos/master/2021/11/2309/D2309_20211109T132100.3Z_prores.mov"
 ```
 
+## Applications
+
 ### VARS Annotation
 
-VARS Annotation will run on Window, macOS, and Linux. At MBARI, we use macOS. If you need a build of VARS Annotation for your operating system submit create a request [here](https://github.com/mbari-media-management/vars-annotation/issues)
+VARS Annotation is one of the applications used to create annotations on video. It will run on Window, macOS, and Linux. At MBARI, we use macOS. If you need a build of VARS Annotation for your operating system submit create a request [here](https://github.com/mbari-media-management/vars-annotation/issues). It requires a separate VARS-compatible video player. (See the [Prebuilt Applications section above](#Prebuilt-applications)). 
+
+### VARS Query (beta)
+
+VARS Query is a web application that can be used to search for and retrieve annotations, videos, and images. A link to open it will be on `Welcome to the MBARI Media Managment (M3) Server` page. On a single machine you can get to that page using `http://localhost`. 
+
+### VARS Knowledge-base Editor (alpha)
+
+VARS Knowledge-base Editor is a web application that is used to modify the knowledge-base, a lexicon and phylogenetic tree of terms that can be used to annotate in various VARS applications.
+
+### VARS Gridview
+
+[VARS Gridiview](https://github.com/mbari-org/vars-gridview) is a bulk editing tool for reviewing and correcting bounding box annotations, such as machine learning generated annotations. 
+
+### Mondrian (alpha)
+
+[Mondrian](https://github.com/mbari-org/mondrian) is an image annotation application. Please be aware that images must be registered in VARS before they can be annotated. There's a script for image registration in `m3-quickstart/bin/vars_register_images.sh`
