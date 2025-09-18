@@ -41,7 +41,7 @@ A default account is created as user: `admin`, pwd: `admin`. If an application a
 ### Next Steps
 
 1. Open a browser to <http://localhost> to verify that things are working.
-2. Register your first video with VARS. You can use any video with a URL or you can put them in `m3-quickstart/temp/media` and browse to it (e.g. <http://localhost>). Once you have a URL use `bin/vars_register_media.sh` to register it in the VARS Video Asset Manager.
+2. [Register your first video with VARS](#Registering-a-video). You can use any video with a URL or you can put them in `m3-quickstart/temp/media` and browse to it (e.g. <http://localhost>). Once you have a URL use `bin/vars_register_media.sh` to register it in the VARS Video Asset Manager.
 3. Download [VARS Annotation](https://github.com/mbari-media-management/vars-annotation/releases) and configure it as described [in the VARS Annotation docs](https://docs.mbari.org/vars-annotation/setup/).
 
 Any computer on you network can connect to the VARS services you're running. You can annotate from other machines on your network. You just need to know the name of the machine that you are running it on. You can test this by going to `http://<yourmachinename>`, if it's working you will see the `Welcome to the MBARI Media Managment (M3) Server` page.
