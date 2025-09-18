@@ -74,6 +74,8 @@ bin/vars_register_media.sh "Doc Ricketts" "Doc Ricketts 2309" "http://m3.shore.m
 
 ## Applications
 
+>[!IMPORTANT] The web applications, VARS Query and VARS Knowledgebase Editor, work best when the web server if configured with SSL/HTTPS. We're working on providing a build and docs to help you with that.
+
 ### VARS Annotation
 
 VARS Annotation is one of the applications used to create annotations on video. It will run on Window, macOS, and Linux. At MBARI, we use macOS. If you need a build of VARS Annotation for your operating system submit create a request [here](https://github.com/mbari-media-management/vars-annotation/issues). It requires a separate VARS-compatible video player. (See the [Prebuilt Applications section above](#Prebuilt-applications)). 
@@ -82,9 +84,9 @@ VARS Annotation is one of the applications used to create annotations on video. 
 
 VARS Query is a web application that can be used to search for and retrieve annotations, videos, and images. A link to open it will be on `Welcome to the MBARI Media Managment (M3) Server` page. On a single machine you can get to that page using `http://localhost`. 
 
-### VARS Knowledge-base Editor (alpha)
+### VARS Knowledgebase Editor (alpha)
 
-VARS Knowledge-base Editor is a web application that is used to modify the knowledge-base, a lexicon and phylogenetic tree of terms that can be used to annotate in various VARS applications.
+VARS Knowledgebase Editor is a web application that is used to modify the knowledge-base, a lexicon and phylogenetic tree of terms that can be used to annotate in various VARS applications.
 
 ### VARS Gridview
 
