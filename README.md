@@ -24,14 +24,14 @@ A default account is created as user: `admin`, pwd: `admin`. If an application a
 
 ### Software Prerequisites
 
-#### For Services and supporting scripts
+#### For Services and Supporting Scripts
 
 - [Docker](https://www.docker.com) - Required to launch the VARS microservices
 - [Python >= 3.7](https://www.python.org) - Runs the supporting scripts. The additional python requirements are in [bin/etc/python/requirements.txt](requirements.txt)
 - [ffmpeg](https://ffmpeg.org) - Required to use the python video registration scripts
 - [Scala](https://www.scala-lang.org) - (Optional) Runs some of the supporting scripts.
 
-#### Prebuilt applications
+#### For Basic Video Annotation
 
 - [VARS Annotation](https://github.com/mbari-org/vars-annotation/releases) - The annotation application
 - A VARS Friendly-video player. It can be one of the following:
