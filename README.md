@@ -20,7 +20,7 @@ bin/docker_start.sh
 
 A default account is created as user: `admin`, pwd: `admin`. If an application asks for a configuration URL, it is typically `http://<server-running-m3-quickstarts-name>/config`. 
 
-## All the glorious details
+## Getting Started
 
 ### Software Prerequisites
 
@@ -50,28 +50,6 @@ Any computer on you network can connect to the VARS services you're running. You
 
 If you want to shutdown the M3/VARS software stack, run `m3-quickstart/bin/docker_stop.sh`.
 
-## Details
-
-### Registering a video
-
-Before a video can be annotated, VARS needs to know about it. The first step is to make your video web accessible. If you've already run `docker_start.sh`, you have a web server running that is capable of serving video. You can put the video in `m3-quickstart/temp/media` and browse to it under <http://localhost/media>.
-
-The next step is to register the video. It's highly recommended that you follow a naming convention described [here](https://github.com/underwatervideo/UnderwaterVideoWorkingGroup/blob/master/Meetings/2016_Workshop/Documents/FINAL-2016VideoWorkshopReport.pdf). To help you get started, there's a script <bin/vars_register_media.sh> you can use to register a video with VARS. It's usage is:
-
-```bash
-cd m3-quickstart
-bin/vars_register_media.sh <camera id> <deployment id> <video url>
-```
-
-- __camera-id__ - An identifier for the camera or platform that collected the video
-- __deployment id__ - An identifier for the deployment of the camera
-- __video url__ - The URL to your video. Don't use localhost!! You can browse to your machine using it's network name instead.
-
-```bash
-# Example
-bin/vars_register_media.sh "Doc Ricketts" "Doc Ricketts 2309" "http://m3.shore.mbari.org/videos/master/2021/11/2309/D2309_20211109T132100.3Z_prores.mov"
-```
-
 ## Applications
 
 > [!IMPORTANT]
@@ -96,3 +74,25 @@ VARS Knowledgebase Editor is a web application that is used to modify the knowle
 ### Mondrian (alpha)
 
 [Mondrian](https://github.com/mbari-org/mondrian) is an image annotation application. Please be aware that images must be registered in VARS before they can be annotated. There's a script for image registration in `m3-quickstart/bin/vars_register_images.sh`
+
+## FAQ
+
+### Registering a video
+
+Before a video can be annotated, VARS needs to know about it. The first step is to make your video web accessible. If you've already run `docker_start.sh`, you have a web server running that is capable of serving video. You can put the video in `m3-quickstart/temp/media` and browse to it under <http://localhost/media>.
+
+The next step is to register the video. It's highly recommended that you follow a naming convention described [here](https://github.com/underwatervideo/UnderwaterVideoWorkingGroup/blob/master/Meetings/2016_Workshop/Documents/FINAL-2016VideoWorkshopReport.pdf). To help you get started, there's a script <bin/vars_register_media.sh> you can use to register a video with VARS. It's usage is:
+
+```bash
+cd m3-quickstart
+bin/vars_register_media.sh <camera id> <deployment id> <video url>
+```
+
+- __camera-id__ - An identifier for the camera or platform that collected the video
+- __deployment id__ - An identifier for the deployment of the camera
+- __video url__ - The URL to your video. Don't use localhost!! You can browse to your machine using it's network name instead.
+
+```bash
+# Example
+bin/vars_register_media.sh "Doc Ricketts" "Doc Ricketts 2309" "http://m3.shore.mbari.org/videos/master/2021/11/2309/D2309_20211109T132100.3Z_prores.mov"
+```
