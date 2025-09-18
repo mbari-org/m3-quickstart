@@ -1,4 +1,4 @@
-//> using scala 3.3.3
+//> using scala 3.7.3
 
 
 //> using dep "com.microsoft.sqlserver:mssql-jdbc:9.4.1.jre11"

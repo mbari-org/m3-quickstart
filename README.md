@@ -27,13 +27,7 @@ bin/docker_start.sh
 - [Docker](https://www.docker.com) - Required to launch the VARS microservices
 - [Python >= 3.7](https://www.python.org) - Runs the supporting scripts. The additional python requirements are in [bin/etc/python/requirements.txt](requirements.txt)
 - [ffmpeg](https://ffmpeg.org) - Required to use the python video registration scripts
-- [scala-cli](https://scala-cli.virtuslab.org) - (Optional) Runs some of the supporting scripts.
-
-#### To build the VARS Query and Knowledgebase
-
-We are in the process of creating web versions of these applications, so this step may go away
-
-- [Java 17+](https://jdk.java.net/17/) - Builds the VARS Query and VARS Knowledgebase applications.
+- [Scala](https://www.scala-lang.org) - (Optional) Runs some of the supporting scripts.
 
 #### Prebuilt applications
 
@@ -42,36 +36,13 @@ We are in the process of creating web versions of these applications, so this st
   - [Sharktopoda](https://github.com/mbari-org/Sharktopoda/releases) - macOS-only (Recommended)
   - [jsharktopoda](https://github.com/mbari-org/jsharktopoda/releases) - cross-platform
 
-## Building the VARS Query and VARS Knowledgebase
-
-### Build everyting
-
-To get M3/VARS built and running on your own server. Do the following in a terminal:
-
-```bash
-# Get setup
-git clone https://github.com/mbari-org/m3-quickstart.git
-cd m3-quickstart
-
-# Builds some custom VARS apps under temp/apps
-# You need GITHUB_TOKEN and GITHUB_USERNAME environment variables set.
-#   see https://github.com/mbari-org/maven#gradle
-export GITHUB_TOKEN=<your github token>
-export GITHUB_USERNAME=<your github username>
-bin/vars_build.sh
-
-# Next steps needed to run python support scripts
-pip install -r bin/etc/python/requirements.txt
-```
-
 ### Next Steps
 
 1. Open a browser to <http://localhost> to verify that things are working.
-2. Run the _VARS Knowledgebase_ application. The first time it's run it will ask you to create an admin account. It will be located in `m3-quickstart/temp/apps`. __Remember your admin password!!__
-3. Register your first video with VARS. You can use any video with a URL or you can put them in `m3-quickstart/temp/media` and browse to it (e.g. <http://localhost>). Once you have a URL use `bin/vars_register_media.sh` to register it in the VARS Video Asset Manager.
-4. Download [VARS Annotation](https://github.com/mbari-media-management/vars-annotation/releases) and configure it as described [here](https://docs.mbari.org/vars-annotation/setup/).
+2. Register your first video with VARS. You can use any video with a URL or you can put them in `m3-quickstart/temp/media` and browse to it (e.g. <http://localhost>). Once you have a URL use `bin/vars_register_media.sh` to register it in the VARS Video Asset Manager.
+3. Download [VARS Annotation](https://github.com/mbari-media-management/vars-annotation/releases) and configure it as described [in the VARS Annotation docs](https://docs.mbari.org/vars-annotation/setup/).
 
-Any computer on you network can connect to the VARS services you're running. You can annotate from other machines on your network.
+Any computer on you network can connect to the VARS services you're running. You can annotate from other machines on your network. You just need to know the name of the machine that you are running it on. You can test this by going to `http://<yourmachinename>`, if it's working you will see the `Welcome to the MBARI Media Managment (M3) Server` page.
 
 ### Clean up
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env -S scala-cli shebang
+#!/usr/bin/env -S scala shebang
 
 //> using file project.scala
 
