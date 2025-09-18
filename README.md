@@ -26,7 +26,8 @@ A simple way to run MBARI's **Video Annotation and Reference System (VARS)**.
 ## Overview
 
 MBARI's Video Annotation and Reference System (VARS) consists of a database, a web server, multiple back-end microservices, web applications, and desktop applications.  
-The **m3-quickstart** project makes it easy for organizations to spin up everything needed to get started with VARS for video and image annotation. 
+
+The **m3-quickstart** project makes it easy for organizations to spin up everything needed to get started with VARS for video and image annotation.
 
 ---
 
