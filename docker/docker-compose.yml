@@ -32,6 +32,25 @@ services:
     networks:
       - m3
 
+  # nginx:
+  #   build: nginx/.
+  #   image: m3/nginx
+  #   restart: always
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ${M3_HOST_DIR}/media:/usr/local/nginx/html/media
+  #     - ${M3_HOST_DIR}/framegrabs:/usr/local/nginx/html/framegrabs
+  #   networks:
+  #     - m3
+  #   depends_on:
+  #     - annosaurus
+  #     - charybdis
+  #     - panoptes
+  #     - raziel
+  #     - vampire-squid
+  #     - oni
+
   nginx:
     build: nginx/.
     image: m3/nginx
@@ -39,8 +58,8 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ${M3_HOST_DIR}/media:/usr/local/nginx/html/media
-      - ${M3_HOST_DIR}/framegrabs:/usr/local/nginx/html/framegrabs
+      - ${M3_HOST_DIR}/media:/usr/share/nginx/html/media:ro
+      - ${M3_HOST_DIR}/framegrabs:/usr/share/nginx/html/framegrabs:ro
     networks:
       - m3
     depends_on:
