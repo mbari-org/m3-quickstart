@@ -4,8 +4,8 @@ MY_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export BASE_DIR="$( cd "$( dirname "${MY_DIR}/../.." )" && pwd )"
 
 # export HOST_IP=$(curl -4 ifconfig.co)
-# export HOST_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | head -1)
-export HOST_IP="localhost"
+export HOST_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | head -1)
+# export HOST_IP="localhost"
 export IMAGE_COPYRIGHT_OWNER="Creative Commons (CC)"
 export JWT_ISSUER=http://www.mbari.org
 export DATABASE_NAME=M3_VARS
@@ -108,6 +108,7 @@ export RAZIEL_HTTP_CONTEXT=config
 export RAZIEL_JWT_SIGNING_SECRET=foo
 export RAZIEL_MASTER_KEY=inflatable_ducks
 export RAZIEL_PORT=8400
+export RAZIEL_URL="http://${HOST_IP}"
 
 # Vampire squid - video asset manager service
 export VAMPIRESQUID_CLIENT_SECRET=foo
