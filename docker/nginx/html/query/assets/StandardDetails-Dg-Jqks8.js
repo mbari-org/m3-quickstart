@@ -1,0 +1,1 @@
+import{d as t,b as o,i as r,D as n,t as d,o as l,s as c}from"./index-ps4APlwp.js";const m=t({__name:"StandardDetails",props:{summary:{}},setup(a){const s=a;return(e,p)=>(l(),o("details",null,[r("summary",null,d(s.summary),1),n(e.$slots,"default",{},void 0)]))}}),u=c(m,[["__scopeId","data-v-290db262"]]);export{u as S};
