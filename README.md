@@ -6,7 +6,8 @@
 [![Release](https://img.shields.io/github/v/release/mbari-org/m3-quickstart)](https://github.com/mbari-org/m3-quickstart/releases)
 [![License](https://img.shields.io/github/license/mbari-org/m3-quickstart)](LICENSE)
 
-A simple way to run MBARI's **Video Annotation and Reference System (VARS)**.
+A simple way to run MBARI's **Video Annotation and Reference System (VARS)** a component of MBARI'
+s media management system (M3).
 
 ---
 
