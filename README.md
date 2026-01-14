@@ -23,7 +23,7 @@ cd vars-quickstart-mbari
 Then copy or move the following directories:
 
 1. Copy or move `m3-quickstart/temp/postgres` to `vars-quickstart-public/temp/postgres`
-2. Copy or Move `m3-quickstart/temp/framegrabs` to `vars-quickstart-public/temp/framegrabs`
-3. Copy or Move `m3-quickstart/temp/media` to `vars-quickstart-public/temp/media`
+2. Copy or move `m3-quickstart/temp/framegrabs` to `vars-quickstart-public/temp/framegrabs`
+3. Copy or move `m3-quickstart/temp/media` to `vars-quickstart-public/temp/media`
 
 Finally, continue to follow the [Quick Start instructions](https://github.com/mbari-org/vars-quickstart-public?tab=readme-ov-file#quick-start) in `vars-quickstart-public`.
