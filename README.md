@@ -8,7 +8,7 @@
 
 A simple way to run MBARI's **Video Annotation and Reference System (VARS)**, a component of MBARI's media management system (M3). The original instructions for this project are in [README_ORIGINAL.md](README_ORIGINAL.md)
 
-> [!IMPORTANT]
+> [!WARNING]
 > This project is no longer supported. Users are recommended to use or migrate to <https://github.com/mbari-org/vars-quickstart-public> instead.
 
 ## Migrating to vars-quickstart-public
