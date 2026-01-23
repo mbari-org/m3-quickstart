@@ -149,3 +149,8 @@ DELETE FROM
   LinkRealization
 WHERE
   LinkName = 'dsg-MBARI-new-species';
+
+-- Fix URLs in DSG with spaces. Those spaces break things
+UPDATE Media
+SET Url = REPLACE(Url, ' ', '%20')
+WHERE Url LIKE '% %'
